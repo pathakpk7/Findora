@@ -1,15 +1,14 @@
-import { ConflictException, Injectable, UnauthorizedException 
-
- } from '@nestjs/common';
+import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import { PrismaService } from '../config/prisma/prisma.service';
 
 @Injectable()
 export class AuthService {
   constructor(
-    private readonly prisma: any,
+    private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
   ) {}
 
@@ -34,6 +33,13 @@ export class AuthService {
         password: hashedPassword,
         firstName: registerDto.firstName,
         lastName: registerDto.lastName,
+        rollNo: registerDto.rollNo,
+        department: registerDto.department,
+        year: registerDto.year,
+        section: registerDto.section,
+        role: 'USER',
+        trustScore: 0,
+        isVerified: false,
       },
       select: {
         id: true,
@@ -42,6 +48,13 @@ export class AuthService {
         firstName: true,
         lastName: true,
         avatar: true,
+        rollNo: true,
+        department: true,
+        year: true,
+        section: true,
+        trustScore: true,
+        role: true,
+        isVerified: true,
         isActive: true,
         createdAt: true,
         updatedAt: true,
@@ -55,6 +68,25 @@ export class AuthService {
     const prisma = this.prisma as any;
     const user = await prisma.user.findUnique({
       where: { email: loginDto.email },
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        password: true,
+        firstName: true,
+        lastName: true,
+        avatar: true,
+        rollNo: true,
+        department: true,
+        year: true,
+        section: true,
+        trustScore: true,
+        role: true,
+        isVerified: true,
+        isActive: true,
+        createdAt: true,
+        updatedAt: true,
+      },
     });
 
     if (!user) {
@@ -67,17 +99,8 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    return this.buildAuthResponse({
-      id: user.id,
-      email: user.email,
-      username: user.username,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      avatar: user.avatar,
-      isActive: user.isActive,
-      createdAt: user.createdAt,
-      updatedAt: user.updatedAt,
-    });
+    const { password, ...userWithoutPassword } = user;
+    return this.buildAuthResponse(userWithoutPassword);
   }
 
   private buildAuthResponse(user: {
@@ -87,11 +110,24 @@ export class AuthService {
     firstName: string | null;
     lastName: string | null;
     avatar: string | null;
+    rollNo: string | null;
+    department: string | null;
+    year: number | null;
+    section: string | null;
+    trustScore: number;
+    role: string;
+    isVerified: boolean;
     isActive: boolean;
     createdAt: Date;
     updatedAt: Date;
   }) {
-    const payload = { sub: user.id, email: user.email, username: user.username };
+    const payload = {
+      sub: user.id,
+      email: user.email,
+      username: user.username,
+      role: user.role,
+      isVerified: user.isVerified,
+    };
 
     return {
       user,

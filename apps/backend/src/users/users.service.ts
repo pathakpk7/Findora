@@ -18,6 +18,13 @@ export class UsersService {
         firstName: true,
         lastName: true,
         avatar: true,
+        rollNo: true,
+        department: true,
+        year: true,
+        section: true,
+        trustScore: true,
+        role: true,
+        isVerified: true,
         isActive: true,
         createdAt: true,
         updatedAt: true,
@@ -36,6 +43,13 @@ export class UsersService {
         firstName: true,
         lastName: true,
         avatar: true,
+        rollNo: true,
+        department: true,
+        year: true,
+        section: true,
+        trustScore: true,
+        role: true,
+        isVerified: true,
         isActive: true,
         createdAt: true,
         updatedAt: true,
@@ -53,9 +67,12 @@ export class UsersService {
     await this.findOne(id);
     const prisma = this.prisma as any;
 
+    // Prevent users from updating role, trustScore, isVerified
+    const { role, trustScore, isVerified, ...safeData } = updateUserDto as any;
+
     return prisma.user.update({
       where: { id },
-      data: updateUserDto,
+      data: safeData,
       select: {
         id: true,
         email: true,
@@ -63,6 +80,13 @@ export class UsersService {
         firstName: true,
         lastName: true,
         avatar: true,
+        rollNo: true,
+        department: true,
+        year: true,
+        section: true,
+        trustScore: true,
+        role: true,
+        isVerified: true,
         isActive: true,
         createdAt: true,
         updatedAt: true,

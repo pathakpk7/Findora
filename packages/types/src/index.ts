@@ -1,4 +1,10 @@
 // User related types
+export enum Role {
+  USER = 'USER',
+  MODERATOR = 'MODERATOR',
+  ADMIN = 'ADMIN',
+}
+
 export interface User {
   id: string;
   email: string;
@@ -6,6 +12,13 @@ export interface User {
   firstName?: string;
   lastName?: string;
   avatar?: string;
+  rollNo?: string;
+  department?: string;
+  year?: number;
+  section?: string;
+  trustScore: number;
+  role: Role;
+  isVerified: boolean;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -17,6 +30,10 @@ export interface CreateUserData {
   password: string;
   firstName?: string;
   lastName?: string;
+  rollNo?: string;
+  department?: string;
+  year?: number;
+  section?: string;
 }
 
 export interface UpdateUserData {
@@ -25,6 +42,10 @@ export interface UpdateUserData {
   firstName?: string;
   lastName?: string;
   avatar?: string;
+  rollNo?: string;
+  department?: string;
+  year?: number;
+  section?: string;
 }
 
 // Auth related types
@@ -39,6 +60,10 @@ export interface RegisterData {
   password: string;
   firstName?: string;
   lastName?: string;
+  rollNo?: string;
+  department?: string;
+  year?: number;
+  section?: string;
 }
 
 export interface AuthResponse {
