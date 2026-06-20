@@ -8,6 +8,8 @@ import { AppModule } from './app.module';
 import { ConfigService } from '@nestjs/config';
 import helmet from 'helmet';
 
+console.log('[MAIN] main.ts loaded, about to call bootstrap()');
+
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
@@ -56,8 +58,12 @@ async function bootstrap() {
   }
 
   const port = configService.get('API_PORT') || 3001;
+  console.log(`[STARTUP] About to listen on port ${port}`);
   await app.listen(port);
   console.log(`🚀 Application is running on: http://localhost:${port}`);
 }
 
-bootstrap();
+bootstrap().catch((error) => {
+  console.error('[STARTUP ERROR]', error);
+  process.exit(1);
+});
