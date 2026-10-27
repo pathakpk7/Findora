@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Key, Tag, Headphones, Wallet, Search, Sparkles, MapPin } from 'lucide-react';
+import { Key, Headphones, Wallet, MapPin } from 'lucide-react';
 
 export function LostAndFoundCanvas() {
   return (

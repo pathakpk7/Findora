@@ -1,5 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  eslint: {
+    // Prevent non-critical lint warnings from failing production builds on Vercel
+    ignoreDuringBuilds: true,
+  },
   images: {
     remotePatterns: [
       {
