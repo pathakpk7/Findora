@@ -39,7 +39,11 @@ describe('AuthService (unit)', () => {
   it('register should throw ConflictException when user exists', async () => {
     mockPrisma.user.findFirst.mockResolvedValue({ id: '1' });
     await expect(
-      service.register({ email: 'a@b.com', username: 'u', password: 'pass' } as any),
+      service.register({
+        email: 'a@b.com',
+        username: 'u',
+        password: 'pass',
+      } as any)
     ).rejects.toThrow(ConflictException);
   });
 
@@ -66,7 +70,11 @@ describe('AuthService (unit)', () => {
     };
     mockPrisma.user.create.mockResolvedValue(created);
 
-    const res = await service.register({ email: 'a@b.com', username: 'u', password: 'pass' } as any);
+    const res = await service.register({
+      email: 'a@b.com',
+      username: 'u',
+      password: 'pass',
+    } as any);
     expect(res).toHaveProperty('user');
     expect(res).toHaveProperty('token', 'signed-token');
     expect(jwtService.sign).toHaveBeenCalledWith({
@@ -80,13 +88,32 @@ describe('AuthService (unit)', () => {
 
   it('login should throw when user not found', async () => {
     mockPrisma.user.findUnique.mockResolvedValue(null);
-    await expect(service.login({ email: 'x', password: 'p' } as any)).rejects.toThrow(UnauthorizedException);
+    await expect(
+      service.login({ email: 'x', password: 'p' } as any)
+    ).rejects.toThrow(UnauthorizedException);
   });
 
   it('login should throw when password invalid', async () => {
-    mockPrisma.user.findUnique.mockResolvedValue({ id: '1', password: 'hashed' });
+    mockPrisma.user.findUnique.mockResolvedValue({
+      id: '1',
+      password: 'hashed',
+    });
     (bcrypt.compare as jest.Mock).mockResolvedValue(false);
-    await expect(service.login({ email: 'x', password: 'p' } as any)).rejects.toThrow(UnauthorizedException);
+    await expect(
+      service.login({ email: 'x', password: 'p' } as any)
+    ).rejects.toThrow(UnauthorizedException);
+  });
+
+  it('login should throw when user is deactivated', async () => {
+    mockPrisma.user.findUnique.mockResolvedValue({
+      id: '1',
+      password: 'hashed',
+      isActive: false,
+    });
+    (bcrypt.compare as jest.Mock).mockResolvedValue(true);
+    await expect(
+      service.login({ email: 'x', password: 'p' } as any)
+    ).rejects.toThrow(UnauthorizedException);
   });
 
   it('login should return auth response on success', async () => {

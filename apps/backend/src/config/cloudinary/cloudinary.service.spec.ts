@@ -1,15 +1,17 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ConfigService } from '@nestjs/config';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, ForbiddenException } from '@nestjs/common';
 import { CloudinaryService } from './cloudinary.service';
+import { PrismaService } from '../prisma/prisma.service';
+import { v2 as cloudinary } from 'cloudinary';
+import { Role } from '@prisma/client';
 
 describe('CloudinaryService', () => {
   let service: CloudinaryService;
-  let configService: ConfigService;
 
   const mockConfigService = {
     get: jest.fn((key: string) => {
-      const config = {
+      const config: Record<string, string> = {
         CLOUDINARY_CLOUD_NAME: 'test-cloud',
         CLOUDINARY_API_KEY: 'test-key',
         CLOUDINARY_API_SECRET: 'test-secret',
@@ -18,7 +20,15 @@ describe('CloudinaryService', () => {
     }),
   };
 
+  const mockPrismaService = {
+    foundItem: {
+      findFirst: jest.fn(),
+    },
+  };
+
   beforeEach(async () => {
+    jest.clearAllMocks();
+
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         CloudinaryService,
@@ -26,35 +36,53 @@ describe('CloudinaryService', () => {
           provide: ConfigService,
           useValue: mockConfigService,
         },
+        {
+          provide: PrismaService,
+          useValue: mockPrismaService,
+        },
       ],
     }).compile();
 
     service = module.get<CloudinaryService>(CloudinaryService);
-    configService = module.get<ConfigService>(ConfigService);
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
   });
 
+  describe('generateSignedUploadParams', () => {
+    it('should generate signed upload parameters successfully', () => {
+      jest
+        .spyOn(cloudinary.utils, 'api_sign_request')
+        .mockReturnValue('mock-signature');
+
+      const params = service.generateSignedUploadParams();
+
+      expect(params).toHaveProperty('timestamp');
+      expect(params).toHaveProperty('signature', 'mock-signature');
+      expect(params.folder).toBe('findora/found-items');
+      expect(params.cloudName).toBe('test-cloud');
+      expect(params.apiKey).toBe('test-key');
+    });
+  });
+
   describe('uploadImage', () => {
-    it('should upload an image successfully', async () => {
+    it('should upload an image successfully when format and size are valid', async () => {
       const mockFile = {
         path: '/tmp/test.jpg',
         originalname: 'test.jpg',
         mimetype: 'image/jpeg',
+        size: 1024 * 1024,
       } as Express.Multer.File;
 
-      jest.spyOn(require('cloudinary/v2'), 'uploader').mockReturnValue({
-        upload: jest.fn().mockResolvedValue({
-          secure_url: 'https://res.cloudinary.com/test/image.jpg',
-          public_id: 'test-public-id',
-          width: 1200,
-          height: 1200,
-          format: 'jpg',
-          bytes: 100000,
-        }),
-      });
+      jest.spyOn(cloudinary.uploader, 'upload').mockResolvedValue({
+        secure_url: 'https://res.cloudinary.com/test/image.jpg',
+        public_id: 'test-public-id',
+        width: 1200,
+        height: 1200,
+        format: 'jpg',
+        bytes: 100000,
+      } as any);
 
       const result = await service.uploadImage(mockFile);
 
@@ -63,72 +91,85 @@ describe('CloudinaryService', () => {
       expect(result.url).toBe('https://res.cloudinary.com/test/image.jpg');
     });
 
-    it('should throw BadRequestException on upload failure', async () => {
+    it('should throw BadRequestException if mimetype is not allowed', async () => {
       const mockFile = {
-        path: '/tmp/test.jpg',
-        originalname: 'test.jpg',
-        mimetype: 'image/jpeg',
+        path: '/tmp/script.sh',
+        originalname: 'script.sh',
+        mimetype: 'text/plain',
+        size: 100,
       } as Express.Multer.File;
 
-      jest.spyOn(require('cloudinary/v2'), 'uploader').mockReturnValue({
-        upload: jest.fn().mockRejectedValue(new Error('Upload failed')),
-      });
+      await expect(service.uploadImage(mockFile)).rejects.toThrow(
+        BadRequestException
+      );
+    });
+
+    it('should throw BadRequestException if file size exceeds 5MB', async () => {
+      const mockFile = {
+        path: '/tmp/large.jpg',
+        originalname: 'large.jpg',
+        mimetype: 'image/jpeg',
+        size: 6 * 1024 * 1024,
+      } as Express.Multer.File;
 
       await expect(service.uploadImage(mockFile)).rejects.toThrow(
-        BadRequestException,
+        BadRequestException
       );
     });
   });
 
-  describe('uploadImages', () => {
-    it('should upload multiple images successfully', async () => {
-      const mockFiles = [
-        { path: '/tmp/test1.jpg', originalname: 'test1.jpg' } as Express.Multer.File,
-        { path: '/tmp/test2.jpg', originalname: 'test2.jpg' } as Express.Multer.File,
-      ];
-
-      jest.spyOn(service, 'uploadImage').mockResolvedValue({
-        url: 'https://res.cloudinary.com/test/image.jpg',
-        publicId: 'test-public-id',
-        width: 1200,
-        height: 1200,
-        format: 'jpg',
-        bytes: 100000,
+  describe('deleteImage IDOR Security', () => {
+    it('should allow owner to delete their own image', async () => {
+      mockPrismaService.foundItem.findFirst.mockResolvedValue({
+        id: 'item-1',
+        foundById: 'user-123',
       });
 
-      const results = await service.uploadImages(mockFiles);
+      jest
+        .spyOn(cloudinary.uploader, 'destroy')
+        .mockResolvedValue({ result: 'ok' } as any);
 
-      expect(results).toHaveLength(2);
-      expect(service.uploadImage).toHaveBeenCalledTimes(2);
+      await expect(
+        service.deleteImage(
+          'findora/found-items/test-id',
+          'user-123',
+          Role.USER
+        )
+      ).resolves.not.toThrow();
     });
-  });
 
-  describe('deleteImage', () => {
-    it('should delete an image successfully', async () => {
-      jest.spyOn(require('cloudinary/v2'), 'uploader').mockReturnValue({
-        destroy: jest.fn().mockResolvedValue({ result: 'ok' }),
+    it('should throw ForbiddenException if user tries to delete another user image', async () => {
+      mockPrismaService.foundItem.findFirst.mockResolvedValue({
+        id: 'item-1',
+        foundById: 'owner-456',
       });
 
-      await expect(service.deleteImage('test-public-id')).resolves.not.toThrow();
+      await expect(
+        service.deleteImage(
+          'findora/found-items/test-id',
+          'attacker-789',
+          Role.USER
+        )
+      ).rejects.toThrow(ForbiddenException);
     });
 
-    it('should throw BadRequestException on delete failure', async () => {
-      jest.spyOn(require('cloudinary/v2'), 'uploader').mockReturnValue({
-        destroy: jest.fn().mockRejectedValue(new Error('Delete failed')),
+    it('should allow MODERATOR to delete any image', async () => {
+      mockPrismaService.foundItem.findFirst.mockResolvedValue({
+        id: 'item-1',
+        foundById: 'owner-456',
       });
 
-      await expect(service.deleteImage('test-public-id')).rejects.toThrow(
-        BadRequestException,
-      );
-    });
-  });
+      jest
+        .spyOn(cloudinary.uploader, 'destroy')
+        .mockResolvedValue({ result: 'ok' } as any);
 
-  describe('deleteImages', () => {
-    it('should delete multiple images successfully', async () => {
-      jest.spyOn(service, 'deleteImage').mockResolvedValue();
-
-      await expect(service.deleteImages(['id1', 'id2'])).resolves.not.toThrow();
-      expect(service.deleteImage).toHaveBeenCalledTimes(2);
+      await expect(
+        service.deleteImage(
+          'findora/found-items/test-id',
+          'mod-1',
+          Role.MODERATOR
+        )
+      ).resolves.not.toThrow();
     });
   });
 });

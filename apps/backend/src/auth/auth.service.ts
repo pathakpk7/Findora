@@ -1,4 +1,8 @@
-import { ConflictException, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
@@ -9,7 +13,7 @@ import { PrismaService } from '../config/prisma/prisma.service';
 export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
-    private readonly jwtService: JwtService,
+    private readonly jwtService: JwtService
   ) {}
 
   async register(registerDto: RegisterDto) {
@@ -93,14 +97,21 @@ export class AuthService {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const isPasswordValid = await bcrypt.compare(loginDto.password, user.password);
+    const isPasswordValid = await bcrypt.compare(
+      loginDto.password,
+      user.password
+    );
 
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
-    const { password, ...userWithoutPassword } = user;
-    return this.buildAuthResponse(userWithoutPassword);
+    if (!user.isActive) {
+      throw new UnauthorizedException('User account has been deactivated');
+    }
+
+    delete user.password;
+    return this.buildAuthResponse(user);
   }
 
   private buildAuthResponse(user: {

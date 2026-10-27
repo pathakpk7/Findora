@@ -6,6 +6,15 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { HealthModule } from './health/health.module';
 import { CloudinaryModule } from './config/cloudinary/cloudinary.module';
+import { FoundItemsModule } from './found-items/found-items.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { AuditModule } from './audit/audit.module';
+import { LostReportsModule } from './lost-reports/lost-reports.module';
+import { ClaimsModule } from './claims/claims.module';
+import { HandoversModule } from './handovers/handovers.module';
+import { ReputationModule } from './reputation/reputation.module';
+import { AdminModule } from './admin/admin.module';
+import { MatchingModule } from './matching/matching.module';
 
 @Module({
   imports: [
@@ -18,6 +27,15 @@ import { CloudinaryModule } from './config/cloudinary/cloudinary.module';
     UsersModule,
     HealthModule,
     CloudinaryModule,
+    FoundItemsModule,
+    NotificationsModule,
+    AuditModule,
+    LostReportsModule,
+    ClaimsModule,
+    HandoversModule,
+    ReputationModule,
+    AdminModule,
+    MatchingModule,
   ],
   controllers: [],
   providers: [],

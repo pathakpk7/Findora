@@ -1,4 +1,10 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const rawBaseUrl =
+  process.env.NEXT_PUBLIC_API_URL ||
+  process.env.NEXT_PUBLIC_BACKEND_URL ||
+  'http://localhost:3001';
+
+// Safely normalize base URL (strip trailing slashes and redundant /api)
+export const BASE_URL = rawBaseUrl.trim().replace(/\/+$/, '').replace(/\/api$/, '');
 export const API_URL = `${BASE_URL}/api`;
 export const BASE_API = BASE_URL;
 

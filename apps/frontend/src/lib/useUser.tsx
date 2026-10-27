@@ -11,7 +11,7 @@ export function useUser() {
 
   const fetchUser = useCallback(async () => {
     setLoading(true);
-    const token = typeof window !== 'undefined' ? localStorage.getItem('token') : null;
+    const token = typeof window !== 'undefined' ? (localStorage.getItem('token') || localStorage.getItem('findora_token')) : null;
     if (!token) {
       setUser(null);
       setLoading(false);
@@ -27,6 +27,7 @@ export function useUser() {
         const body = await res.json().catch(() => null);
         const message = body?.message || res.statusText || 'Failed to fetch user';
         localStorage.removeItem('token');
+        localStorage.removeItem('findora_token');
         setUser(null);
         setError(message);
         setLoading(false);
@@ -48,6 +49,7 @@ export function useUser() {
 
   function logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('findora_token');
     setUser(null);
     router.push('/login');
   }

@@ -1,10 +1,10 @@
 "use client";
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useUser } from '../../lib/useUser';
 import { API_URL, BASE_API } from '../../lib/api';
 
-type UploadResult = { avatar: string };
 
 export default function ProfilePage() {
   const { user, loading, error, logout, refresh } = useUser();
@@ -61,7 +61,7 @@ export default function ProfilePage() {
                 } as any,
               });
               if (!res.ok) throw new Error('Upload failed');
-              const data = await res.json() as UploadResult;
+              await res.json();
               await refresh();
             } catch (err) {
               console.error(err);
@@ -77,6 +77,14 @@ export default function ProfilePage() {
         <p><strong>Year:</strong> {user.year || 'Not provided'}</p>
         <p><strong>Section:</strong> {user.section || 'Not provided'}</p>
         <p><strong>Trust Score:</strong> {user.trustScore}</p>
+        <div className="pt-2 flex flex-wrap gap-2">
+          <Link href="/profile/reputation" className="inline-flex items-center space-x-1 text-xs font-bold bg-blue-600 text-white px-3 py-1.5 rounded-lg hover:bg-blue-700 transition-colors">
+            <span>View Reputation & Badges</span>
+          </Link>
+          <Link href="/leaderboard" className="inline-flex items-center space-x-1 text-xs font-bold bg-amber-500 text-white px-3 py-1.5 rounded-lg hover:bg-amber-600 transition-colors">
+            <span>View Campus Leaderboard</span>
+          </Link>
+        </div>
         <p><strong>Role:</strong> {user.role}</p>
         <p><strong>Verified:</strong> {user.isVerified ? 'Yes' : 'No'}</p>
         <div className="mt-4">

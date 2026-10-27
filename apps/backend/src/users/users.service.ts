@@ -68,7 +68,10 @@ export class UsersService {
     const prisma = this.prisma as any;
 
     // Prevent users from updating role, trustScore, isVerified
-    const { role, trustScore, isVerified, ...safeData } = updateUserDto as any;
+    const safeData = { ...updateUserDto } as any;
+    delete safeData.role;
+    delete safeData.trustScore;
+    delete safeData.isVerified;
 
     return prisma.user.update({
       where: { id },

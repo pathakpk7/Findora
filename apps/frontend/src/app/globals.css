@@ -57,3 +57,95 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ========================================================================= */
+/* FINDORA HIDE & SEEK & LOST & FOUND CUSTOM ANIMATIONS                      */
+/* ========================================================================= */
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-12px) rotate(3deg);
+  }
+}
+
+@keyframes floatSlower {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-18px) rotate(-4deg);
+  }
+}
+
+@keyframes swayKeys {
+  0%, 100% {
+    transform: rotate(-10deg);
+  }
+  50% {
+    transform: rotate(12deg);
+  }
+}
+
+@keyframes radarSweep {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes radarPing {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes sparkleBurst {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(180deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+    opacity: 0.9;
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 6s ease-in-out infinite;
+}
+
+.animate-float-slower {
+  animation: floatSlower 8s ease-in-out infinite;
+}
+
+.animate-sway-keys {
+  animation: swayKeys 3.5s ease-in-out infinite alternate;
+  transform-origin: top center;
+}
+
+.animate-radar-sweep {
+  animation: radarSweep 6s linear infinite;
+  transform-origin: center center;
+}
+
+.animate-radar-ping {
+  animation: radarPing 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.animate-sparkle-burst {
+  animation: sparkleBurst 0.6s ease-out forwards;
+}

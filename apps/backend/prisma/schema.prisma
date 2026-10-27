@@ -16,27 +16,135 @@ enum Role {
   ADMIN
 }
 
+enum ItemCategory {
+  ELECTRONICS
+  PHONE
+  EARBUDS
+  WATCH
+  WALLET
+  CASH
+  BOOK
+  NOTEBOOK
+  ID_CARD
+  STUDENT_CARD
+  KEYS
+  BAG
+  CLOTHING
+  ACCESSORY
+  CHARGER
+  OTHER
+}
+
+enum ItemStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CLAIMED
+  RETURN_PENDING
+  RETURNED
+  EXPIRED
+  ARCHIVED
+}
+
+enum LostReportStatus {
+  ACTIVE
+  MATCHED
+  RECOVERED
+  CLOSED
+  CANCELLED
+  EXPIRED
+}
+
+enum ClaimStatus {
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+  CANCELLED
+  COMPLETED
+}
+
+enum HandoverStatus {
+  PENDING
+  SCANNED
+  COMPLETED
+  EXPIRED
+  CANCELLED
+}
+
+enum MatchSource {
+  AI
+  RULE_BASED
+}
+
+enum MatchConfidence {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum NotificationType {
+  ITEM_SUBMITTED
+  ITEM_APPROVED
+  ITEM_REJECTED
+  CLAIM_SUBMITTED
+  CLAIM_APPROVED
+  CLAIM_REJECTED
+  CLAIM_MORE_EVIDENCE
+  HANDOVER_CREATED
+  HANDOVER_COMPLETED
+  ITEM_RETURNED
+  POSSIBLE_MATCH
+  BADGE_EARNED
+  TRUST_SCORE_CHANGED
+  SYSTEM
+}
+
+enum AuditAction {
+  ROLE_CHANGED
+  USER_DEACTIVATED
+  USER_REACTIVATED
+  USER_VERIFIED
+  ITEM_APPROVED
+  ITEM_REJECTED
+  CLAIM_APPROVED
+  CLAIM_REJECTED
+  HANDOVER_COMPLETED
+  TRUST_SCORE_CHANGED
+}
+
 model User {
-  id         String    @id @default(cuid())
-  email      String    @unique
-  username   String    @unique
+  id         String   @id @default(cuid())
+  email      String   @unique
+  username   String   @unique
   password   String
   firstName  String?
   lastName   String?
   avatar     String?
-  rollNo     String?   @unique
+  rollNo     String?  @unique
   department String?
   year       Int?
   section    String?
-  trustScore Int       @default(0)
-  role       Role      @default(USER)
-  isVerified Boolean   @default(false)
-  isActive   Boolean   @default(true)
-  createdAt  DateTime  @default(now())
-  updatedAt  DateTime  @updatedAt
+  trustScore Int      @default(0)
+  role       Role     @default(USER)
+  isVerified Boolean  @default(false)
+  isActive   Boolean  @default(true)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
 
-  sessions  Session[]
-  profiles  Profile[]
+  sessions Session[]
+  profiles Profile[]
+
+  // Lost & Found Relations
+  foundItems        FoundItem[]         @relation("UserFoundItems")
+  lostReports       LostReport[]        @relation("UserLostReports")
+  claims            Claim[]             @relation("UserClaims")
+  reviewedClaims    Claim[]             @relation("ReviewerClaims")
+  notifications     Notification[]      @relation("UserNotifications")
+  trustScoreHistory TrustScoreHistory[] @relation("UserTrustHistory")
+  actorTrustHistory TrustScoreHistory[] @relation("ActorTrustHistory")
+  userBadges        UserBadge[]         @relation("UserBadges")
+  auditLogs         AuditLog[]          @relation("ActorAuditLogs")
 
   @@map("users")
 }
@@ -54,16 +162,238 @@ model Session {
 }
 
 model Profile {
-  id          String   @id @default(cuid())
-  userId      String   @unique
+  id          String    @id @default(cuid())
+  userId      String    @unique
   bio         String?
   website     String?
   location    String?
   dateOfBirth DateTime?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
 
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("profiles")
+}
+
+model FoundItem {
+  id                String       @id @default(cuid())
+  title             String
+  category          ItemCategory
+  publicDescription String
+  foundLocation     String
+  foundDate         DateTime
+  status            ItemStatus   @default(PENDING)
+  publicImages      String[]
+  foundById         String
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+
+  foundBy      User                   @relation("UserFoundItems", fields: [foundById], references: [id], onDelete: Restrict)
+  verification FoundItemVerification?
+  claims       Claim[]
+  matches      LostReportMatch[]
+
+  @@index([status])
+  @@index([category])
+  @@index([foundDate])
+  @@index([foundLocation])
+  @@index([foundById])
+  @@index([createdAt])
+  @@map("found_items")
+}
+
+model FoundItemVerification {
+  id                      String   @id @default(cuid())
+  foundItemId             String   @unique
+  serialNumber            String?
+  hiddenMarks             String?
+  privateIdentifyingInfo String?
+  privateNotes            String?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  foundItem FoundItem @relation(fields: [foundItemId], references: [id], onDelete: Cascade)
+
+  @@map("found_item_verifications")
+}
+
+model LostReport {
+  id                          String           @id @default(cuid())
+  reporterId                  String
+  title                       String
+  category                    ItemCategory
+  description                 String
+  lostLocation                String
+  lostDate                    DateTime
+  images                      String[]
+  identifyingCharacteristics String?
+  status                      LostReportStatus @default(ACTIVE)
+  createdAt                   DateTime         @default(now())
+  updatedAt                   DateTime         @updatedAt
+
+  reporter User                @relation("UserLostReports", fields: [reporterId], references: [id], onDelete: Cascade)
+  matches  LostReportMatch[]
+
+  @@index([status])
+  @@index([category])
+  @@index([lostDate])
+  @@index([lostLocation])
+  @@index([reporterId])
+  @@map("lost_reports")
+}
+
+model LostReportMatch {
+  id           String          @id @default(cuid())
+  lostReportId String
+  foundItemId  String
+  score        Int
+  confidence   MatchConfidence
+  source       MatchSource     @default(RULE_BASED)
+  reasons      String[]
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+
+  lostReport LostReport @relation(fields: [lostReportId], references: [id], onDelete: Cascade)
+  foundItem  FoundItem  @relation(fields: [foundItemId], references: [id], onDelete: Cascade)
+
+  @@unique([lostReportId, foundItemId])
+  @@index([lostReportId])
+  @@index([foundItemId])
+  @@index([score])
+  @@map("lost_report_matches")
+}
+
+model Claim {
+  id           String      @id @default(cuid())
+  foundItemId  String
+  claimantId   String
+  evidence     String
+  status       ClaimStatus @default(PENDING)
+  reviewerId   String?
+  reviewReason String?
+  reviewedAt   DateTime?
+  completedAt  DateTime?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  foundItem FoundItem @relation(fields: [foundItemId], references: [id], onDelete: Cascade)
+  claimant  User      @relation("UserClaims", fields: [claimantId], references: [id], onDelete: Cascade)
+  reviewer  User?     @relation("ReviewerClaims", fields: [reviewerId], references: [id], onDelete: SetNull)
+  handover  Handover?
+
+  @@unique([foundItemId, claimantId])
+  @@index([foundItemId])
+  @@index([claimantId])
+  @@index([status])
+  @@index([reviewerId])
+  @@index([createdAt])
+  @@map("claims")
+}
+
+model Handover {
+  id          String         @id @default(cuid())
+  claimId     String         @unique
+  tokenHash   String         @unique
+  status      HandoverStatus @default(PENDING)
+  expiresAt   DateTime
+  generatedAt DateTime       @default(now())
+  scannedAt   DateTime?
+  completedAt DateTime?
+  cancelledAt DateTime?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  claim Claim @relation(fields: [claimId], references: [id], onDelete: Cascade)
+
+  @@index([claimId])
+  @@index([status])
+  @@index([tokenHash])
+  @@map("handovers")
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  link      String?
+  readAt    DateTime?
+  createdAt DateTime         @default(now())
+
+  user User @relation("UserNotifications", fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([readAt])
+  @@index([createdAt])
+  @@index([userId, createdAt])
+  @@index([userId, readAt])
+  @@map("notifications")
+}
+
+model TrustScoreHistory {
+  id            String   @id @default(cuid())
+  userId        String
+  amount        Int
+  previousScore Int
+  newScore      Int
+  reason        String
+  sourceType    String?
+  sourceId      String?
+  actorId       String?
+  createdAt     DateTime @default(now())
+
+  user  User  @relation("UserTrustHistory", fields: [userId], references: [id], onDelete: Cascade)
+  actor User? @relation("ActorTrustHistory", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([createdAt])
+  @@unique([userId, sourceType, sourceId])
+  @@map("trust_score_history")
+}
+
+model Badge {
+  id          String   @id @default(cuid())
+  code        String   @unique
+  name        String
+  description String
+  icon        String
+  criteria    String?
+  createdAt   DateTime @default(now())
+
+  userBadges UserBadge[]
+
+  @@map("badges")
+}
+
+model UserBadge {
+  id       String   @id @default(cuid())
+  userId   String
+  badgeId  String
+  earnedAt DateTime @default(now())
+
+  user  User  @relation("UserBadges", fields: [userId], references: [id], onDelete: Cascade)
+  badge Badge @relation(fields: [badgeId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, badgeId])
+  @@map("user_badges")
+}
+
+model AuditLog {
+  id         String      @id @default(cuid())
+  actorId    String?
+  action     AuditAction
+  entityType String
+  entityId   String
+  metadata   String?
+  createdAt  DateTime    @default(now())
+
+  actor User? @relation("ActorAuditLogs", fields: [actorId], references: [id], onDelete: SetNull)
+
+  @@index([actorId])
+  @@index([entityType])
+  @@index([entityId])
+  @@index([createdAt])
+  @@map("audit_logs")
 }

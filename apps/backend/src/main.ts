@@ -17,10 +17,32 @@ async function bootstrap() {
   // Security middleware
   app.use(helmet());
 
-  // CORS configuration
+  // CORS configuration supporting local dev, custom domain, and Vercel deployments
+  const configuredOrigins = (configService.get('FRONTEND_URL') || 'http://localhost:3000')
+    .split(',')
+    .map((o: string) => o.trim())
+    .filter(Boolean);
+
   app.enableCors({
-    origin: configService.get('FRONTEND_URL') || 'http://localhost:3000',
+    origin: (origin, callback) => {
+      // Allow requests with no origin (e.g. mobile apps, curl, server-to-server)
+      if (!origin) return callback(null, true);
+
+      // Check configured origins or any *.vercel.app deployment
+      const isAllowed =
+        configuredOrigins.includes(origin) ||
+        origin.endsWith('.vercel.app') ||
+        origin.includes('localhost') ||
+        configService.get('NODE_ENV') !== 'production';
+
+      if (isAllowed) {
+        return callback(null, true);
+      }
+      return callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
   });
 
   // Global validation pipe
@@ -29,7 +51,7 @@ async function bootstrap() {
       whitelist: true,
       forbidNonWhitelisted: true,
       transform: true,
-    }),
+    })
   );
 
   // API prefix
@@ -54,16 +76,18 @@ async function bootstrap() {
   }
 
   if ((app as any).useStaticAssets) {
-    (app as NestExpressApplication).useStaticAssets(uploadDir, { prefix: '/uploads' });
+    (app as NestExpressApplication).useStaticAssets(uploadDir, {
+      prefix: '/uploads',
+    });
   }
 
-  const port = configService.get('API_PORT') || 3001;
+  const port = process.env.PORT || configService.get('PORT') || configService.get('API_PORT') || 3001;
   console.log(`[STARTUP] About to listen on port ${port}`);
   await app.listen(port);
   console.log(`🚀 Application is running on: http://localhost:${port}`);
 }
 
-bootstrap().catch((error) => {
+bootstrap().catch(error => {
   console.error('[STARTUP ERROR]', error);
   process.exit(1);
 });

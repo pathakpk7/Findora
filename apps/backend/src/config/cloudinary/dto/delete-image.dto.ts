@@ -1,7 +1,9 @@
-import { IsArray, IsString } from 'class-validator';
+import { IsArray, IsString, ArrayMinSize, ArrayMaxSize } from 'class-validator';
 
 export class DeleteImageDto {
   @IsArray()
   @IsString({ each: true })
-  publicIds: string[];
+  @ArrayMinSize(1)
+  @ArrayMaxSize(5)
+  publicIds!: string[];
 }

@@ -1,4 +1,15 @@
-import { Body, Controller, Get, Param, Patch, UseGuards, Req, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  UseGuards,
+  Req,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
@@ -28,7 +39,8 @@ export class UsersController {
       storage: diskStorage({
         destination: (req, file, cb) => {
           const uploadPath = join(process.cwd(), 'apps', 'backend', 'uploads');
-          if (!existsSync(uploadPath)) mkdirSync(uploadPath, { recursive: true });
+          if (!existsSync(uploadPath))
+            mkdirSync(uploadPath, { recursive: true });
           cb(null, uploadPath);
         },
         filename: (req, file, cb) => {
@@ -36,9 +48,12 @@ export class UsersController {
           cb(null, name);
         },
       }),
-    }),
+    })
   )
-  async uploadAvatar(@UploadedFile() file: Express.Multer.File, @Req() req: any) {
+  async uploadAvatar(
+    @UploadedFile() file: Express.Multer.File,
+    @Req() req: any
+  ) {
     const userId = req.user?.id;
     if (!userId) return { message: 'Unauthorized' };
 

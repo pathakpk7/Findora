@@ -42,6 +42,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const body = await res.json();
     localStorage.setItem('token', body.token);
+    localStorage.setItem('findora_token', body.token);
     await refresh();
   }
 

@@ -1,91 +1,144 @@
-# Findora
+# Findora — Smart Campus Lost & Found Platform
 
-Production-grade full-stack application built with Next.js, NestJS, and Supabase.
+Findora is a production-grade, secure, full-stack campus Lost & Found discovery and handover platform built with NestJS, Next.js 15, PostgreSQL, Prisma, Cloudinary, and AI matching.
+
+---
+
+## End-to-End Platform Workflow
+
+```
+[ Student A ] ──▶ Submits Found Item (PENDING)
+                         │
+                         ▼
+                  [ Moderator ] ──▶ Reviews & Approves (APPROVED)
+                                          │
+[ Student B ] ──▶ Creates Lost Report ◄──┘
+      │                  │
+      │                  ▼
+      ├─────────▶ Requests AI Matches ──▶ Gets Ranked Candidates (AI/Rule)
+      │                  │
+      ▼                  ▼
+Submits Claim ──▶ [ Moderator ] ──▶ Approves Claim (APPROVED)
+                         │
+                         ▼
+              [ Single-Use QR Token ]
+                         │
+                         ▼
+        [ Authorized Participant Scans ]
+                         │
+                         ▼
+            [ Handover Completed ]
+                         │
+       ┌─────────────────┼─────────────────┐
+       ▼                 ▼                 ▼
+[ Item RETURNED ] [ Claim COMPLETED ] [ TrustScore +30 ]
+       │                 │                 │
+       ▼                 ▼                 ▼
+[ Badges Evaluated ] [ Notifications Sent ] [ Audit Log Written ]
+```
+
+---
+
+## Key Features
+
+- **Authentication & RBAC:** Secure JWT authentication with live database account active checks, password hashing via bcrypt, and strict Role-Based Access Control (`USER`, `MODERATOR`, `ADMIN`).
+- **Found Item Submissions:** Public inventory reporting with image uploads via Cloudinary, mandatory moderation workflow (`PENDING` $\rightarrow$ `APPROVED`/`REJECTED`), and secret verification parameters (`serialNumber`, `hiddenMarks`).
+- **Lost Reports:** Private lost report management for students with custom match queries.
+- **Ownership Verification & Claims:** Private ownership claims with evidence submission, moderator verification queues, and status transitions.
+- **Secure One-Time QR Handover:** Cryptographic 32-byte QR authorization tokens (SHA-256 hashed in database, 15-minute expiration, single-use atomic completion) for physical item returns.
+- **AI-Powered Recommendation Matching:** Intelligent Lost & Found candidate matching using Google Gemini 1.5 with a deterministic rule-based fallback engine (`0–100` score, `LOW`/`MEDIUM`/`HIGH` confidence, and strict PII/private data isolation).
+- **Gamification & Reputation:** Server-calculated `TrustScore` (`0–1000`), progression levels, automatic badge awards (`FIRST_FIND`, `COMMUNITY_HERO`, `CAMPUS_GUARDIAN`), and campus leaderboard.
+- **In-App Notification Center:** Real-time persistent notifications with unread counts and deep-linking.
+- **Admin Dashboard & Analytics:** Platform-wide operational statistics, aggregate conversion metrics, audit log inspector, and user management (role promotion, verification, deactivation).
+- **Security Hardened:** Helmet security headers, CORS origin protection, IDOR ownership validation, DTO whitelist stripping, and zero secret logging (`SECURITY.md`).
+
+---
 
 ## Tech Stack
 
-- **Frontend**: Next.js 15 App Router + TypeScript + TailwindCSS + ShadCN UI
-- **Backend**: NestJS + TypeScript
-- **Database**: Supabase PostgreSQL
-- **ORM**: Prisma
-- **Deployment**: Docker-ready
+- **Frontend:** Next.js 15 (App Router), React 19, TypeScript, TailwindCSS, Lucide Icons
+- **Backend:** NestJS 10, Passport JWT, RxJS, Swagger Open API
+- **Database & ORM:** PostgreSQL, Prisma ORM (v5.22)
+- **File Storage:** Cloudinary Signed Upload API
+- **AI Provider:** Google Gemini API (with deterministic fallback engine)
+- **Deployment:** Containerized Docker & Docker Compose ready
 
-## Quick Start
+---
 
-1. **Clone and install dependencies**:
-   ```bash
-   git clone <repository-url>
-   cd findora
-   npm install
-   ```
-
-2. **Set up environment variables**:
-   ```bash
-   cp .env.example .env
-   # Fill in your environment variables
-   ```
-
-3. **Set up the database**:
-   ```bash
-   npm run db:generate
-   npm run db:push
-   ```
-
-4. **Start the development servers**:
-   ```bash
-   npm run dev
-   ```
-
-The frontend will be available at `http://localhost:3000` and the backend at `http://localhost:3001`.
-
-## Project Structure
+## Architecture & Workspaces
 
 ```
 findora/
 ├── apps/
-│   ├── frontend/          # Next.js frontend application
-│   └── backend/           # NestJS backend application
-├── packages/              # Shared packages
-│   ├── ui/               # Shared UI components
-│   └── types/            # Shared TypeScript types
-├── docker-compose.yml    # Docker configuration
-├── package.json          # Root package.json with workspaces
+│   ├── frontend/             # Next.js 15 App Router Frontend
+│   └── backend/              # NestJS REST API Server
+├── packages/
+│   └── types/                # Shared TypeScript Data Types
+├── docker-compose.yml        # Multi-container Docker configuration
+├── SECURITY.md               # Comprehensive Security & Disclosure Guide
+├── SETUP.md                  # Development & Deployment Setup Guide
 └── README.md
 ```
 
-## Available Scripts
+---
 
-- `npm run dev` - Start both frontend and backend in development mode
-- `npm run build` - Build both applications for production
-- `npm run start` - Start both applications in production mode
-- `npm run lint` - Run linting for all applications
-- `npm run format` - Format code with Prettier
-- `npm run db:generate` - Generate Prisma client
-- `npm run db:push` - Push database schema to Supabase
-- `npm run docker:up` - Start services with Docker
+## Quick Start
 
-## Environment Variables
-
-See `.env.example` for all required environment variables.
-
-## Docker
-
+### 1. Clone & Install Dependencies
 ```bash
-# Build and start all services
-npm run docker:up
-
-# Stop services
-npm run docker:down
+git clone https://github.com/pathakpk7/Findora.git
+cd Findora
+npm install
 ```
 
-## Contributing
+### 2. Configure Environment Variables
+```bash
+cp .env.example .env
+# Configure DATABASE_URL, JWT_SECRET, CLOUDINARY_*, GEMINI_API_KEY
+```
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+### 3. Generate Prisma Client
+```bash
+npm run db:generate
+```
+
+### 4. Run Development Servers
+```bash
+npm run dev
+```
+- **Frontend App:** `http://localhost:3000`
+- **Backend API:** `http://localhost:3001/api`
+- **Swagger Docs:** `http://localhost:3001/api/docs`
+
+---
+
+## Testing & Verification
+
+```bash
+# Type check all packages
+npm run type-check
+
+# Run ESLint across workspace
+npm run lint
+
+# Execute backend tests (Jest)
+cd apps/backend && npm run test
+
+# Execute frontend tests (Jest)
+cd apps/frontend && npm run test
+
+# Build production bundles
+npm run build
+```
+
+---
+
+## Security & Disclosure
+
+Security vulnerabilities, privacy boundaries, and QR token specifications are documented in [`SECURITY.md`](file:///c:/Users/patha/OneDrive/Desktop/FINDORA/SECURITY.md).
+
+---
 
 ## License
 
-This project is licensed under the MIT License.
+Licensed under the [MIT License](LICENSE).
