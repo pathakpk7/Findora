@@ -167,19 +167,32 @@ export function CampusItemsDirectory() {
             <div className="w-14 h-14 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center mx-auto">
               <Search className="w-7 h-7" />
             </div>
-            <h4 className="text-lg font-bold text-gray-900">No items match your criteria</h4>
+            <h4 className="text-lg font-bold text-gray-900">
+              {search || selectedCategory ? 'No items match your criteria' : 'Campus Inventory is Clean'}
+            </h4>
             <p className="text-sm text-gray-500">
-              Try adjusting your search terms or category filter to discover items found in other buildings.
+              {search || selectedCategory
+                ? 'Try adjusting your search terms or category filter to discover items found in other buildings.'
+                : 'All reported found items have either been claimed or returned to their owners. Have you found something?'}
             </p>
-            <button
-              onClick={() => {
-                setSearch('');
-                setSelectedCategory('');
-              }}
-              className="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-semibold hover:bg-blue-500 transition-colors"
-            >
-              Reset Filters
-            </button>
+            {search || selectedCategory ? (
+              <button
+                onClick={() => {
+                  setSearch('');
+                  setSelectedCategory('');
+                }}
+                className="px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-semibold hover:bg-blue-500 transition-colors"
+              >
+                Reset Filters
+              </button>
+            ) : (
+              <Link
+                href="/found-items/new"
+                className="inline-flex items-center space-x-1.5 px-4 py-2 bg-blue-600 text-white rounded-xl text-xs font-semibold hover:bg-blue-500 transition-colors shadow-sm"
+              >
+                <span>Report a Found Item</span>
+              </Link>
+            )}
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">

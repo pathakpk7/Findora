@@ -1,7 +1,7 @@
 "use client";
 
 import React from 'react';
-import { Key, Headphones, Wallet, MapPin } from 'lucide-react';
+import { ShieldCheck, Sparkles, Radio, Lock } from 'lucide-react';
 
 export function LostAndFoundCanvas() {
   return (
@@ -20,69 +20,69 @@ export function LostAndFoundCanvas() {
         </div>
       </div>
 
-      {/* 2. Floating Lost Item: Keys with Lanyard (Top Left) */}
+      {/* 2. Floating Status: Campus Radar (Top Left) */}
       <div className="absolute top-12 left-6 sm:left-16 opacity-75 animate-sway-keys hidden sm:block">
-        <div className="bg-slate-900/80 border border-amber-500/30 backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center space-x-2.5 shadow-xl shadow-amber-500/10">
-          <div className="w-8 h-8 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400">
-            <Key className="w-4 h-4" />
-          </div>
-          <div className="text-left">
-            <span className="block text-[10px] font-bold text-amber-300 uppercase tracking-wider">
-              Lost &amp; Recovered
-            </span>
-            <span className="block text-xs font-semibold text-slate-200">
-              Dorm Room Keys
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* 3. Floating Lost Item: AirPods / Audio (Top Right) */}
-      <div className="absolute top-16 right-6 sm:right-20 opacity-75 animate-float-slow hidden sm:block">
         <div className="bg-slate-900/80 border border-cyan-500/30 backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center space-x-2.5 shadow-xl shadow-cyan-500/10">
           <div className="w-8 h-8 rounded-xl bg-cyan-500/20 flex items-center justify-center text-cyan-400">
-            <Headphones className="w-4 h-4" />
+            <Radio className="w-4 h-4 animate-pulse" />
           </div>
           <div className="text-left">
             <span className="block text-[10px] font-bold text-cyan-300 uppercase tracking-wider">
-              Item Located
+              Network Active
             </span>
             <span className="block text-xs font-semibold text-slate-200">
-              AirPods in Case
+              Campus Lost &amp; Found
             </span>
           </div>
         </div>
       </div>
 
-      {/* 4. Floating Lost Item: Leather Wallet (Bottom Left) */}
+      {/* 3. Floating Status: AI Verification (Top Right) */}
+      <div className="absolute top-16 right-6 sm:right-20 opacity-75 animate-float-slow hidden sm:block">
+        <div className="bg-slate-900/80 border border-blue-500/30 backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center space-x-2.5 shadow-xl shadow-blue-500/10">
+          <div className="w-8 h-8 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400">
+            <Sparkles className="w-4 h-4" />
+          </div>
+          <div className="text-left">
+            <span className="block text-[10px] font-bold text-blue-300 uppercase tracking-wider">
+              Smart Matching
+            </span>
+            <span className="block text-xs font-semibold text-slate-200">
+              AI Similarity Analysis
+            </span>
+          </div>
+        </div>
+      </div>
+
+      {/* 4. Floating Status: Privacy Protected (Bottom Left) */}
       <div className="absolute bottom-24 left-8 sm:left-24 opacity-70 animate-float-slower hidden md:block">
         <div className="bg-slate-900/80 border border-emerald-500/30 backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center space-x-2.5 shadow-xl shadow-emerald-500/10">
           <div className="w-8 h-8 rounded-xl bg-emerald-500/20 flex items-center justify-center text-emerald-400">
-            <Wallet className="w-4 h-4" />
+            <Lock className="w-4 h-4" />
           </div>
           <div className="text-left">
             <span className="block text-[10px] font-bold text-emerald-300 uppercase tracking-wider">
-              Protected Item
+              Protected Privacy
             </span>
             <span className="block text-xs font-semibold text-slate-200">
-              Student ID Wallet
+              Verified Claims Only
             </span>
           </div>
         </div>
       </div>
 
-      {/* 5. Floating Campus Search Tag (Bottom Right) */}
+      {/* 5. Floating Status: Community Trust (Bottom Right) */}
       <div className="absolute bottom-20 right-8 sm:right-28 opacity-75 animate-float-slow hidden md:block">
         <div className="bg-slate-900/80 border border-indigo-500/30 backdrop-blur-md px-3.5 py-2.5 rounded-2xl flex items-center space-x-2.5 shadow-xl shadow-indigo-500/10">
           <div className="w-8 h-8 rounded-xl bg-indigo-500/20 flex items-center justify-center text-indigo-400">
-            <MapPin className="w-4 h-4" />
+            <ShieldCheck className="w-4 h-4" />
           </div>
           <div className="text-left">
             <span className="block text-[10px] font-bold text-indigo-300 uppercase tracking-wider">
-              Library Hall 2F
+              Trust Score System
             </span>
             <span className="block text-xs font-semibold text-slate-200">
-              Scanning for match...
+              Secure QR Handover
             </span>
           </div>
         </div>
