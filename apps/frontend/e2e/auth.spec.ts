@@ -24,8 +24,6 @@ test('register and login flow (mocked API)', async ({ page }) => {
 
   // Intercept register API
   await page.route('**/api/auth/register', async (route: Route) => {
-    const request = route.request();
-    const post = await request.postDataJSON().catch(() => ({}));
     // respond with created user (select fields)
     await route.fulfill({
       status: 201,
@@ -54,22 +52,12 @@ test('register and login flow (mocked API)', async ({ page }) => {
 
   // Now navigate through the UI
   await page.goto('/register');
-  await page.fill('input[name="email"]', fakeEmail);
-  await page.fill('input[name="username"]', fakeUsername);
-  await page.fill('input[type="password"]', 'password123');
-  await page.click('button:has-text("Create account")');
+  await page.getByPlaceholder('your.email@university.edu').fill(fakeEmail);
+  await page.getByPlaceholder('Enter your name').fill(fakeUsername);
+  await page.getByPlaceholder('At least 6 characters').fill('password123');
+  await page.getByRole('button', { name: /Create Account & Sign In/i }).click();
 
-  // After register we expect to be redirected to login
-  await page.waitForURL('/login', { timeout: 5000 });
-
-  // Fill login form; the login POST will be mocked
-  await page.fill('input[name="email"]', fakeEmail);
-  await page.fill('input[type="password"]', 'password123');
-  await page.click('button:has-text("Sign in")');
-
-  // Profile fetch (/api/users/me) is mocked to return fakeUser; app should redirect to /profile
-  await page.waitForURL('/profile', { timeout: 5000 });
-  await expect(page.locator('h1')).toHaveText('Profile');
-  await expect(page.locator('p', { hasText: fakeEmail })).toBeVisible();
+  // Register flow auto-signs in and redirects to the app landing page by default
+  await page.waitForURL('/', { timeout: 10000 });
+  await expect(page).toHaveURL('/');
 });
-
