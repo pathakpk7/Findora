@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CampusFind — College Lost & Found Platform</title>
+  <meta name="description" content="Centralized campus lost and found platform for students to report, search, and reclaim belongings safely.">
+  
+  <!-- Typography: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Top Configuration Banner -->
+  <aside class="config-banner" id="firebase-config-banner">
+    <div>
+      <strong>Setup Required:</strong> Firebase project keys are not configured yet
+      <a href="#" id="open-config-modal-btn">Configure credentials &rarr;</a>
+    </div>
+    <button type="button" id="open-config-modal-btn-2">Configure Now</button>
+  </aside>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="currentColor"></polygon>
+          </svg>
+        </div>
+        <span>Campus<span class="accent">Find</span></span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="nav-menu" id="nav-menu">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="browse.html" class="nav-link">Browse Items</a>
+        <a href="report.html" class="nav-link">Report Item</a>
+        <a href="dashboard.html" class="nav-link">My Listings</a>
+        <a href="admin.html" class="nav-link" id="nav-link-admin" style="display:none; color:var(--brand-primary);">
+          Admin
+        </a>
+      </nav>
+
+      <!-- Auth State & User Menu -->
+      <div class="header-actions">
+        <div id="header-auth-actions" style="display:flex; gap:0.5rem; align-items:center;">
+          <a href="login.html" class="btn btn-outline btn-sm">Log In</a>
+          <a href="login.html?tab=register" class="btn btn-primary btn-sm">Register</a>
+        </div>
+
+        <!-- Mobile Drawer Toggle -->
+        <button type="button" class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="site-main" style="padding-top:0;">
+    <!-- Hero Section -->
+    <section class="hero-section">
+      <div class="container">
+        <h1 class="hero-title" data-reveal>
+          Recover what’s lost<br>
+          <span class="hero-highlight">Return what’s found</span>
+        </h1>
+
+        <p class="hero-subtitle" data-reveal style="--reveal-delay: 80ms;">
+          A dedicated campus platform for students to report lost belongings, verify ownership privately, and return found items securely
+        </p>
+
+        <!-- Quick Search Bar -->
+        <div class="hero-search-wrapper" data-reveal style="--reveal-delay: 140ms;">
+          <form class="hero-search-form" id="hero-search-form">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--ink-muted)" stroke-width="2" style="margin-right:0.6rem; flex-shrink:0;">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+            <input 
+              type="text" 
+              class="hero-search-input" 
+              id="hero-search-input" 
+              placeholder="Search by item name, student ID, book, or campus location..."
+              autocomplete="off"
+            >
+            <span class="search-shortcut-hint" title="Press / to search">/</span>
+            <button type="submit" class="btn btn-primary btn-sm">Search</button>
+          </form>
+        </div>
+
+        <!-- Quick Call to Action Buttons -->
+        <div class="hero-actions" data-reveal style="--reveal-delay: 200ms;">
+          <a href="report.html" class="btn btn-primary btn-lg">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Report an Item
+          </a>
+          <a href="browse.html" class="btn btn-secondary btn-lg">
+            Browse All Items
+          </a>
+        </div>
+
+        <!-- Campus Live Stats Counter -->
+        <div class="hero-stats-row" data-reveal style="--reveal-delay: 260ms;">
+          <div class="hero-stat-item">
+            <div class="hero-stat-num" id="stat-total">0</div>
+            <div class="hero-stat-label">Total Listings</div>
+          </div>
+          <div class="hero-stat-item">
+            <div class="hero-stat-num" style="color:var(--status-lost);" id="stat-lost">0</div>
+            <div class="hero-stat-label">Lost Reports</div>
+          </div>
+          <div class="hero-stat-item">
+            <div class="hero-stat-num" style="color:var(--status-found);" id="stat-found">0</div>
+            <div class="hero-stat-label">Found Belongings</div>
+          </div>
+          <div class="hero-stat-item">
+            <div class="hero-stat-num" style="color:var(--brand-primary);" id="stat-resolved">0</div>
+            <div class="hero-stat-label">Returned Items</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Container Content -->
+    <div class="container">
+      <!-- How It Works Section (No 01/02/03 number clichés) -->
+      <section style="margin-bottom: 5rem;" data-reveal>
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">How CampusFind Works</h2>
+            <p class="section-subtitle">A confidential three-step workflow designed for student privacy</p>
+          </div>
+        </div>
+
+        <div class="steps-grid">
+          <div class="step-card">
+            <div class="step-icon">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+              </svg>
+            </div>
+            <h3 class="step-title">Report in Seconds</h3>
+            <p class="step-desc">
+              Log misplaced items or turn in found belongings with precise campus location coordinates, category, and date.
+            </p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-icon" style="background-color:var(--status-found-bg); color:var(--status-found);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+            </div>
+            <h3 class="step-title">Confidential Claiming</h3>
+            <p class="step-desc">
+              Claimants submit unique ownership proofs such as serial numbers or hidden markings, concealed from the public.
+            </p>
+          </div>
+
+          <div class="step-card">
+            <div class="step-icon" style="background-color:var(--brand-tint); color:var(--brand-primary);">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <h3 class="step-title">Verify & Handoff</h3>
+            <p class="step-desc">
+              The finder reviews submitted proof. Upon verification, contact details are safely unlocked to coordinate return.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recent Campus Listings Section -->
+      <section style="margin-bottom: 5rem;" data-reveal>
+        <div class="section-header">
+          <div>
+            <h2 class="section-title">Recent Campus Listings</h2>
+            <p class="section-subtitle">Items reported across classrooms, lecture halls, laboratories, and grounds</p>
+          </div>
+          <a href="browse.html" class="btn btn-outline btn-sm">Browse All Listings &rarr;</a>
+        </div>
+
+        <div class="items-grid" id="recent-items-grid">
+          <div class="loading-container" style="grid-column: 1 / -1;">
+            <div class="spinner spinner-lg"></div>
+            <p>Loading recent campus items...</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Demonstration & Evaluation Mode (Clean architectural callout) -->
+      <section class="callout-box" data-reveal>
+        <div>
+          <h3>Demonstration & Evaluation Mode</h3>
+          <p>
+            Testing or evaluating CampusFind? Populate realistic college listings (laptops, student IDs, calculators, backpacks) with one click into your database.
+          </p>
+        </div>
+        <button type="button" class="btn btn-primary" id="btn-seed-sample">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+          </svg>
+          Seed Demo Listings
+        </button>
+      </section>
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <div class="brand-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="currentColor"></polygon>
+              </svg>
+            </div>
+            <span>Campus<span class="accent">Find</span></span>
+          </div>
+          <p>
+            Centralized college lost and found platform for students and faculty to report, search, and reclaim misplaced belongings safely.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="browse.html">Browse Listings</a></li>
+            <li><a href="report.html">Report Item</a></li>
+            <li><a href="dashboard.html">My Dashboard</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Categories</h4>
+          <ul class="footer-links">
+            <li><a href="browse.html?category=Electronics">Electronics & Hardware</a></li>
+            <li><a href="browse.html?category=Documents">ID Cards & Credentials</a></li>
+            <li><a href="browse.html?category=Bags">Bags & Wallets</a></li>
+            <li><a href="browse.html?category=Books">Books & Course Notes</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Verification & Safety</h4>
+          <ul class="footer-links">
+            <li><a href="javascript:void(0)" onclick="alert('Ownership proofs are strictly encrypted and hidden from the public view.')">Ownership Proof Policy</a></li>
+            <li><a href="javascript:void(0)" onclick="alert('Campus Security: Room 101 Administration Block | Internal Ext: 2400')">Campus Security Office</a></li>
+            <li><a href="admin.html">Administration Portal</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 CampusFind. All rights reserved.</div>
+        <div class="footer-colophon">
+          <div class="footer-status-indicator">
+            <span class="status-dot-pulse"></span>
+            Campus Network Operational
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="js/motion.js"></script>
+  <script type="module" src="js/pages/home.js"></script>
+</body>
+</html>

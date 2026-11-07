@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Login & Register — CampusFind</title>
+  
+  <!-- Typography: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Top Configuration Banner -->
+  <aside class="config-banner" id="firebase-config-banner">
+    <div>
+      <strong>Setup Required:</strong> Firebase project keys are not configured yet
+      <a href="#" id="open-config-modal-btn">Configure credentials &rarr;</a>
+    </div>
+  </aside>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="currentColor"></polygon>
+          </svg>
+        </div>
+        <span>Campus<span class="accent">Find</span></span>
+      </a>
+
+      <nav class="nav-menu" id="nav-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="browse.html" class="nav-link">Browse Items</a>
+        <a href="report.html" class="nav-link">Report Item</a>
+      </nav>
+
+      <div class="header-actions">
+        <div id="header-auth-actions"></div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Auth Main Content -->
+  <main class="site-main">
+    <div class="container">
+      <div class="auth-wrapper" data-reveal>
+        <div class="auth-header">
+          <h2>Student Portal</h2>
+          <p>Access your listings and claim verification requests</p>
+        </div>
+
+        <div class="card">
+          <!-- Tab Navigation -->
+          <div class="auth-tabs">
+            <button type="button" class="auth-tab-btn active" data-target="pane-login">
+              Log In
+            </button>
+            <button type="button" class="auth-tab-btn" data-target="pane-register">
+              Register
+            </button>
+            <button type="button" class="auth-tab-btn" data-target="pane-reset" style="display:none;">
+              Reset
+            </button>
+          </div>
+
+          <style>
+            .auth-tab-pane { display: none; }
+            .auth-tab-pane.active { display: block; animation: fadeIn 0.25s var(--ease-out); }
+          </style>
+
+          <div class="card-body">
+            <!-- Pane 1: Log In -->
+            <div class="auth-tab-pane active" id="pane-login">
+              <form id="login-form">
+                <div class="form-group">
+                  <label class="form-label" for="login-email">College Email Address <span class="required">*</span></label>
+                  <input type="email" class="form-control" id="login-email" placeholder="student@college.edu" required autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+                    <label class="form-label" for="login-password" style="margin-bottom:0;">Password <span class="required">*</span></label>
+                    <a href="#" class="switch-tab-link" data-target="pane-reset" style="font-size:0.825rem; font-weight:500;">Forgot Password?</a>
+                  </div>
+                  <input type="password" class="form-control" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-submit-login" style="margin-top:1.75rem;">
+                  Log In to CampusFind
+                </button>
+              </form>
+
+              <div style="text-align:center; margin-top:1.5rem; font-size:0.875rem; color:var(--ink-secondary);">
+                New to CampusFind? 
+                <a href="#" class="switch-tab-link" data-target="pane-register" style="font-weight:600;">Create an account</a>
+              </div>
+            </div>
+
+            <!-- Pane 2: Student Registration -->
+            <div class="auth-tab-pane" id="pane-register">
+              <form id="register-form">
+                <div class="form-group">
+                  <label class="form-label" for="reg-name">Full Name <span class="required">*</span></label>
+                  <input type="text" class="form-control" id="reg-name" placeholder="e.g. Ashish Kumar" required>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="reg-email">College Email <span class="required">*</span></label>
+                  <input type="email" class="form-control" id="reg-email" placeholder="ashish@student.college.edu" required autocomplete="email">
+                  <div class="form-text">Used for receiving ownership verification updates</div>
+                </div>
+
+                <div style="display:grid; grid-template-columns:1fr 1fr; gap:1rem;">
+                  <div class="form-group">
+                    <label class="form-label" for="reg-student-id">Student ID or Roll #</label>
+                    <input type="text" class="form-control" id="reg-student-id" placeholder="21BCE1042">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label" for="reg-phone">Phone Number</label>
+                    <input type="tel" class="form-control" id="reg-phone" placeholder="9876543210">
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="reg-password">Password <span class="required">*</span></label>
+                  <input type="password" class="form-control" id="reg-password" placeholder="Min. 6 characters" required autocomplete="new-password">
+                </div>
+
+                <div class="form-group">
+                  <label class="form-label" for="reg-confirm-password">Confirm Password <span class="required">*</span></label>
+                  <input type="password" class="form-control" id="reg-confirm-password" placeholder="Repeat password" required autocomplete="new-password">
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-submit-register" style="margin-top:1.75rem;">
+                  Create Student Account
+                </button>
+              </form>
+
+              <div style="text-align:center; margin-top:1.5rem; font-size:0.875rem; color:var(--ink-secondary);">
+                Already have an account? 
+                <a href="#" class="switch-tab-link" data-target="pane-login" style="font-weight:600;">Log In</a>
+              </div>
+            </div>
+
+            <!-- Pane 3: Password Reset -->
+            <div class="auth-tab-pane" id="pane-reset">
+              <div style="margin-bottom:1.5rem;">
+                <h3 style="font-size:1.15rem; font-weight:700; color:var(--ink-primary); margin-bottom:0.25rem;">Reset Your Password</h3>
+                <p style="font-size:0.875rem; color:var(--ink-secondary);">Enter your college email to receive a password reset link</p>
+              </div>
+
+              <form id="reset-form">
+                <div class="form-group">
+                  <label class="form-label" for="reset-email">Your Registered Email <span class="required">*</span></label>
+                  <input type="email" class="form-control" id="reset-email" placeholder="student@college.edu" required>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block btn-lg" id="btn-submit-reset" style="margin-top:1.75rem;">
+                  Send Reset Link
+                </button>
+              </form>
+
+              <div style="text-align:center; margin-top:1.5rem; font-size:0.875rem;">
+                <a href="#" class="switch-tab-link" data-target="pane-login" style="font-weight:600;">&larr; Back to Log In</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 CampusFind. All rights reserved.</div>
+        <div class="footer-colophon">
+          <div class="footer-status-indicator">
+            <span class="status-dot-pulse"></span>
+            Campus Network Operational
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="js/motion.js"></script>
+  <script type="module" src="js/pages/login.js"></script>
+</body>
+</html>

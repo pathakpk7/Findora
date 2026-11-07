@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Browse Listings — CampusFind</title>
+  
+  <!-- Typography: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Top Configuration Banner -->
+  <aside class="config-banner" id="firebase-config-banner">
+    <div>
+      <strong>Setup Required:</strong> Firebase project keys are not configured yet
+      <a href="#" id="open-config-modal-btn">Configure credentials &rarr;</a>
+    </div>
+  </aside>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="currentColor"></polygon>
+          </svg>
+        </div>
+        <span>Campus<span class="accent">Find</span></span>
+      </a>
+
+      <nav class="nav-menu" id="nav-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="browse.html" class="nav-link active">Browse Items</a>
+        <a href="report.html" class="nav-link">Report Item</a>
+        <a href="dashboard.html" class="nav-link">My Listings</a>
+        <a href="admin.html" class="nav-link" id="nav-link-admin" style="display:none; color:var(--brand-primary);">Admin</a>
+      </nav>
+
+      <div class="header-actions">
+        <div id="header-auth-actions" style="display:flex; gap:0.5rem; align-items:center;">
+          <a href="login.html" class="btn btn-outline btn-sm">Log In</a>
+          <a href="login.html?tab=register" class="btn btn-primary btn-sm">Register</a>
+        </div>
+
+        <button type="button" class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Browse Section -->
+  <main class="site-main">
+    <div class="container">
+      <!-- Header Banner -->
+      <div class="browse-header-banner" data-reveal>
+        <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1.5rem;">
+          <div>
+            <h1 style="font-size:2.25rem; font-weight:800; color:var(--ink-primary); margin-bottom:0.35rem;">
+              Campus Belongings Catalog
+            </h1>
+            <p style="color:var(--ink-secondary); font-size:1rem;">
+              Search items reported across campus classrooms, libraries, laboratories, and grounds
+            </p>
+          </div>
+          <a href="report.html" class="btn btn-primary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <line x1="12" y1="5" x2="12" y2="19"></line>
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+            </svg>
+            Report an Item
+          </a>
+        </div>
+      </div>
+
+      <!-- Browse Layout with Filter Sidebar + Grid -->
+      <div class="browse-layout">
+        <!-- Sidebar Filters -->
+        <aside class="filter-sidebar" data-reveal>
+          <div class="filter-sidebar-header">
+            <div class="filter-title">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"></polygon>
+              </svg>
+              Filter Items
+            </div>
+            <button type="button" id="clear-filters-btn" class="btn btn-outline btn-sm" style="font-size:0.75rem; padding:0.25rem 0.6rem;">
+              Clear All
+            </button>
+          </div>
+
+          <!-- Keyword Search -->
+          <div class="filter-group">
+            <label class="filter-group-title" for="browse-search-input">Search Keywords</label>
+            <input 
+              type="text" 
+              id="browse-search-input" 
+              class="form-control" 
+              placeholder="e.g. MacBook, ID card, keys..."
+              autocomplete="off"
+            >
+          </div>
+
+          <!-- Listing Type Filter -->
+          <div class="filter-group">
+            <div class="filter-group-title">Listing Type</div>
+            <div class="filter-options-list">
+              <label class="filter-radio-label">
+                <input type="radio" name="filter-type" value="all" checked>
+                <span>All Listings</span>
+              </label>
+              <label class="filter-radio-label">
+                <input type="radio" name="filter-type" value="lost">
+                <span>Lost Only</span>
+              </label>
+              <label class="filter-radio-label">
+                <input type="radio" name="filter-type" value="found">
+                <span>Found Only</span>
+              </label>
+            </div>
+          </div>
+
+          <!-- Category Filter -->
+          <div class="filter-group">
+            <label class="filter-group-title" for="filter-category">Category</label>
+            <select id="filter-category" class="form-control">
+              <option value="all">All Categories</option>
+              <option value="Electronics">Electronics & Hardware</option>
+              <option value="Documents">ID Cards & Documents</option>
+              <option value="Bags">Bags, Backpacks & Wallets</option>
+              <option value="Books">Books, Notebooks & Stationary</option>
+              <option value="Accessories">Keys, Watches & Jewelry</option>
+              <option value="Clothing">Clothing & Personal Gear</option>
+              <option value="Other">Other Items</option>
+            </select>
+          </div>
+
+          <!-- Location Filter -->
+          <div class="filter-group">
+            <label class="filter-group-title" for="filter-location">Campus Location</label>
+            <input 
+              type="text" 
+              id="filter-location" 
+              class="form-control" 
+              placeholder="e.g. Library, Lab, Cafeteria"
+              list="common-locations"
+            >
+            <datalist id="common-locations">
+              <option value="Central Library">
+              <option value="Main Cafeteria">
+              <option value="Computer Lab 1">
+              <option value="Science Block">
+              <option value="Sports Complex">
+              <option value="Auditorium">
+              <option value="Hostel Area">
+              <option value="Administrative Block">
+            </datalist>
+          </div>
+        </aside>
+
+        <!-- Right Listings Column -->
+        <section class="catalog-content">
+          <div class="catalog-toolbar" data-reveal>
+            <div class="catalog-count" id="browse-items-count">
+              Searching listings...
+            </div>
+
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+              <label for="browse-sort-select" style="font-size:0.875rem; color:var(--ink-muted); font-weight:500;">
+                Sort:
+              </label>
+              <select id="browse-sort-select" class="form-control" style="width:auto; padding:0.45rem 1rem;">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Catalog Items Grid -->
+          <div class="items-grid" id="browse-items-grid">
+            <div class="loading-container" style="grid-column: 1 / -1;">
+              <div class="spinner spinner-lg"></div>
+              <p>Loading campus listings...</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-logo">
+            <div class="brand-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="currentColor"></polygon>
+              </svg>
+            </div>
+            <span>Campus<span class="accent">Find</span></span>
+          </div>
+          <p>
+            Centralized college lost and found platform for students and faculty to report, search, and reclaim misplaced belongings safely.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="browse.html">Browse Listings</a></li>
+            <li><a href="report.html">Report Item</a></li>
+            <li><a href="dashboard.html">My Dashboard</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Categories</h4>
+          <ul class="footer-links">
+            <li><a href="browse.html?category=Electronics">Electronics & Hardware</a></li>
+            <li><a href="browse.html?category=Documents">ID Cards & Credentials</a></li>
+            <li><a href="browse.html?category=Bags">Bags & Wallets</a></li>
+            <li><a href="browse.html?category=Books">Books & Course Notes</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Verification & Safety</h4>
+          <ul class="footer-links">
+            <li><a href="javascript:void(0)" onclick="alert('Ownership proofs are strictly encrypted and hidden from the public view.')">Ownership Proof Policy</a></li>
+            <li><a href="javascript:void(0)" onclick="alert('Campus Security: Room 101 Administration Block | Internal Ext: 2400')">Campus Security Office</a></li>
+            <li><a href="admin.html">Administration Portal</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 CampusFind. All rights reserved.</div>
+        <div class="footer-colophon">
+          <div class="footer-status-indicator">
+            <span class="status-dot-pulse"></span>
+            Campus Network Operational
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="js/motion.js"></script>
+  <script type="module" src="js/pages/browse.js"></script>
+</body>
+</html>

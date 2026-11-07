@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini Project Report - CampusFind</title>
+<style>
+  @page {
+    size: A4;
+    margin: 1in;
+  }
+  @media print {
+    .page-break {
+      page-break-before: always;
+    }
+  }
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+    line-height: 1.5;
+    color: #000;
+    margin: 0 auto;
+    padding: 20px 40px;
+    max-width: 850px;
+    background-color: #fff;
+  }
+  h1, h2, h3, h4 {
+    font-family: "Times New Roman", Times, serif;
+    font-weight: bold;
+    color: #000;
+  }
+  .center {
+    text-align: center;
+  }
+  .justify {
+    text-align: justify;
+  }
+  .bold {
+    font-weight: bold;
+  }
+  .cover-title {
+    font-size: 18pt;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 25px;
+    text-transform: uppercase;
+  }
+  .cover-topic {
+    font-size: 16pt;
+    font-weight: bold;
+    margin: 20px 0;
+  }
+  .cover-subtitle {
+    font-size: 13pt;
+    margin: 10px 0;
+  }
+  .cover-meta {
+    font-size: 12pt;
+    margin: 25px 0;
+  }
+  .cover-college {
+    font-size: 14pt;
+    font-weight: bold;
+    margin-top: 15px;
+  }
+  .cover-session {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 30px;
+  }
+  .logo-box {
+    margin: 20px auto;
+    text-align: center;
+  }
+  .logo-box svg {
+    width: 110px;
+    height: 90px;
+  }
+  .dept-header {
+    border-top: 2px solid #000;
+    border-bottom: 2px solid #000;
+    padding: 10px 0;
+    margin: 25px 0;
+  }
+  table.index-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 12pt;
+  }
+  table.index-table th, table.index-table td {
+    border: 1px solid #000;
+    padding: 8px 12px;
+  }
+  table.index-table th {
+    background-color: #f2f2f2;
+    text-align: left;
+  }
+  .chapter-heading {
+    font-size: 15pt;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 15px;
+    text-decoration: underline;
+  }
+  .section-heading {
+    font-size: 13pt;
+    font-weight: bold;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+  .subsection-heading {
+    font-size: 12pt;
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 5px;
+  }
+  p {
+    margin: 10px 0;
+    text-indent: 30px;
+  }
+  .no-indent {
+    text-indent: 0;
+  }
+  ul, ol {
+    margin: 10px 0;
+    padding-left: 40px;
+  }
+  li {
+    margin-bottom: 6px;
+  }
+  pre {
+    background-color: #f9f9f9;
+    border: 1px solid #ccc;
+    padding: 12px;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 10pt;
+    line-height: 1.3;
+    overflow-x: auto;
+    margin: 15px 0;
+  }
+  .figure-box {
+    text-align: center;
+    margin: 25px auto;
+    padding: 15px;
+    border: 1px solid #ddd;
+    background: #fafafa;
+  }
+  .figure-caption {
+    font-style: italic;
+    font-size: 11pt;
+    margin-top: 8px;
+    text-align: center;
+  }
+  .diagram-box {
+    border: 2px dashed #999;
+    padding: 15px;
+    margin: 15px auto;
+    background-color: #fcfcfc;
+    font-family: "Courier New", monospace;
+    font-size: 10pt;
+    white-space: pre;
+    text-align: left;
+    display: inline-block;
+  }
+  .ref-item {
+    text-indent: -30px;
+    padding-left: 30px;
+    margin: 8px 0;
+    text-align: justify;
+  }
+</style>
+</head>
+<body>
+
+<!-- ========================================== -->
+<!-- COVER PAGE                                 -->
+<!-- ========================================== -->
+<div class="center">
+  <div class="cover-title">Mini Project or Internship Report</div>
+  <div class="cover-topic">“CampusFind: A Web-Based College Lost and Found Management System”</div>
+  
+  <p class="no-indent cover-subtitle">
+    Submitted in partial fulfilment for the requirement for the award of the degree of
+  </p>
+  <div class="cover-title" style="font-size: 14pt; margin: 10px 0;">Bachelor of Technology</div>
+  <p class="no-indent cover-subtitle">in</p>
+  <div class="cover-title" style="font-size: 14pt; margin: 10px 0;">Computer Science & Engineering</div>
+
+  <div style="margin: 30px 0;">
+    <div style="float: left; width: 48%; text-align: left; padding-left: 10px;">
+      <span class="bold">Submitted by:</span><br>
+      Name: [Student Name]<br>
+      (Uni. Roll No.: [XXXXXXXXXX])
+    </div>
+    <div style="float: right; width: 48%; text-align: right; padding-right: 10px;">
+      <span class="bold">Under the Supervision of:</span><br>
+      [Project Guide / Trainer Name]<br>
+      Assistant Professor, CSE Dept.
+    </div>
+    <div style="clear: both;"></div>
+  </div>
+
+  <div class="logo-box">
+    <!-- Department Logo SVG vector -->
+    <svg viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="50,5 20,60 80,60" fill="#1b3574" />
+      <polygon points="50,15 32,52 68,52" fill="#fff" />
+      <polygon points="50,22 58,35 50,48 42,35" fill="#d9241c" />
+      <polygon points="50,50 35,62 65,62" fill="#1b3574" />
+    </svg>
+  </div>
+
+  <div class="cover-college">
+    Department of Computer Science & Engineering<br>
+    UNITED INSTITUTE OF TECHNOLOGY (284)<br>
+    <span style="font-size: 11pt; font-weight: normal;">(Affiliated to Dr. A.P.J. Abdul Kalam Technical University, Lucknow)</span>
+  </div>
+  
+  <div class="cover-session">Session-2026-2027</div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- VISION AND MISSION OF THE DEPARTMENT       -->
+<!-- ========================================== -->
+<div class="dept-header center">
+  <div class="bold" style="font-size: 14pt;">Department of Computer Science & Engineering</div>
+  <div style="font-size: 12pt;">UNITED INSTITUTE OF TECHNOLOGY (284)</div>
+</div>
+
+<div class="section-heading">Vision of the Department</div>
+<p class="justify">
+  To be a center of excellence in the field of Computer Science and Engineering for producing talented engineers to ethically serve constantly changing needs of society and industry throughout their career and life.
+</p>
+
+<div class="section-heading" style="margin-top: 25px;">Mission of the Department</div>
+<p class="no-indent justify">
+  <strong>M1.</strong> Accomplish excellence with committed faculty by providing theoretical foundation and practical skills for solving complex engineering problems in the state-of-the-art trends in Computer science and allied disciplines.<br><br>
+  <strong>M2.</strong> To foster skills and competency, generating novel ideas, entrepreneurship and model creations focused towards deep knowledge, interpersonal skills and leadership.<br><br>
+  <strong>M3.</strong> To develop habitude of research among faculty and students in the area of Computer Science & Allied disciplines by providing the desired environment, for addressing the needs of industry and society.<br><br>
+  <strong>M4.</strong> To mould the students with ethical principles in thoughts, expression and deeds.
+</p>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- INDEX / TABLE OF CONTENTS                  -->
+<!-- ========================================== -->
+<div class="chapter-heading">Index</div>
+
+<table class="index-table">
+  <thead>
+    <tr>
+      <th style="width: 12%;">S. No</th>
+      <th style="width: 73%;">Topic</th>
+      <th style="width: 15%; text-align: center;">Page No.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1</td>
+      <td>Introduction ……………………………………………………………………...</td>
+      <td style="text-align: center;">1</td>
+    </tr>
+    <tr>
+      <td>2</td>
+      <td>Requirement ……………………………………………………………………..</td>
+      <td style="text-align: center;">3</td>
+    </tr>
+    <tr>
+      <td>3</td>
+      <td>Conceptual Background …………………………………………………………</td>
+      <td style="text-align: center;">5</td>
+    </tr>
+    <tr>
+      <td>4</td>
+      <td>Implementation ……………………………………………………………….....</td>
+      <td style="text-align: center;">10</td>
+    </tr>
+    <tr>
+      <td>4.1</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;Coding ………………………………………………………………………</td>
+      <td style="text-align: center;">10</td>
+    </tr>
+    <tr>
+      <td>4.2</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;Flow Chart …………………………………………………………………..</td>
+      <td style="text-align: center;">14</td>
+    </tr>
+    <tr>
+      <td>5</td>
+      <td>User Interface ……………………………………………………………………</td>
+      <td style="text-align: center;">16</td>
+    </tr>
+    <tr>
+      <td>6</td>
+      <td>Conclusion ………………………………………………………………………..</td>
+      <td style="text-align: center;">21</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>References ………………………………………………………………………</td>
+      <td style="text-align: center;">22</td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>Appendix …………………………………………………………………………</td>
+      <td style="text-align: center;">23</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- CHAPTER 1: INTRODUCTION                   -->
+<!-- ========================================== -->
+<div class="chapter-heading">Chapter-1<br>Introduction</div>
+
+<p class="justify">
+  In modern higher educational institutions, hundreds of students, faculty members, and administrative staff traverse campus facilities, academic blocks, libraries, laboratories, seminar halls, cafeterias, and athletic fields daily. In the course of this bustling academic environment, personal belongings—ranging from vital academic identification credentials, textbooks, calculators, and laboratory records to expensive personal consumer electronics such as laptops, mobile phones, headphones, earphones, and keys—are frequently misplaced or forgotten.
+</p>
+
+<p class="justify">
+  Historically, educational institutions have relied upon manual and ad-hoc mechanisms to manage lost and found assets. Traditional approaches primarily encompass physical lost-and-found registry books maintained by departmental security guards, pinned paper announcements on crowded college notice boards, and unstructured broadcasts circulated across unmonitored WhatsApp or Telegram messaging groups. While these manual processes served smaller campuses in the past, they exhibit critical structural deficiencies within modern technological institutions. Physical registers are geographically fragmented, making it necessary for an anxious student to physically visit every building across campus to check if an item was turned in. Physical notice boards suffer from rapid clutter, lack search capabilities, and cannot be updated in real time. Moreover, informal social media groups lack indexing, suffer from information overload, and expose students' private personal phone numbers to unrestricted public audiences.
+</p>
+
+<div class="section-heading">1.1 Problem Statement</div>
+<p class="justify">
+  The conventional procedures for reporting and reclaiming lost and found items in college campuses lack centralization, real-time tracking, privacy controls, and secure ownership validation. Specifically, there is no centralized database allowing students to readily search for misplaced items by category, location, or date. Furthermore, existing public broadcasts present substantial vulnerability to fraudulent claims: dishonest individuals can view public photos or descriptions and deceptively claim ownership of valuable items. Additionally, finder students are discouraged from reporting found items due to the risk of unwanted phone calls or social harassment. Consequently, there is an urgent necessity for a secure, web-enabled, centralized campus management platform that simplifies lost and found reporting while ensuring confidential ownership verification and strict user data privacy.
+</p>
+
+<div class="section-heading">1.2 Objectives of the System</div>
+<p class="justify">
+  The primary objective of this project is to develop and implement <strong>CampusFind</strong>, an interactive, responsive, cloud-integrated web application designed specifically for college campuses. The core objectives include:
+</p>
+<ul>
+  <li><strong>Centralized Cataloging:</strong> Providing an organized repository where all lost and found reports across campus facilities are logged with standardized metadata, categories, locations, and high-resolution photographs.</li>
+  <li><strong>Advanced Search & Multi-Criteria Filtering:</strong> Enabling instantaneous search across titles, descriptions, categories, and campus locations with filter chips (All, Lost Only, Found Only) and sorting controls.</li>
+  <li><strong>Confidential Ownership Verification:</strong> Formulating a two-sided verification protocol where claimants must submit distinct, private verification proofs (such as lock screen wallpapers, hidden engravings, serial numbers, or internal compartment contents) that remain strictly concealed from the public and are visible solely to the finder and institutional administrators.</li>
+  <li><strong>Role-Based Campus Access:</strong> Implementing authentication with college credentials, separating regular student privileges from administrative management and moderation consoles.</li>
+  <li><strong>Institutional Oversight & Content Moderation:</strong> Providing college authorities with real-time analytics, spam/abuse moderation queues, and dispute resolution mechanisms.</li>
+</ul>
+
+<div class="section-heading">1.3 Scope of the Project</div>
+<p class="justify">
+  The scope of <em>CampusFind</em> covers the entire student and faculty community within the institution. The web-based architecture ensures universal cross-platform accessibility across mobile smartphones, tablets, and personal computers without requiring proprietary native app store installations. The cloud-backed serverless architecture ensures real-time data persistence, high availability, and horizontal scalability during peak institutional periods such as examinations and annual college festivals.
+</p>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- CHAPTER 2: REQUIREMENT                    -->
+<!-- ========================================== -->
+<div class="chapter-heading">Chapter-2<br>Requirement</div>
+
+<p class="justify">
+  The development and deployment of the <em>CampusFind</em> web portal necessitate both hardware and software infrastructure to guarantee optimal response times, data integrity, security, and responsive rendering across diverse client devices.
+</p>
+
+<div class="section-heading">2.1 Hardware Requirements</div>
+<p class="justify">
+  The hardware specifications are categorized into developer workstation environments and end-user client devices:
+</p>
+
+<div class="subsection-heading">A. Development & Administrative Environment:</div>
+<ul>
+  <li><strong>Processor:</strong> Intel Core i3 / AMD Ryzen 3 or higher (Intel Core i5 / AMD Ryzen 5 recommended).</li>
+  <li><strong>System Memory (RAM):</strong> Minimum 4 GB RAM (8 GB or higher recommended for running local development servers and build tools).</li>
+  <li><strong>Hard Disk Space:</strong> Minimum 500 MB free storage for application source files, libraries, and local emulators.</li>
+  <li><strong>Network Interface:</strong> Broadband / Wi-Fi internet connectivity with minimum 2 Mbps bandwidth for cloud synchronization and database communication.</li>
+  <li><strong>Display:</strong> Minimum resolution of 1366 &times; 768 pixels (1920 &times; 1080 Full HD recommended).</li>
+</ul>
+
+<div class="subsection-heading">B. Client / User Environment:</div>
+<ul>
+  <li><strong>Mobile Devices:</strong> Any Android or iOS smartphone with modern web browser capabilities and minimum 2 GB RAM.</li>
+  <li><strong>Personal Computers:</strong> Any standard desktop or laptop running Windows, macOS, or Linux.</li>
+  <li><strong>Network Connectivity:</strong> Active 3G/4G/5G mobile data or campus Wi-Fi connectivity.</li>
+</ul>
+
+<div class="section-heading">2.2 Software Requirements</div>
+<p class="justify">
+  The software components utilized in constructing, running, and testing the system are outlined below:
+</p>
+<ul>
+  <li><strong>Operating System:</strong> Microsoft Windows 10/11, macOS Monterey or higher, or Ubuntu Linux 20.04+.</li>
+  <li><strong>Integrated Development Environment (IDE):</strong> Visual Studio Code (v1.85+) / Google Antigravity IDE equipped with Live Server, ESLint, and Prettier extensions.</li>
+  <li><strong>Frontend Technologies:</strong> HTML5 (HyperText Markup Language), CSS3 (Cascading Style Sheets with Flexbox, CSS Grid, and Custom Properties), JavaScript (ECMAScript 2022 / ES6+ Modules).</li>
+  <li><strong>Backend & Cloud Infrastructure:</strong> Google Firebase Platform (v10 Modular SDK):
+    <ul>
+      <li><em>Firebase Authentication:</em> User identity management, session token verification, and automated password reset workflows.</li>
+      <li><em>Cloud Firestore:</em> Flexible, scalable NoSQL document-oriented cloud database for real-time data persistence.</li>
+      <li><em>Cloud Storage for Firebase:</em> Scalable object storage for lost and found photographic evidence with client-side image validation.</li>
+      <li><em>Firebase Hosting:</em> Fast, secure production-grade global content delivery network (CDN) with automatic SSL certificates.</li>
+    </ul>
+  </li>
+  <li><strong>Web Browsers:</strong> Google Chrome (v115+), Mozilla Firefox (v115+), Microsoft Edge (v115+), or Apple Safari (v16+).</li>
+  <li><strong>Version Control:</strong> Git (v2.40+) and GitHub for source code management.</li>
+</ul>
+
+<div class="section-heading">2.3 Functional Requirements</div>
+<ul>
+  <li><strong>User Account Management:</strong> Secure registration with Student Name, College Email ID, University Roll Number, and Contact Number; persistent login sessions; password recovery via email.</li>
+  <li><strong>Dual-Mode Item Submission:</strong> Intuitive reporting form with toggle between "I Lost Something" and "I Found Something"; location selection from campus datalist; date/time picker; client-side image validation.</li>
+  <li><strong>Multi-Criteria Search & Filtering:</strong> Real-time keyword search; filtering by listing type, category, and campus zones; sorting by timestamp.</li>
+  <li><strong>Confidential Claim System:</strong> Submission of private ownership proofs; approval/rejection interface for finders; automated contact disclosure upon verified approval.</li>
+  <li><strong>Administrative Console:</strong> Overview metrics; listing moderation; abuse report resolution; system-wide role-based access control.</li>
+</ul>
+
+<div class="section-heading">2.4 Non-Functional Requirements</div>
+<ul>
+  <li><strong>Security:</strong> Granular server-side Firestore Security Rules preventing unauthorized document modification and protecting claimant privacy.</li>
+  <li><strong>Usability:</strong> Responsive user interface following modern design tokens, accessible color contrasts, and touch-friendly mobile controls.</li>
+  <li><strong>Performance:</strong> Sub-second query retrieval times with client-side caching and indexed Firestore queries.</li>
+  <li><strong>Reliability:</strong> 99.9% cloud uptime backed by Google Cloud infrastructure.</li>
+</ul>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- CHAPTER 3: CONCEPTUAL BACKGROUND          -->
+<!-- ========================================== -->
+<div class="chapter-heading">Chapter-3<br>Conceptual Background</div>
+
+<p class="justify">
+  This chapter presents a comprehensive overview of the conceptual frameworks, system architectures, and underlying technologies studied during summer training and subsequently applied in developing the <em>CampusFind</em> college management portal.
+</p>
+
+<div class="section-heading">3.1 Technologies and Concepts Covered During Summer Training</div>
+<p class="justify">
+  During the industrial summer training program, foundational and advanced concepts of full-stack web engineering, cloud-native computing, asynchronous programming, and software architecture were thoroughly explored:
+</p>
+
+<div class="subsection-heading">A. Modern Frontend Engineering & Semantic Web Standards:</div>
+<p class="justify">
+  Summer training emphasized the paradigm shift from obsolete monolithic web pages to modular, component-driven client architectures. Mastery was gained in semantic HTML5 markup, which improves accessibility (a11y), search engine optimization (SEO), and screen reader parsing. Training in CSS3 focused on modern layout primitives—primarily CSS Flexible Box (Flexbox) for one-dimensional dynamic alignment and CSS Grid for two-dimensional component matrices. Additionally, the adoption of CSS Custom Properties (design tokens) established unified theming across typography, color palettes, spacing units, and shadow elevations, eliminating redundant inline styles.
+</p>
+
+<div class="subsection-heading">B. Advanced JavaScript (ECMAScript 6+) and Asynchronous Execution:</div>
+<p class="justify">
+  In-depth modules were dedicated to the modern JavaScript execution model, focusing on the event loop, execution contexts, closures, lexical scoping, and prototype chains. Special emphasis was placed on asynchronous programming using Promises and the <code>async/await</code> syntax to eliminate "callback hell." Developers were trained to use native ES Modules (<code>import</code> / <code>export</code>), enabling clean architectural separation between User Interface controllers, database services, authentication handlers, and utility helpers.
+</p>
+
+<div class="subsection-heading">C. Serverless Architecture & Cloud Backend-as-a-Service (BaaS):</div>
+<p class="justify">
+  The training covered modern cloud-native architectural patterns, contrasting traditional self-hosted virtual servers (e.g., Apache/Nginx on AWS EC2 or VPS) with serverless Backend-as-a-Service (BaaS) architectures such as Google Firebase. The serverless paradigm allows software engineers to deploy production applications rapidly without the operational overhead of server provisioning, operating system patching, and manual load balancing. Core cloud principles studied included automated horizontal elasticity, pay-as-you-go resource allocation, and zero-downtime microservice deployments.
+</p>
+
+<div class="subsection-heading">D. NoSQL Document Databases and Firestore Data Modeling:</div>
+<p class="justify">
+  Summer training provided extensive practical instruction on document-oriented NoSQL databases, specifically Google Cloud Firestore. Unlike traditional relational databases (RDBMS) governed by fixed schemas, primary keys, and heavy table joins, Firestore structures data into hierarchical Collections and Documents containing JSON-like key-value mappings. Crucial design patterns mastered included:
+</p>
+<ul>
+  <li><em>Denormalization Strategies:</em> Embedding frequently queried metadata (such as owner display names and status badges) directly into listings to minimize billable read operations.</li>
+  <li><em>Subcollections vs. Top-Level Collections:</em> Deciding between nested subcollections and decoupled root-level collections for complex entities like claims and moderation reports.</li>
+  <li><em>Query Optimization & Composite Indexing:</em> Structuring queries adhering to Firestore's index requirements for combined equality (<code>where ==</code>) and range/sorting (<code>orderBy</code>) operations.</li>
+</ul>
+
+<div class="subsection-heading">E. Declarative Security Rules & Role-Based Access Control (RBAC):</div>
+<p class="justify">
+  In client-side serverless development, database security cannot rely on traditional server-side middleware controllers. Training covered declarative security authoring in Firebase Security Rules. By enforcing granular expressions evaluated on the cloud gateway, applications ensure that write operations validate document payload schemas, verify client authentication tokens (<code>request.auth != null</code>), and enforce data ownership constraints before transactions touch storage engines.
+</p>
+
+<div class="section-heading">3.2 Technologies Used to Develop the Mini Project</div>
+<p class="justify">
+  The <em>CampusFind</em> project was architected utilizing a modern, lightweight, high-performance technology stack selected for maximum browser interoperability and maintainability:
+</p>
+
+<div class="subsection-heading">A. User Interface & Presentation Layer:</div>
+<ul>
+  <li><strong>HTML5:</strong> Utilized across all functional views (<code>index.html</code>, <code>browse.html</code>, <code>report.html</code>, <code>item-details.html</code>, <code>dashboard.html</code>, <code>admin.html</code>, <code>login.html</code>, and <code>profile.html</code>) providing accessible structural scaffolding, semantic form controls, datalists, and modal dialogue containers.</li>
+  <li><strong>CSS3 & Modular Style Architecture:</strong> Organized into discrete stylesheets:
+    <ul>
+      <li><code>main.css</code>: Defines core design tokens (variables for primary brand blues, neutral slates, danger reds, success greens, font stacks, and elevation shadows), baseline resets, sticky header bars, and responsive footers.</li>
+      <li><code>components.css</code>: Encapsulates reusable design primitives including action buttons, listing cards, status pills, feedback toasts, confirmation dialogues, and tabular grids.</li>
+      <li><code>pages.css</code>: Formats specific page geometries, hero showcases, filter sidebars, and dashboard layout containers.</li>
+      <li><code>responsive.css</code>: Implements adaptive media queries spanning mobile screens (320px&ndash;767px), tablets (768px&ndash;1023px), and desktop viewports (1024px+).</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="subsection-heading">B. Application Logic & Client Controller Layer:</div>
+<ul>
+  <li><strong>JavaScript ES6+ Modules:</strong> The codebase is organized into clean, single-responsibility modules:
+    <ul>
+      <li><code>auth.js</code>: Coordinates student registration, login, session listeners, and administrative route guards.</li>
+      <li><code>db.js</code>: Encapsulates all Cloud Firestore CRUD operations for listings, claims, moderation reports, and aggregated platform metrics.</li>
+      <li><code>storage.js</code>: Manages image file selection, drag-and-drop ingestion, format verification (JPEG/PNG/WebP), size bounds checking (5 MB maximum), and cloud upload streaming.</li>
+      <li><code>ui.js</code>: Coordinates interactive DOM updates, modal dialogues, floating toast notifications, skeleton loaders, and date formatting.</li>
+      <li><code>seed-data.js</code>: Provides automated dummy campus listing data to facilitate evaluation, demonstration, and viva presentations.</li>
+      <li><code>pages/*.js</code>: Dedicated view controllers binding DOM events to underlying services.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="subsection-heading">C. Backend Cloud Infrastructure (Google Firebase Platform v10):</div>
+<ul>
+  <li><strong>Firebase Authentication:</strong> Secure user identity store employing encrypted password hashing (bcrypt/scrypt) and JSON Web Tokens (JWT) for session management.</li>
+  <li><strong>Cloud Firestore:</strong> Provides sub-second query execution, automatic multi-region data replication, and offline persistence capabilities.</li>
+  <li><strong>Cloud Storage:</strong> Secures photographic uploads within isolated storage buckets governed by strict MIME-type and byte-size authorization rules.</li>
+  <li><strong>Firestore Security Rules:</strong> Implemented in <code>firestore.rules</code> to safeguard student privacy and prevent unauthorized data tampering.</li>
+</ul>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- CHAPTER 4: IMPLEMENTATION                 -->
+<!-- ========================================== -->
+<div class="chapter-heading">Chapter-4<br>Implementation</div>
+
+<p class="justify">
+  The implementation phase translates system designs and requirements into executable, modular software components. This chapter highlights critical source code modules and illustrative logic flowcharts governing core application workflows.
+</p>
+
+<div class="section-heading">4.1 Coding</div>
+<p class="justify">
+  The system follows clean code conventions, modular separation of concerns, and robust error handling. Representative code excerpts from essential service modules are presented below:
+</p>
+
+<div class="subsection-heading">A. User Authentication & Profile Synchronization (<code>auth.js</code>):</div>
+<pre>
+import { 
+  auth, db, createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, signOut, 
+  updateProfile, doc, setDoc, serverTimestamp 
+} from "./firebase-init.js";
+
+/**
+ * Registers a new student account and creates a synchronized user profile in Firestore.
+ */
+export async function registerUser(name, email, password, studentId = "", phone = "") {
+  if (!auth) throw new Error("Firebase Authentication is not initialized.");
+
+  // Create user in Firebase Authentication
+  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  const user = userCredential.user;
+
+  // Set the display name in the Auth profile
+  await updateProfile(user, { displayName: name });
+
+  // Provision synchronized document in /users/{uid}
+  const userDocRef = doc(db, "users", user.uid);
+  const userData = {
+    uid: user.uid,
+    name: name.trim(),
+    email: email.toLowerCase().trim(),
+    studentId: studentId.trim(),
+    phone: phone.trim(),
+    role: "student",
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp()
+  };
+
+  await setDoc(userDocRef, userData);
+  return { user, profile: userData };
+}
+</pre>
+
+<div class="subsection-heading">B. Multi-Criteria Listing Ingestion & Dynamic Retrieval (<code>db.js</code>):</div>
+<pre>
+import { 
+  db, collection, doc, addDoc, getDocs, 
+  query, where, serverTimestamp 
+} from "./firebase-init.js";
+
+const ITEMS_COLLECTION = "items";
+
+/**
+ * Ingests a new Lost or Found item record into Cloud Firestore.
+ */
+export async function createItem(itemData) {
+  const docRef = await addDoc(collection(db, ITEMS_COLLECTION), {
+    ...itemData,
+    status: itemData.status || "active",
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp()
+  });
+  return docRef.id;
+}
+
+/**
+ * Fetches items matching multi-criteria filter options with client-side text filtering.
+ */
+export async function getItems({ type = "all", category = "all", status = "all", searchQuery = "" }) {
+  let q = collection(db, ITEMS_COLLECTION);
+  const conditions = [];
+
+  if (type !== "all") conditions.push(where("type", "==", type));
+  if (category !== "all") conditions.push(where("category", "==", category));
+  if (status !== "all") conditions.push(where("status", "==", status));
+
+  const queryRef = conditions.length > 0 ? query(q, ...conditions) : q;
+  const snapshot = await getDocs(queryRef);
+  
+  let results = [];
+  snapshot.forEach(doc => results.push({ id: doc.id, ...doc.data() }));
+
+  // Case-insensitive multi-attribute keyword filter
+  if (searchQuery.trim()) {
+    const qLower = searchQuery.toLowerCase().trim();
+    results = results.filter(item => 
+      (item.title && item.title.toLowerCase().includes(qLower)) ||
+      (item.description && item.description.toLowerCase().includes(qLower)) ||
+      (item.location && item.location.toLowerCase().includes(qLower))
+    );
+  }
+  return results;
+}
+</pre>
+
+<div class="subsection-heading">C. Confidential Ownership Claim Submission (<code>db.js</code>):</div>
+<pre>
+const CLAIMS_COLLECTION = "claims";
+
+/**
+ * Submits an ownership claim with hidden confidential proof details.
+ */
+export async function submitClaim(itemId, itemTitle, claimantData, proofDetails) {
+  const claimRecord = {
+    itemId,
+    itemTitle,
+    claimantId: claimantData.uid,
+    claimantName: claimantData.name,
+    claimantEmail: claimantData.email,
+    claimantPhone: claimantData.phone || "",
+    proofDetails: proofDetails.trim(), // Hidden from general public
+    status: "pending",                 // pending | approved | rejected
+    createdAt: serverTimestamp()
+  };
+
+  const docRef = await addDoc(collection(db, CLAIMS_COLLECTION), claimRecord);
+  return docRef.id;
+}
+</pre>
+
+<div class="subsection-heading">D. Declarative Security Rules Enforcement (<code>firestore.rules</code>):</div>
+<pre>
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Helper: Check if user is authenticated
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Helper: Check if user is platform administrator
+    function isAdmin() {
+      return isAuthenticated() && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == "admin";
+    }
+
+    // Items Collection: Anyone can read, logged-in students can create
+    match /items/{itemId} {
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated() && 
+        (resource.data.ownerId == request.auth.uid || isAdmin());
+    }
+
+    // Claims Collection: Confidential proofs protected
+    match /claims/{claimId} {
+      allow create: if isAuthenticated();
+      allow read: if isAuthenticated() && 
+        (resource.data.claimantId == request.auth.uid || 
+         resource.data.itemOwnerId == request.auth.uid || isAdmin());
+      allow update: if isAuthenticated() && 
+        (resource.data.itemOwnerId == request.auth.uid || isAdmin());
+    }
+  }
+}
+</pre>
+
+<div class="page-break"></div>
+
+<div class="section-heading">4.2 Flow Chart</div>
+<p class="justify">
+  The systematic operational logic of <em>CampusFind</em> is illustrated in the architectural flowcharts below, capturing the end-to-end lifecycle of student interaction, item ingestion, and ownership claim resolution.
+</p>
+
+<div class="figure-box">
+  <div class="diagram-box">
+             +-----------------------+
+             |         START         |
+             +-----------+-----------+
+                         |
+                         v
+             +-----------------------+
+             |  Open CampusFind Web  |
+             +-----------+-----------+
+                         |
+                         v
+             +-----------------------+
+             | Is Student Logged In? |
+             +-----------+-----------+
+                    /         \
+              No   /           \  Yes
+                  v             v
+       +------------------+   +-------------------+
+       | Display Public   |   | Authenticate User |
+       | Browse & Login   |   | Access Full Suite |
+       +--------+---------+   +---------+---------+
+                |                       |
+                +-----------+-----------+
+                            |
+                            v
+       +-----------------------------------------+
+       |   Choose Action: Report / Browse / Claim|
+       +--------------------+--------------------+
+                            |
+           +----------------+----------------+
+           |                                 |
+           v                                 v
++---------------------+           +---------------------+
+| Report Lost / Found |           | Browse Catalog /    |
+| Item with Details   |           | Search Misplaced    |
++----------+----------+           +----------+----------+
+           |                                 |
+           v                                 v
++---------------------+           +---------------------+
+| Upload Photo &      |           | View Details & Click|
+| Validate Constraints|           | "Claim This Item"   |
++----------+----------+           +----------+----------+
+           |                                 |
+           v                                 v
++---------------------+           +---------------------+
+| Store in Firestore  |           | Submit Confidential |
+| Broadcast to Campus |           | Verification Proof  |
++----------+----------+           +----------+----------+
+           |                                 |
+           |                                 v
+           |                      +---------------------+
+           |                      | Original Poster     |
+           |                      | Reviews Proof       |
+           |                      +----------+----------+
+           |                                 |
+           |                          /-------------\
+           |                   Yes   /               \   No
+           |             +----------< Proof Matches?  >---------+
+           |             |           \               /          |
+           |             v            \-------------/           v
+           |   +-------------------+                +-------------------+
+           |   | Approve Claim &   |                | Reject Claim with |
+           |   | Reveal Contact    |                | Notification Note |
+           |   +---------+---------+                +---------+---------+
+           |             |                                    |
+           +-------------+------------------------------------+
+                         |
+                         v
+             +-----------------------+
+             |         STOP          |
+             +-----------------------+
+  </div>
+  <div class="figure-caption">Fig: 4.1 System Operational Logic Flowchart of CampusFind</div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- CHAPTER 5: USER INTERFACES                -->
+<!-- ========================================== -->
+<div class="chapter-heading">Chapter-5<br>User Interfaces</div>
+
+<p class="justify">
+  The user interface of <em>CampusFind</em> is built around clean visual aesthetics, high accessibility, and responsive navigation across all mobile, tablet, and desktop form factors. This chapter describes the core functional screens developed in the application, accompanied by interface mockups and operational explanations.
+</p>
+
+<div class="figure-box">
+  <img src="report_images/fig5_1.jpg" alt="Landing Page Interface" style="width: 100%; max-width: 750px; height: auto; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+  <div class="figure-caption">Fig: 5.1 Landing Page Interface (index.html)</div>
+</div>
+<p class="justify">
+  The landing page introduces students to the platform, presenting the hero banner, real-time statistics counter, a universal search bar for instantaneous item lookup, and primary call-to-action buttons for reporting or browsing campus belongings.
+</p>
+
+<div class="figure-box">
+  <img src="report_images/fig5_2.jpg" alt="Student Registration & Onboarding Interface" style="width: 100%; max-width: 750px; height: auto; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+  <div class="figure-caption">Fig: 5.2 Student Registration & Onboarding Interface (login.html)</div>
+</div>
+<p class="justify">
+  The registration view enables students to establish secure platform accounts by providing their full name, official college email, university student ID/roll number, phone number, and password, provisioning synchronized credentials in Firebase Authentication and Firestore.
+</p>
+
+<div class="page-break"></div>
+
+<div class="figure-box">
+  <img src="report_images/fig5_3.jpg" alt="Campus Belongings Catalog & Multi-Filter Search" style="width: 100%; max-width: 750px; height: auto; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+  <div class="figure-caption">Fig: 5.3 Campus Belongings Catalog & Multi-Filter Search (browse.html)</div>
+</div>
+<p class="justify">
+  The browse catalog provides comprehensive search and multi-parameter filtering options, allowing students to filter items by keywords, listing types (All Listings, Lost Only, Found Only), and sorting preferences with responsive layout states and feedback counters.
+</p>
+
+<div class="figure-box">
+  <img src="report_images/fig5_4.jpg" alt="Item Reporting Form - Details Section" style="width: 100%; max-width: 750px; height: auto; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+  <div class="figure-caption">Fig: 5.4 Item Reporting Form - Details Section (report.html)</div>
+</div>
+<p class="justify">
+  The initial segment of the item reporting interface features a dual-toggle selector ("I Lost Something" vs. "I Found Something") along with input fields for item title, category dropdown, incident date picker, campus location, and detailed description.
+</p>
+
+<div class="page-break"></div>
+
+<div class="figure-box">
+  <img src="report_images/fig5_5.jpg" alt="Item Reporting Form - Photo Upload & Privacy Preferences" style="width: 100%; max-width: 750px; height: auto; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+  <div class="figure-caption">Fig: 5.5 Item Reporting Form - Photo Upload & Privacy Preferences (report.html)</div>
+</div>
+<p class="justify">
+  The submission module includes a drag-and-drop photograph uploader supporting JPG, PNG, and WebP formats up to 5MB, accompanied by privacy-preserving contact preferences that safeguard student phone numbers until ownership verification is approved.
+</p>
+
+<div class="figure-box">
+  <img src="report_images/fig5_6.jpg" alt="Student Dashboard & Claims Management Interface" style="width: 100%; max-width: 750px; height: auto; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+  <div class="figure-caption">Fig: 5.6 Student Dashboard & Claims Management Interface (dashboard.html)</div>
+</div>
+<p class="justify">
+  The student dashboard consolidates personal account management, displaying active listings metrics, returned/resolved counts, pending claim counters, and tabbed navigation for reported belongings, incoming verification claims, and submitted claim statuses.
+</p>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- CHAPTER 6: CONCLUSION                     -->
+<!-- ========================================== -->
+<div class="chapter-heading">Chapter-6<br>Conclusion</div>
+
+<p class="justify">
+  The <em>CampusFind</em> college lost and found management system successfully addresses the challenges of misplaced property across academic institutions. By replacing fragmented manual registry books, physical notice board postings, and disorganized social messaging groups with a unified, web-based digital platform, the application establishes an efficient, transparent, and secure ecosystem for campus belongings.
+</p>
+
+<p class="justify">
+  Throughout the project lifecycle, the application achieved all core objectives:
+</p>
+<ul>
+  <li><strong>Centralized Campus Accessibility:</strong> Implemented a responsive, mobile-optimized web architecture allowing students and faculty to report, browse, and track lost or found items across campus zones at any time.</li>
+  <li><strong>Confidential Ownership Verification:</strong> Designed a verification workflow that safeguards sensitive proof details from public view, preventing fraudulent claims while protecting student privacy.</li>
+  <li><strong>Cloud-Native Reliability & Speed:</strong> Integrated Google Firebase v10 modular services (Authentication, Cloud Firestore, and Cloud Storage) to deliver sub-second multi-criteria search, real-time data persistence, and resilient cloud storage.</li>
+  <li><strong>Administrative Oversight:</strong> Provided institutional staff with platform analytics, user role controls, and moderation tools to maintain campus-wide safety and data integrity.</li>
+</ul>
+
+<div class="section-heading">6.1 Future Enhancements</div>
+<p class="justify">
+  While the current system fulfills its operational requirements, future iterations can introduce several advanced capabilities:
+</p>
+<ul>
+  <li><strong>Automated AI Image Matching:</strong> Integrating computer vision models to automatically match photos of found items with existing lost reports based on visual feature extraction.</li>
+  <li><strong>Automated Push Notifications:</strong> Adding Progressive Web App (PWA) service workers to deliver instant web push alerts whenever an item matching a student's lost description is logged.</li>
+  <li><strong>BLE Beacons & Campus Geofencing:</strong> Integrating Bluetooth Low Energy (BLE) beacon anchors in key locations such as laboratories and libraries to automatically tag recovery coordinates.</li>
+  <li><strong>Institutional Single Sign-On (SSO):</strong> Incorporating college SAML/OAuth Single Sign-On using existing student institutional email credentials.</li>
+</ul>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- REFERENCES                                 -->
+<!-- ========================================== -->
+<div class="chapter-heading">References</div>
+
+<div class="ref-item">
+  [1] L. Bass, P. Clements, and R. Kazman, <em>Software Architecture in Practice</em>, 2nd ed. Reading, MA: Addison Wesley, 2003. [E-book] Available: Safari e-book.
+</div>
+
+<div class="ref-item">
+  [2] D. Ince, “Acoustic coupler,” in <em>A Dictionary of the Internet</em>. Oxford University Press, [online document], 2001. Available: Oxford Reference Online, http://www.oxfordreference.com [Accessed: May 24, 2007].
+</div>
+
+<div class="ref-item">
+  [3] M. T. Kimour and D. Meslati, “Deriving objects from use cases in real-time embedded systems,” <em>Information and Software Technology</em>, vol. 47, no. 8, p. 533, June 2005. [Abstract]. Available: ProQuest, http://www.umi.com/proquest/. [Accessed November 12, 2007].
+</div>
+
+<div class="ref-item">
+  [4] W. K. Chen, <em>Linear Networks and Systems</em>. Belmont, CA: Wadsworth Press, 2003.
+</div>
+
+<div class="ref-item">
+  [5] K. A. Nelson, R. J. Davis, D. R. Lutz, and W. Smith, “Optical generation of tunable ultrasonic waves,” <em>Journal of Applied Physics</em>, vol. 53, no. 2, Feb., pp. 1144-1149, 2002.
+</div>
+
+<div class="ref-item">
+  [6] E. Gamma, R. Helm, R. Johnson, and J. Vlissides, <em>Design Patterns: Elements of Reusable Object-Oriented Software</em>. Boston, MA: Addison-Wesley, 1994.
+</div>
+
+<div class="ref-item">
+  [7] Google LLC, “Cloud Firestore Documentation and Security Rules Guide,” Google Firebase, [online document], 2024. Available: https://firebase.google.com/docs/firestore. [Accessed: Oct 19, 2026].
+</div>
+
+<div class="ref-item">
+  [8] Mozilla Developer Network (MDN), “JavaScript ES6 Modules and Web APIs Reference,” MDN Web Docs, [online document], 2024. Available: https://developer.mozilla.org. [Accessed: Oct 19, 2026].
+</div>
+
+<div class="ref-item">
+  [9] R. Fielding, “Architectural Styles and the Design of Network-based Software Architectures,” Ph.D. dissertation, Dept. of Inf. and Comput. Sci., Univ. of California, Irvine, CA, 2000.
+</div>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- APPENDIX                                   -->
+<!-- ========================================== -->
+<div class="chapter-heading">Appendix</div>
+
+<div class="center" style="margin-top: 50px;">
+  <div class="bold" style="font-size: 14pt; margin-bottom: 20px;">SUMMER TRAINING CERTIFICATE</div>
+  
+  <p class="justify" style="text-indent: 0; max-width: 650px; margin: 30px auto; line-height: 2;">
+    This is to certify that <strong>[Student Name]</strong>, University Roll Number <strong>[XXXXXXXXXX]</strong>, student of B.Tech. in Computer Science & Engineering at <strong>United Institute of Technology (284), Allahabad</strong>, has successfully undertaken and completed their industrial summer training and mini project work on <strong>“CampusFind: A Web-Based College Lost and Found Management System”</strong> during the academic session 2026-2027.
+  </p>
+
+  <div style="border: 2px dashed #777; width: 80%; height: 320px; margin: 40px auto; display: flex; align-items: center; justify-content: center; background-color: #fafafa; border-radius: 6px;">
+    <span style="color: #666; font-style: italic; font-size: 13pt;">
+      [Affix / Attach Copy of Official Summer Training Certificate Here]
+    </span>
+  </div>
+
+  <div style="margin-top: 60px;">
+    <div style="float: left; width: 45%; text-align: center;">
+      ___________________________<br>
+      <strong>[Trainer / Guide Signature]</strong><br>
+      Project Supervisor / Guide
+    </div>
+    <div style="float: right; width: 45%; text-align: center;">
+      ___________________________<br>
+      <strong>Head of Department</strong><br>
+      Dept. of Computer Science & Engineering
+    </div>
+    <div style="clear: both;"></div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,33 @@
+rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    
+    // Helper function to check if the uploaded file is a valid photograph under 5MB
+    function isValidImage() {
+      return request.resource.contentType.matches('image/jpeg|image/png|image/webp')
+        && request.resource.size < 5 * 1024 * 1024;
+    }
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    // Item Photographs
+    match /items/{userId}/{fileName} {
+      // Anyone can view item photos
+      allow read: if true;
+      
+      // Only the authenticated student can upload photos under their own user folder
+      allow write: if isAuthenticated() 
+        && request.auth.uid == userId 
+        && isValidImage();
+
+      // Only the uploader or admin can delete photos
+      allow delete: if isAuthenticated() && (
+        request.auth.uid == userId ||
+        request.auth.token.role == 'admin'
+      );
+    }
+  }
+}

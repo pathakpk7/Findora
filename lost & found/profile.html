@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Profile — CampusFind</title>
+  <meta name="description" content="Manage your campus profile, contact details, and account security.">
+  
+  <!-- Typography: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Core Stylesheets -->
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/pages.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Top Configuration Banner -->
+  <aside class="config-banner" id="firebase-config-banner">
+    <div>
+      <strong>Setup Required:</strong> Firebase project keys are not configured yet
+      <a href="#" id="open-config-modal-btn">Configure credentials &rarr;</a>
+    </div>
+    <button type="button" id="open-config-modal-btn-2">Configure Now</button>
+  </aside>
+
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="container header-container">
+      <a href="index.html" class="brand-logo">
+        <div class="brand-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="currentColor"></polygon>
+          </svg>
+        </div>
+        <span>Campus<span class="accent">Find</span></span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="nav-menu" id="nav-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="browse.html" class="nav-link">Browse Items</a>
+        <a href="report.html" class="nav-link">Report Item</a>
+        <a href="dashboard.html" class="nav-link">My Listings</a>
+        <a href="admin.html" class="nav-link" id="nav-link-admin" style="display:none; color:var(--brand-primary);">
+          Admin
+        </a>
+      </nav>
+
+      <!-- Auth State & User Menu -->
+      <div class="header-actions">
+        <div id="header-auth-actions" style="display:flex; gap:0.5rem; align-items:center;"></div>
+
+        <button type="button" class="mobile-nav-toggle" id="mobile-nav-toggle" aria-label="Toggle navigation">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Profile Container -->
+  <main class="site-main">
+    <div class="container" style="max-width: 720px; padding-top: 2rem; padding-bottom: 4rem;">
+      
+      <!-- Profile Header / Bio -->
+      <div class="card reveal-on-scroll" style="margin-bottom: 2rem;">
+        <div class="card-body" style="padding: 2.5rem 2rem;">
+          
+          <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; padding-bottom: 1.75rem; border-bottom: 1px solid var(--border-subtle);">
+            <div style="width: 4.5rem; height: 4.5rem; border-radius: var(--radius-sm); background: var(--brand-primary); color: #ffffff; font-size: 1.75rem; font-weight: 700; display: flex; align-items: center; justify-content: center; box-shadow: var(--shadow-sm);" id="profile-avatar-letter">
+              S
+            </div>
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;">
+                <h2 style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary); letter-spacing: -0.02em; margin: 0;" id="profile-header-name">
+                  Student Name
+                </h2>
+                <span class="status-tag status-found" id="profile-role-badge">
+                  <span class="status-dot"></span>
+                  Verified Student
+                </span>
+              </div>
+              <p style="font-size: 0.875rem; color: var(--text-tertiary); margin-top: 0.25rem; margin-bottom: 0;" id="profile-joined-date">
+                Member of CampusFind
+              </p>
+            </div>
+          </div>
+
+          <form id="profile-form">
+            <div class="form-group">
+              <label class="form-label" for="profile-name">Full Name <span class="required">*</span></label>
+              <input type="text" class="form-control" id="profile-name" required autocomplete="name">
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="profile-email">College Email (Institutional Identifier)</label>
+              <input type="email" class="form-control" id="profile-email" disabled style="background-color: var(--surface-subtle); color: var(--text-secondary); cursor: not-allowed;">
+            </div>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem;">
+              <div class="form-group">
+                <label class="form-label" for="profile-student-id">Student ID or Roll Number</label>
+                <input type="text" class="form-control" id="profile-student-id" placeholder="e.g. 21BCE1042">
+              </div>
+
+              <div class="form-group">
+                <label class="form-label" for="profile-phone">Contact Phone</label>
+                <input type="tel" class="form-control" id="profile-phone" placeholder="+91 98765 43210">
+              </div>
+            </div>
+
+            <div style="margin-top: 2rem; display: flex; justify-content: flex-end;">
+              <button type="submit" class="btn btn-primary" id="btn-save-profile">
+                Save Profile Changes
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- Security & Password Reset Card -->
+      <div class="card reveal-on-scroll">
+        <div class="card-header" style="border-bottom: 1px solid var(--border-subtle); padding: 1.25rem 2rem;">
+          <h3 style="font-size: 1.125rem; font-weight: 700; color: var(--text-primary); margin: 0;">
+            Security & Authentication
+          </h3>
+        </div>
+        <div class="card-body" style="padding: 1.75rem 2rem;">
+          <p style="font-size: 0.9375rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem; max-width: 540px;">
+            To modify your credentials or reset your account password, a cryptographically signed verification link will be dispatched to your registered college address.
+          </p>
+          <button type="button" class="btn btn-outline btn-sm" id="btn-request-password-change">
+            Send Password Reset Link
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Site Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col" style="grid-column: span 2;">
+          <div class="footer-brand">
+            <span class="brand-text">Campus<span>Find</span></span>
+          </div>
+          <p class="footer-desc">
+            The dedicated platform for returning misplaced belongings across student halls, laboratories, auditoriums, and academic libraries.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Directory</h4>
+          <ul class="footer-links">
+            <li><a href="browse.html?category=Electronics">Electronics & Hardware</a></li>
+            <li><a href="browse.html?category=Documents">ID Cards & Credentials</a></li>
+            <li><a href="browse.html?category=Bags">Bags & Wallets</a></li>
+            <li><a href="browse.html?category=Books">Books & Course Notes</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Campus Safety</h4>
+          <ul class="footer-links">
+            <li><a href="javascript:void(0)" onclick="alert('Ownership proofs are strictly encrypted and hidden from public view.')">Ownership Proof Protocol</a></li>
+            <li><a href="javascript:void(0)" onclick="alert('Campus Security Office: Room 101 Administration Block | Internal Ext: 2400')">Campus Security Office</a></li>
+            <li><a href="admin.html">Administration Portal</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 CampusFind. All rights reserved.</div>
+        <div class="footer-colophon">
+          <div class="footer-status-indicator">
+            <span class="status-dot-pulse"></span>
+            Campus Network Operational
+          </div>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Core Scripts -->
+  <script type="module" src="js/motion.js"></script>
+  <script type="module" src="js/pages/profile.js"></script>
+</body>
+</html>

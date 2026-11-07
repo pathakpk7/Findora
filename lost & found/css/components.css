@@ -1,0 +1,671 @@
+/* ==========================================================================
+   CampusFind — Component System
+   Buttons, Status Indicators, Cards, Inputs, Modals, Toasts, Tables
+   Zero AI Slop: No pill tags, no rainbow gradients, no squircle chaos.
+   ========================================================================== */
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.925rem;
+  line-height: 1;
+  padding: 0.75rem 1.35rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  user-select: none;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all var(--transition-quick);
+  position: relative;
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.btn-primary {
+  background-color: var(--brand-primary);
+  color: #FFFFFF;
+  box-shadow: 0 1px 2px rgba(24, 72, 224, 0.2);
+}
+
+.btn-primary:hover {
+  background-color: var(--brand-hover);
+  color: #FFFFFF;
+  box-shadow: 0 4px 12px rgba(24, 72, 224, 0.25);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background-color: var(--bg-subtle);
+  color: var(--ink-primary);
+  border-color: var(--bg-muted);
+}
+
+.btn-secondary:hover {
+  background-color: var(--bg-muted);
+  color: var(--ink-primary);
+}
+
+.btn-outline {
+  background-color: var(--bg-surface);
+  color: var(--ink-secondary);
+  border-color: var(--bg-muted);
+}
+
+.btn-outline:hover {
+  color: var(--ink-primary);
+  border-color: var(--ink-muted);
+  background-color: var(--bg-subtle);
+}
+
+.btn-danger {
+  background-color: var(--status-lost);
+  color: #FFFFFF;
+}
+
+.btn-danger:hover {
+  background-color: #B42318;
+  color: #FFFFFF;
+}
+
+.btn-danger-outline {
+  background-color: transparent;
+  color: var(--status-lost);
+  border-color: var(--status-lost-bg);
+}
+
+.btn-danger-outline:hover {
+  background-color: var(--status-lost-bg);
+}
+
+.btn-success {
+  background-color: var(--status-found);
+  color: #FFFFFF;
+}
+
+.btn-success:hover {
+  background-color: #027A48;
+}
+
+.btn-sm {
+  font-size: 0.825rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-xs);
+}
+
+.btn-lg {
+  font-size: 1rem;
+  padding: 0.95rem 1.85rem;
+  border-radius: var(--radius-md);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border-radius: var(--radius-sm);
+}
+
+/* ==========================================================================
+   Status Indicators (Replaces AI Pill Badges)
+   ========================================================================== */
+.badge,
+.status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.775rem;
+  font-weight: 600;
+  line-height: 1;
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-xs);
+  letter-spacing: 0.02em;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+.badge::before,
+.status-tag::before {
+  content: "";
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.badge-lost,
+.status-lost {
+  background-color: var(--status-lost-bg);
+  color: var(--status-lost-ink);
+}
+
+.badge-lost::before,
+.status-lost::before {
+  background-color: var(--status-lost);
+}
+
+.badge-found,
+.status-found {
+  background-color: var(--status-found-bg);
+  color: var(--status-found-ink);
+}
+
+.badge-found::before,
+.status-found::before {
+  background-color: var(--status-found);
+}
+
+.badge-resolved,
+.status-resolved {
+  background-color: var(--status-resolved-bg);
+  color: var(--status-resolved-ink);
+}
+
+.badge-resolved::before,
+.status-resolved::before {
+  background-color: var(--status-resolved);
+}
+
+.badge-pending,
+.status-pending {
+  background-color: var(--status-pending-bg);
+  color: var(--status-pending-ink);
+}
+
+.badge-pending::before,
+.status-pending::before {
+  background-color: var(--status-pending);
+}
+
+.badge-category {
+  background-color: var(--bg-subtle);
+  color: var(--ink-secondary);
+}
+
+.badge-category::before {
+  display: none;
+}
+
+.badge-admin {
+  background-color: #F4EBFF;
+  color: #6941C6;
+}
+
+.badge-admin::before {
+  background-color: #7F56D9;
+}
+
+/* ==========================================================================
+   Cards (Clean, Borderless Surfaces)
+   ========================================================================== */
+.card {
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 1.5rem 1.75rem;
+  border-bottom: 1px solid var(--bg-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--ink-primary);
+}
+
+.card-body {
+  padding: 1.75rem;
+}
+
+.card-footer {
+  padding: 1.25rem 1.75rem;
+  background-color: var(--bg-canvas);
+  border-top: 1px solid var(--bg-subtle);
+}
+
+/* Item Card (Catalog & Home Grid) */
+.item-card {
+  background-color: var(--bg-surface);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal);
+  position: relative;
+}
+
+.item-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-hover);
+}
+
+.item-card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  background-color: var(--bg-subtle);
+  overflow: hidden;
+}
+
+.item-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.item-card:hover .item-card-media img {
+  transform: scale(1.05);
+}
+
+.item-card-media .media-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-subtle);
+  background: var(--bg-subtle);
+}
+
+.item-card-badges {
+  position: absolute;
+  top: 0.85rem;
+  left: 0.85rem;
+  display: flex;
+  gap: 0.4rem;
+  z-index: 2;
+}
+
+.item-card-content {
+  padding: 1.35rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.item-card-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--ink-primary);
+  margin-bottom: 0.4rem;
+  line-height: 1.3;
+}
+
+.item-card-desc {
+  font-size: 0.875rem;
+  color: var(--ink-secondary);
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.item-card-meta {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  padding-bottom: 1.15rem;
+}
+
+.item-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.825rem;
+  color: var(--ink-muted);
+}
+
+.item-meta-row svg {
+  width: 14px;
+  height: 14px;
+  stroke: var(--ink-subtle);
+  flex-shrink: 0;
+}
+
+.item-card-actions {
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--bg-subtle);
+}
+
+/* ==========================================================================
+   Forms & Form Controls
+   ========================================================================== */
+.form-group {
+  margin-bottom: 1.35rem;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--ink-primary);
+  margin-bottom: 0.45rem;
+}
+
+.form-label span.required {
+  color: var(--status-lost);
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: 0.95rem;
+  color: var(--ink-primary);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--bg-muted);
+  border-radius: var(--radius-sm);
+  transition: border-color var(--transition-quick), box-shadow var(--transition-quick);
+  outline: none;
+}
+
+.form-control:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgba(24, 72, 224, 0.12);
+}
+
+.form-control::placeholder {
+  color: var(--ink-subtle);
+}
+
+textarea.form-control {
+  min-height: 110px;
+  resize: vertical;
+}
+
+.form-text {
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  margin-top: 0.35rem;
+}
+
+/* ==========================================================================
+   Modals
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background-color: rgba(14, 18, 27, 0.55);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-normal), visibility var(--transition-normal);
+}
+
+.modal-backdrop.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-dialog {
+  background-color: var(--bg-surface);
+  width: 100%;
+  max-width: 540px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-elevated);
+  transform: translateY(16px) scale(0.98);
+  transition: transform var(--transition-normal);
+  overflow: hidden;
+}
+
+.modal-backdrop.show .modal-dialog {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--bg-subtle);
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ink-primary);
+}
+
+.modal-close {
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--ink-muted);
+  cursor: pointer;
+  padding: 0.25rem;
+  border-radius: var(--radius-xs);
+  transition: color var(--transition-quick);
+}
+
+.modal-close:hover {
+  color: var(--ink-primary);
+}
+
+.modal-body {
+  padding: 1.75rem;
+  max-height: 75vh;
+  overflow-y: auto;
+}
+
+.modal-footer {
+  padding: 1.25rem 1.75rem;
+  background-color: var(--bg-canvas);
+  border-top: 1px solid var(--bg-subtle);
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+}
+
+/* ==========================================================================
+   Toasts (Clean Architectural Notification)
+   ========================================================================== */
+.toast-container {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 1200;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-width: 400px;
+  width: calc(100% - 4rem);
+}
+
+.toast {
+  background-color: #0E121B;
+  color: #FFFFFF;
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-elevated);
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  animation: toastSlideUp 0.3s var(--ease-out);
+  transition: transform var(--transition-quick), opacity var(--transition-quick);
+}
+
+@keyframes toastSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ==========================================================================
+   Alerts & Notifications
+   ========================================================================== */
+.alert {
+  padding: 1rem 1.25rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  line-height: 1.5;
+  margin-bottom: 1.25rem;
+}
+
+.alert-info {
+  background-color: var(--brand-tint);
+  color: var(--brand-hover);
+}
+
+.alert-warning {
+  background-color: var(--status-pending-bg);
+  color: var(--status-pending-ink);
+}
+
+.alert-danger {
+  background-color: var(--status-lost-bg);
+  color: var(--status-lost-ink);
+}
+
+.alert-success {
+  background-color: var(--status-found-bg);
+  color: var(--status-found-ink);
+}
+
+/* ==========================================================================
+   Tables
+   ========================================================================== */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.data-table th {
+  padding: 0.85rem 1.25rem;
+  font-size: 0.775rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-muted);
+  background-color: var(--bg-canvas);
+  border-bottom: 1px solid var(--bg-muted);
+}
+
+.data-table td {
+  padding: 1.15rem 1.25rem;
+  color: var(--ink-primary);
+  border-bottom: 1px solid var(--bg-subtle);
+  vertical-align: middle;
+}
+
+.data-table tr:hover td {
+  background-color: rgba(14, 18, 27, 0.02);
+}
+
+/* ==========================================================================
+   Empty States & Spinners
+   ========================================================================== */
+.empty-state {
+  text-align: center;
+  padding: 4.5rem 2rem;
+  max-width: 520px;
+  margin: 0 auto;
+}
+
+.empty-state-icon {
+  width: 4rem;
+  height: 4rem;
+  background-color: var(--bg-subtle);
+  color: var(--ink-muted);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem auto;
+}
+
+.empty-state-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--ink-primary);
+  margin-bottom: 0.5rem;
+}
+
+.empty-state-desc {
+  font-size: 0.95rem;
+  color: var(--ink-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.75rem;
+}
+
+.spinner {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid var(--bg-muted);
+  border-top-color: var(--brand-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: inline-block;
+}
+
+.spinner-lg {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-width: 3px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3.5rem 1rem;
+  gap: 1rem;
+  color: var(--ink-muted);
+  font-size: 0.9rem;
+}

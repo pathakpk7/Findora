@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>CampusFind - Mini Project Report</title>
+<style>
+  @page {
+    size: A4;
+    margin: 1in;
+  }
+  @media print {
+    .page-break {
+      page-break-before: always;
+    }
+  }
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+    line-height: 1.5;
+    color: #000;
+    margin: 0 auto;
+    padding: 20px 40px;
+    max-width: 850px;
+    background-color: #fff;
+    text-align: justify;
+  }
+  h1, .heading {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 16pt;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 12px;
+  }
+  h2, .sub-heading {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 14pt;
+    font-weight: bold;
+    text-align: justify;
+    margin-top: 18px;
+    margin-bottom: 8px;
+  }
+  p, li, td, th, div.other-text {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+    text-align: justify;
+    line-height: 1.5;
+  }
+  p {
+    margin: 8px 0;
+  }
+  ul, ol {
+    margin: 8px 0;
+    padding-left: 35px;
+  }
+  li {
+    margin-bottom: 5px;
+  }
+  table.index-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  table.index-table th, table.index-table td {
+    border: 1px solid #000;
+    padding: 6px 10px;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+  }
+  table.index-table th {
+    background-color: #f2f2f2;
+    text-align: center;
+    font-weight: bold;
+  }
+  pre {
+    background-color: #fafafa;
+    border: 1px solid #ccc;
+    padding: 10px;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 10pt;
+    line-height: 1.3;
+    overflow-x: auto;
+    margin: 12px 0;
+    text-align: left;
+  }
+  .figure-container {
+    text-align: center;
+    margin: 20px auto;
+  }
+  .figure-container img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #999;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  .figure-caption {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 12pt;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 8px;
+    margin-bottom: 12px;
+  }
+  .cover-center {
+    text-align: center;
+  }
+  .logo-box {
+    margin: 15px auto;
+    text-align: center;
+  }
+  .appendix-box {
+    width: 95%;
+    height: 600px;
+    border: 2px dashed #666;
+    margin: 25px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fafafa;
+  }
+</style>
+</head>
+<body>
+
+<!-- ========================================== -->
+<!-- COVER PAGE                                 -->
+<!-- ========================================== -->
+<div class="cover-center">
+  <div class="heading">Mini Project or Internship Report</div>
+  <div class="heading">“CampusFind: College Lost & Found Platform”</div>
+  
+  <p class="other-text cover-center" style="margin-top: 15px;">
+    Submitted in partially fulfilment for the requirement for the award of the degree of
+  </p>
+  <div class="heading" style="font-size: 15pt; margin: 5px 0;">Bachelor of Technology</div>
+  <p class="other-text cover-center" style="margin: 0;">in</p>
+  <div class="heading" style="font-size: 15pt; margin: 5px 0;">Computer Science & Engineering</div>
+
+  <div style="margin: 25px 0;">
+    <p class="other-text cover-center" style="margin: 0; font-weight: bold;">Submitted by</p>
+    <p class="other-text cover-center" style="margin: 2px 0; font-weight: bold;">Prasoon Pathak</p>
+    <p class="other-text cover-center" style="margin: 0;">(2402840109004)</p>
+  </div>
+
+  <div style="margin: 20px 0;">
+    <p class="other-text cover-center" style="margin: 0; font-weight: bold;">Under the Supervision of</p>
+    <p class="other-text cover-center" style="margin: 2px 0; font-weight: bold;">Mr. Abhishek Ray</p>
+  </div>
+
+  <div class="logo-box">
+    <!-- Department Logo -->
+    <svg viewBox="0 0 100 80" width="110" height="85" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="50,5 20,60 80,60" fill="#1b3574" />
+      <polygon points="50,15 32,52 68,52" fill="#fff" />
+      <polygon points="50,22 58,35 50,48 42,35" fill="#d9241c" />
+      <polygon points="50,50 35,62 65,62" fill="#1b3574" />
+    </svg>
+  </div>
+
+  <div class="other-text cover-center" style="font-weight: bold; margin-top: 15px;">
+    Department of Computer Science & Engineering<br>
+    UNITED ISTITUTE OF TECHNOLOGY (284)<br>
+    <span style="font-weight: normal; font-size: 11pt;">(Affiliated to Dr. A.P.J. Abdul Kalam Technical University, Lucknow)</span><br>
+    Session-2026-2027
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- VISION AND MISSION OF THE DEPARTMENT       -->
+<!-- ========================================== -->
+<div class="sub-heading cover-center" style="text-align: center; margin-top: 20px;">Vision of the Department</div>
+<p>
+  To be a center of excellence in the field of Computer Science and Engineering for producing talented engineers to ethically serve constantly changing needs of society and industry throughout their career and life.
+</p>
+
+<div class="sub-heading cover-center" style="text-align: center; margin-top: 25px;">Mission of the Department</div>
+<p>
+  <strong>M1.</strong> Accomplish excellence with committed faculty by providing theoretical foundation and practical skills for solving complex engineering problems in the state-of-the-art trends in Computer science and allied disciplines.<br><br>
+  <strong>M2.</strong> To foster skills and competency, generating novel ideas, entrepreneurship and model creations focused towards deep knowledge, interpersonal skills and leadership.<br><br>
+  <strong>M3.</strong> To develop habitude of research among faculty and students in the area of Computer Science & Allied disciplines by providing the desired environment, for addressing the needs of industry and society.<br><br>
+  <strong>M4.</strong> To mould the students with ethical principles in thoughts, expression and deeds.
+</p>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- INDEX                                      -->
+<!-- ========================================== -->
+<div class="heading">Index</div>
+
+<table class="index-table">
+  <thead>
+    <tr>
+      <th style="width: 12%;">S. No</th>
+      <th style="width: 73%; text-align: left;">Topic</th>
+      <th style="width: 15%;">Page No.</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center;">1</td>
+      <td>Introduction</td>
+      <td style="text-align: center;">1</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">2</td>
+      <td>Requirement</td>
+      <td style="text-align: center;">3</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">3</td>
+      <td>Conceptual Background</td>
+      <td style="text-align: center;">4</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">4</td>
+      <td>Implementation</td>
+      <td style="text-align: center;">8</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">4.1</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;Coding</td>
+      <td style="text-align: center;">8</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">4.2</td>
+      <td>&nbsp;&nbsp;&nbsp;&nbsp;Flow Chart</td>
+      <td style="text-align: center;">12</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">5</td>
+      <td>User Interface</td>
+      <td style="text-align: center;">14</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">6</td>
+      <td>Conclusion</td>
+      <td style="text-align: center;">20</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">7</td>
+      <td>References</td>
+      <td style="text-align: center;">21</td>
+    </tr>
+    <tr>
+      <td style="text-align: center;">8</td>
+      <td>Appendix</td>
+      <td style="text-align: center;">22</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- CHAPTER 1: INTRODUCTION                   -->
+<!-- ========================================== -->
+<div class="heading">Chapter-1</div>
+<div class="heading" style="margin-top: 0;">Introduction</div>
+
+<p>
+  In higher educational institutions, thousands of students, faculty, and administrative personnel navigate campus facilities daily, including lecture complexes, laboratories, libraries, cafeterias, and auditoriums. In this active academic environment, personal belongings such as student identity cards, textbooks, notebooks, scientific calculators, laboratory coats, electronic devices (laptops, mobile phones, earphones), and keys are frequently misplaced.
+</p>
+
+<div class="sub-heading">Problem Statement:</div>
+<p>
+  Conventional methods of managing lost and misplaced articles on college campuses rely primarily on physical lost-and-found registers maintained by security staff, paper notices pinned to bulletin boards, and informal messaging broadcasts across student WhatsApp and Telegram groups. These methods suffer from severe structural shortcomings:
+</p>
+<ul>
+  <li>Lack of Centralization: Students must physically visit multiple departmental offices and security desks across campus to inquire about lost belongings.</li>
+  <li>Vulnerability to Fraudulent Claims: Publicly broadcasting detailed photos of found valuable items enables dishonest individuals to fabricate ownership claims.</li>
+  <li>Privacy Concerns: Finders are often hesitant to report found items because posting publicly reveals their personal contact phone numbers to unvetted groups.</li>
+  <li>Absence of Search and Real-Time Tracking: Manual registers and message groups cannot be indexed, sorted, or filtered by item category, location, or date.</li>
+</ul>
+
+<div class="sub-heading">Objectives of the Project:</div>
+<p>
+  The objective of this project is to develop and deploy <strong>CampusFind</strong>, a centralized, responsive web platform tailored to academic institutions. The specific objectives include:
+</p>
+<ul>
+  <li>Designing a dual-channel reporting workflow enabling users to report both lost belongings and found items with standardized attributes.</li>
+  <li>Developing an interactive search and filtering catalog enabling real-time queries across categories, campus locations, and status.</li>
+  <li>Implementing a confidential ownership verification mechanism where claimants provide private proof details visible only to the original poster and administrators.</li>
+  <li>Integrating cloud-native user authentication linked with student roll numbers and institutional emails.</li>
+  <li>Providing an administrative console for platform-wide metrics, listing management, and content moderation.</li>
+</ul>
+
+<div class="sub-heading">Scope of the Study:</div>
+<p>
+  The platform covers all academic, administrative, and recreational facilities across the campus. The web application is built to run responsively on smartphones, tablets, and desktop computers without requiring native app installations. The backend utilizes Google Firebase serverless cloud architecture, ensuring scalable real-time synchronization, continuous availability, and enterprise-grade security.
+</p>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- CHAPTER 2: REQUIREMENT                    -->
+<!-- ========================================== -->
+<div class="heading">Chapter-2</div>
+<div class="heading" style="margin-top: 0;">Requirement</div>
+
+<div class="sub-heading">Hardware Requirements:</div>
+<ul>
+  <li>Processor: Intel Core i3 / i5 or AMD Ryzen 3 / 5 (2.0 GHz or higher).</li>
+  <li>RAM: 4 GB minimum (8 GB recommended for development and local testing).</li>
+  <li>Hard Disk Space: 500 MB free disk space for project source code and assets.</li>
+  <li>Display: 1366 &times; 768 or 1920 &times; 1080 resolution monitor / smartphone display.</li>
+  <li>Network: Active broadband Wi-Fi or mobile data connectivity (minimum 2 Mbps).</li>
+  <li>Input Devices: Standard keyboard, mouse, and touch interface on mobile devices.</li>
+</ul>
+
+<div class="sub-heading">Software Requirements:</div>
+<ul>
+  <li>Operating System: Microsoft Windows 10 / 11 (64-bit), Linux, or macOS.</li>
+  <li>Development Environment: Visual Studio Code with Live Server and ESLint extensions.</li>
+  <li>Frontend Technologies: HTML5, CSS3 (Flexbox, CSS Grid, Custom Properties), JavaScript (ES6+ Modules).</li>
+  <li>Backend & Cloud Services: Google Firebase Platform (SDK v10 Modular):
+    <ul>
+      <li>Firebase Authentication: Student authentication, identity management, and password reset.</li>
+      <li>Cloud Firestore: Scalable NoSQL cloud database for real-time item and claim records.</li>
+      <li>Cloud Storage for Firebase: Secure cloud object storage for item photographs.</li>
+      <li>Firebase Hosting: Global CDN for production web hosting and SSL delivery.</li>
+    </ul>
+  </li>
+  <li>Web Browsers: Google Chrome, Mozilla Firefox, Microsoft Edge, or Apple Safari.</li>
+  <li>Version Control: Git and GitHub repository management.</li>
+</ul>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- CHAPTER 3: CONCEPTUAL BACKGROUND          -->
+<!-- ========================================== -->
+<div class="heading">Chapter-3</div>
+<div class="heading" style="margin-top: 0;">Conceptual Background</div>
+
+<div class="sub-heading">3.1 Topic and Technology Covered During Summer Training</div>
+<p>
+  During the industrial summer training program, foundational and advanced concepts of modern full-stack web engineering, cloud-native computing, asynchronous programming, and software architecture were thoroughly explored:
+</p>
+
+<div class="sub-heading">Modern Frontend Engineering & Semantic Web Standards:</div>
+<p>
+  Training emphasized semantic HTML5 markup, which establishes clear content structure, improves accessibility (a11y), and assists search indexing. In CSS3, modular style architecture was emphasized using CSS Flexible Box (Flexbox) for one-dimensional layouts and CSS Grid for two-dimensional component matrices. The utilization of CSS Custom Properties (CSS variables) enabled unified design tokens across typography, color palettes, spacing, and elevation shadows, eliminating redundant styling.
+</p>
+
+<div class="sub-heading">Asynchronous JavaScript (ES6+) and Event-Driven Architecture:</div>
+<p>
+  In-depth modules covered JavaScript's asynchronous execution model, event loops, call stacks, Promises, and the <code>async/await</code> paradigm. The adoption of native ES Modules (<code>import</code> / <code>export</code>) was covered to enforce single-responsibility modularity across database helpers, authentication services, and user interface controllers.
+</p>
+
+<div class="sub-heading">Serverless Architecture & Cloud Backend-as-a-Service (BaaS):</div>
+<p>
+  Training analyzed the advantages of serverless cloud platforms compared to traditional monolithic servers. Google Firebase was utilized as the core BaaS ecosystem, providing automated horizontal scalability, zero-downtime deployments, managed SSL certificates, and serverless database persistence without manual server administration.
+</p>
+
+<div class="sub-heading">NoSQL Document Modeling with Cloud Firestore:</div>
+<p>
+  Unlike relational database management systems (RDBMS) constrained by static tabular schemas, Cloud Firestore organizes data into hierarchical collections and JSON-like documents. Key modeling concepts studied included:
+</p>
+<ul>
+  <li>Denormalization: Embedding owner display names directly within item documents to reduce billable read operations.</li>
+  <li>Composite Indexing: Generating multi-field indexes to support compound queries combining equality filters (<code>where ==</code>) with ordering (<code>orderBy</code>).</li>
+  <li>Subcollections: Managing nested relational entities such as ownership claims and moderation reports.</li>
+</ul>
+
+<div class="sub-heading">Declarative Security Rules & Role-Based Access Control:</div>
+<p>
+  Security in serverless architecture is enforced through declarative rules evaluated directly at the database gateway. Training focused on writing granular Firestore Security Rules to validate payload schemas, enforce user authentication (<code>request.auth != null</code>), and restrict private proof details to item owners and administrators.
+</p>
+
+<div class="sub-heading">3.2 Technology Used to Develop the Mini Project</div>
+<p>
+  The <em>CampusFind</em> platform was built using a lightweight, performant, and standard-compliant technology stack:
+</p>
+
+<div class="sub-heading">Presentation and Interface Layer:</div>
+<ul>
+  <li>HTML5: Structured across modular templates (<code>index.html</code>, <code>browse.html</code>, <code>report.html</code>, <code>dashboard.html</code>, and <code>login.html</code>) incorporating native input validation, datalists, and accessible modal elements.</li>
+  <li>CSS3: Structured across <code>main.css</code> (design tokens and global layout), <code>components.css</code> (buttons, cards, badges, and modals), <code>pages.css</code> (page-specific layouts), and <code>responsive.css</code> (viewport media queries).</li>
+</ul>
+
+<div class="sub-heading">Business Logic and Service Modules:</div>
+<ul>
+  <li><code>auth.js</code>: Handles student registration, credential authentication, session persistence, and role guards.</li>
+  <li><code>db.js</code>: Implements Firestore CRUD operations for listings, confidential claim workflows, and platform analytics.</li>
+  <li><code>storage.js</code>: Executes client-side image validation (JPEG/PNG/WebP, &le;5 MB) and uploads photos to Cloud Storage.</li>
+  <li><code>ui.js</code>: Controls dynamic DOM updates, feedback toast notifications, confirmation dialogs, and date formatting.</li>
+</ul>
+
+<div class="sub-heading">Cloud Infrastructure Services:</div>
+<ul>
+  <li>Firebase Authentication: Manages secure student credentials and session tokens.</li>
+  <li>Cloud Firestore: Provides sub-second query performance and real-time database updates.</li>
+  <li>Cloud Storage for Firebase: Manages authenticated photographic uploads in isolated buckets.</li>
+  <li>Firestore Security Rules: Protects confidential ownership proofs from unauthorized public access.</li>
+</ul>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- CHAPTER 4: IMPLEMENTATION                 -->
+<!-- ========================================== -->
+<div class="heading">Chapter-4</div>
+<div class="heading" style="margin-top: 0;">Implementation</div>
+
+<div class="sub-heading">4.1 Coding:</div>
+
+<div class="sub-heading">Code Snippet 4.1.1: Firebase Initialization and Modular SDK Setup</div>
+<pre>
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+import { getStorage } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+import { firebaseConfig } from "./firebase-config.js";
+
+// Initialize core Firebase services
+export const app = initializeApp(firebaseConfig);
+export const auth = getAuth(app);
+export const db = getFirestore(app);
+export const storage = getStorage(app);
+</pre>
+
+<div class="sub-heading">Code Snippet 4.1.2: Student Registration and Profile Creation (auth.js)</div>
+<pre>
+import { auth, db } from "./firebase-init.js";
+import { createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+import { doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+export async function registerUser(name, email, password, studentId = "", phone = "") {
+  const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+  const user = userCredential.user;
+
+  await updateProfile(user, { displayName: name });
+
+  const userDocRef = doc(db, "users", user.uid);
+  const userData = {
+    uid: user.uid,
+    name: name.trim(),
+    email: email.toLowerCase().trim(),
+    studentId: studentId.trim(),
+    phone: phone.trim(),
+    role: "student",
+    createdAt: serverTimestamp()
+  };
+
+  await setDoc(userDocRef, userData);
+  return { user, profile: userData };
+}
+</pre>
+
+<div class="sub-heading">Code Snippet 4.1.3: Item Ingestion and Multi-Criteria Query Engine (db.js)</div>
+<pre>
+import { db } from "./firebase-init.js";
+import { collection, addDoc, getDocs, query, where, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+const ITEMS_COLLECTION = "items";
+
+export async function createItem(itemData) {
+  const docRef = await addDoc(collection(db, ITEMS_COLLECTION), {
+    ...itemData,
+    status: itemData.status || "active",
+    createdAt: serverTimestamp(),
+    updatedAt: serverTimestamp()
+  });
+  return docRef.id;
+}
+
+export async function getItems({ type = "all", category = "all", status = "all", searchQuery = "" }) {
+  let q = collection(db, ITEMS_COLLECTION);
+  const conditions = [];
+
+  if (type !== "all") conditions.push(where("type", "==", type));
+  if (category !== "all") conditions.push(where("category", "==", category));
+  if (status !== "all") conditions.push(where("status", "==", status));
+
+  const queryRef = conditions.length > 0 ? query(q, ...conditions) : q;
+  const snapshot = await getDocs(queryRef);
+  
+  let results = [];
+  snapshot.forEach(doc => results.push({ id: doc.id, ...doc.data() }));
+
+  if (searchQuery.trim()) {
+    const qLower = searchQuery.toLowerCase().trim();
+    results = results.filter(item => 
+      (item.title && item.title.toLowerCase().includes(qLower)) ||
+      (item.description && item.description.toLowerCase().includes(qLower)) ||
+      (item.location && item.location.toLowerCase().includes(qLower))
+    );
+  }
+  return results;
+}
+</pre>
+
+<div class="sub-heading">Code Snippet 4.1.4: Confidential Ownership Claim Submission (db.js)</div>
+<pre>
+const CLAIMS_COLLECTION = "claims";
+
+export async function submitClaim(itemId, itemTitle, claimantData, proofDetails) {
+  const claimRecord = {
+    itemId,
+    itemTitle,
+    claimantId: claimantData.uid,
+    claimantName: claimantData.name,
+    claimantEmail: claimantData.email,
+    claimantPhone: claimantData.phone || "",
+    proofDetails: proofDetails.trim(),
+    status: "pending",
+    createdAt: serverTimestamp()
+  };
+
+  const docRef = await addDoc(collection(db, CLAIMS_COLLECTION), claimRecord);
+  return docRef.id;
+}
+</pre>
+
+<div class="sub-heading">Code Snippet 4.1.5: Image Validation and Cloud Storage Upload (storage.js)</div>
+<pre>
+import { storage } from "./firebase-init.js";
+import { ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+
+const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5 MB
+const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"];
+
+export async function uploadItemImage(file, userId) {
+  if (!ALLOWED_MIME_TYPES.includes(file.type)) {
+    throw new Error("Invalid image format. Allowed formats: JPG, PNG, WebP.");
+  }
+  if (file.size > MAX_IMAGE_SIZE) {
+    throw new Error("File exceeds 5MB size limit.");
+  }
+
+  const fileExt = file.name.split(".").pop();
+  const filePath = `items/${userId}/${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+  const storageRef = ref(storage, filePath);
+
+  const snapshot = await uploadBytes(storageRef, file);
+  return await getDownloadURL(snapshot.ref);
+}
+</pre>
+
+<div class="sub-heading">Code Snippet 4.1.6: Declarative Security Rules (firestore.rules)</div>
+<pre>
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    match /items/{itemId} {
+      allow read: if true;
+      allow create: if isAuthenticated();
+      allow update, delete: if isAuthenticated() && 
+        (resource.data.ownerId == request.auth.uid || request.auth.token.role == "admin");
+    }
+
+    match /claims/{claimId} {
+      allow create: if isAuthenticated();
+      allow read: if isAuthenticated() && 
+        (resource.data.claimantId == request.auth.uid || 
+         resource.data.itemOwnerId == request.auth.uid || 
+         request.auth.token.role == "admin");
+      allow update: if isAuthenticated() && 
+        (resource.data.itemOwnerId == request.auth.uid || request.auth.token.role == "admin");
+    }
+  }
+}
+</pre>
+
+<div class="page-break"></div>
+
+<div class="sub-heading">4.2 Flow Chart:</div>
+
+<div class="figure-container">
+  <img src="report_images/fig4_1_flowchart.png" alt="Fig 4.1 Flowchart" style="max-width: 600px;">
+  <div class="figure-caption">Fig: 4.1 End-to-End Lost and Found System Workflow</div>
+</div>
+<p>
+  The flowchart in Figure 4.1 illustrates the end-to-end operational logic of the <em>CampusFind</em> platform, connecting user access, credential authentication, item reporting, catalog querying, and ownership claim resolution.
+</p>
+
+<div class="page-break"></div>
+
+<div class="figure-container">
+  <img src="report_images/fig4_2_flowchart.png" alt="Fig 4.2 Flowchart" style="max-width: 600px;">
+  <div class="figure-caption">Fig: 4.2 Confidential Ownership Verification and Claim Resolution Workflow</div>
+</div>
+<p>
+  The flowchart in Figure 4.2 details the confidential verification protocol, illustrating the submission of hidden identification proofs by claimants and the review process conducted by the original item finder.
+</p>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- CHAPTER 5: USER INTERFACES                -->
+<!-- ========================================== -->
+<div class="heading">Chapter-5</div>
+<div class="heading" style="margin-top: 0;">User Interface</div>
+
+<p>
+  The user interface of <em>CampusFind</em> is built around clean visual aesthetics, high accessibility, and responsive navigation across all mobile, tablet, and desktop form factors. This chapter describes the core functional screens developed in the application, accompanied by actual output screenshots, figure captions, and operational explanations.
+</p>
+
+<div class="figure-container">
+  <img src="report_images/fig5_1.jpg" alt="Fig 5.1 Landing Page Interface">
+  <div class="figure-caption">Fig: 5.1 Landing Page Interface (index.html)</div>
+</div>
+<p>
+  The landing page introduces students to the platform, presenting the hero banner, real-time statistics counter, a universal search bar for instantaneous item lookup, and primary call-to-action buttons for reporting or browsing campus belongings.
+</p>
+
+<div class="figure-container">
+  <img src="report_images/fig5_2.jpg" alt="Fig 5.2 Student Registration Interface">
+  <div class="figure-caption">Fig: 5.2 Student Registration & Onboarding Interface (login.html)</div>
+</div>
+<p>
+  The registration view enables students to establish secure platform accounts by providing their full name, official college email, university student ID/roll number, phone number, and password, provisioning synchronized credentials in Firebase Authentication and Firestore.
+</p>
+
+<div class="page-break"></div>
+
+<div class="figure-container">
+  <img src="report_images/fig5_3.jpg" alt="Fig 5.3 Campus Belongings Catalog Interface">
+  <div class="figure-caption">Fig: 5.3 Campus Belongings Catalog & Multi-Filter Search (browse.html)</div>
+</div>
+<p>
+  The browse catalog provides comprehensive search and multi-parameter filtering options, allowing students to filter items by keywords, listing types (All Listings, Lost Only, Found Only), and sorting preferences with responsive layout states and feedback counters.
+</p>
+
+<div class="figure-container">
+  <img src="report_images/fig5_4.jpg" alt="Fig 5.4 Item Reporting Form - Details Section">
+  <div class="figure-caption">Fig: 5.4 Item Reporting Form - Details Section (report.html)</div>
+</div>
+<p>
+  The initial segment of the item reporting interface features a dual-toggle selector ("I Lost Something" vs. "I Found Something") along with input fields for item title, category dropdown, incident date picker, campus location, and detailed description.
+</p>
+
+<div class="page-break"></div>
+
+<div class="figure-container">
+  <img src="report_images/fig5_5.jpg" alt="Fig 5.5 Item Reporting Form - Photo Upload & Privacy Preferences">
+  <div class="figure-caption">Fig: 5.5 Item Reporting Form - Photo Upload & Privacy Preferences (report.html)</div>
+</div>
+<p>
+  The submission module includes a drag-and-drop photograph uploader supporting JPG, PNG, and WebP formats up to 5MB, accompanied by privacy-preserving contact preferences that safeguard student phone numbers until ownership verification is approved.
+</p>
+
+<div class="figure-container">
+  <img src="report_images/fig5_6.jpg" alt="Fig 5.6 Student Dashboard Interface">
+  <div class="figure-caption">Fig: 5.6 Student Dashboard & Claims Management Interface (dashboard.html)</div>
+</div>
+<p>
+  The student dashboard consolidates personal account management, displaying active listings metrics, returned/resolved counts, pending claim counters, and tabbed navigation for reported belongings, incoming verification claims, and submitted claim statuses.
+</p>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- CHAPTER 6: CONCLUSION                     -->
+<!-- ========================================== -->
+<div class="heading">Chapter-6</div>
+<div class="heading" style="margin-top: 0;">Conclusion</div>
+
+<p>
+  The <em>CampusFind</em> college lost and found management system successfully addresses the operational and security challenges associated with misplaced belongings across university campuses. By replacing fragmented manual registry books, physical bulletin board notices, and unindexed social messaging broadcasts with a centralized, web-based platform, the application delivers an efficient, secure, and transparent campus asset recovery workflow.
+</p>
+
+<p>
+  Throughout the project development cycle, the application achieved all core design and engineering milestones:
+</p>
+<ul>
+  <li>Centralized Asset Cataloging: Built a responsive, multi-device web interface enabling students and staff to log lost articles and found property in real time.</li>
+  <li>Confidential Verification Mechanism: Established a two-sided verification protocol ensuring private proof attributes remain hidden from public view, eliminating false claims and protecting student privacy.</li>
+  <li>High-Performance Serverless Architecture: Leveraged Google Firebase v10 modular services (Authentication, Cloud Firestore, and Cloud Storage) for low-latency search execution, real-time document synchronization, and scalable data persistence.</li>
+  <li>Role-Based Access Control and Moderation: Provided administrative consoles and granular security rules to ensure campus-wide integrity and oversight.</li>
+</ul>
+
+<div class="sub-heading">Actionable Future Enhancements:</div>
+<ul>
+  <li>AI-Powered Visual Similarity Matching: Incorporating computer vision models to automatically match uploaded photographs of found items with existing lost item records.</li>
+  <li>Web Push Notifications: Implementing Progressive Web App (PWA) service workers to instantly alert students when items matching their descriptions are posted.</li>
+  <li>Geofenced Campus Beacons: Integrating Bluetooth Low Energy (BLE) beacons in high-traffic campus facilities (libraries, laboratories, auditoriums) to automatically record recovery coordinates.</li>
+  <li>Institutional Single Sign-On (SSO): Linking login authentication directly with the university's central identity portal via SAML / OAuth 2.0.</li>
+</ul>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- REFERENCES                                 -->
+<!-- ========================================== -->
+<div class="heading">References</div>
+
+<div class="sub-heading" style="margin-top: 15px;">E-books</div>
+<p style="text-indent: 0;">
+  [1] L. Bass, P. Clements, and R. Kazman, <em>Software Architecture in Practice</em>, 2nd ed. Reading, MA: Addison Wesley, 2003. [E-book] Available: Safari e-book.
+</p>
+
+<div class="sub-heading">Article in Online Encyclopedia</div>
+<p style="text-indent: 0;">
+  [2] D. Ince, “Acoustic coupler,” in <em>A Dictionary of the Internet</em>. Oxford University Press, [online document], 2001. Available: Oxford Reference Online, http://www.oxfordreference.com [Accessed: May 24, 2007].
+</p>
+
+<div class="sub-heading">Journal Article Abstract (accessed from online database)</div>
+<p style="text-indent: 0;">
+  [3] M. T. Kimour and D. Meslati, “Deriving objects from use cases in real-time embedded systems,” <em>Information and Software Technology</em>, vol. 47, no. 8, p. 533, June 2005. [Abstract]. Available: ProQuest, http://www.umi.com/proquest/. [Accessed November 12, 2007].
+</p>
+
+<div class="sub-heading">Books Single Author</div>
+<p style="text-indent: 0;">
+  [4] W. K. Chen, <em>Linear Networks and Systems</em>. Belmont, CA: Wadsworth Press, 2003.
+</p>
+
+<div class="sub-heading">Article in Journal (paginated by annual volume)</div>
+<p style="text-indent: 0;">
+  [5] K. A. Nelson, R. J. Davis, D. R. Lutz, and W. Smith, “Optical generation of tunable ultrasonic waves,” <em>Journal of Applied Physics</em>, vol. 53, no. 2, Feb., pp. 1144-1149, 2002.
+</p>
+
+<div class="sub-heading">Web Documentation & Platform Specifications</div>
+<p style="text-indent: 0;">
+  [6] Google LLC, “Cloud Firestore Documentation and Security Rules Guide,” Google Firebase, [online document], 2024. Available: https://firebase.google.com/docs/firestore. [Accessed: October 19, 2026].
+</p>
+
+<div class="page-break"></div>
+
+<!-- ========================================== -->
+<!-- APPENDIX                                   -->
+<!-- ========================================== -->
+<div class="heading">Appendix</div>
+
+<div class="appendix-box">
+  <span style="font-family: 'Times New Roman', Times, serif; font-size: 14pt; color: #555; font-style: italic;">
+    [ Affix Summer Training Certificate Here ]
+  </span>
+</div>
+
+</body>
+</html>
