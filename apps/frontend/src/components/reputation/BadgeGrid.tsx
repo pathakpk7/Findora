@@ -59,9 +59,9 @@ export function BadgeGrid({ userBadges }: BadgeGridProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-between">
-        <h3 className="text-lg font-extrabold text-gray-900 flex items-center space-x-2">
-          <Award className="w-5 h-5 text-amber-500" />
+      <div className="flex items-center justify-between border-b border-stone-200 pb-3">
+        <h3 className="text-base font-normal text-stone-900 flex items-center space-x-2">
+          <Award className="w-4 h-4 text-stone-700" />
           <span>Campus Badges ({userBadges.length} / {ALL_SYSTEM_BADGES.length})</span>
         </h3>
       </div>
@@ -72,17 +72,17 @@ export function BadgeGrid({ userBadges }: BadgeGridProps) {
           return (
             <div
               key={b.code}
-              className={`p-5 rounded-2xl border transition-all flex items-start space-x-4 ${
+              className={`p-4 border transition-colors flex items-start space-x-3.5 ${
                 earned
-                  ? 'bg-gradient-to-br from-amber-500/10 via-white to-blue-500/10 border-amber-300 shadow-md hover:shadow-lg'
-                  : 'bg-gray-50 border-gray-200 opacity-60'
+                  ? 'bg-white border-stone-300 shadow-sm'
+                  : 'bg-stone-50 border-stone-200 opacity-60'
               }`}
             >
               <div
-                className={`w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shrink-0 shadow-sm ${
+                className={`w-10 h-10 flex items-center justify-center text-lg shrink-0 border ${
                   earned
-                    ? 'bg-gradient-to-br from-amber-400 to-amber-600 text-white'
-                    : 'bg-gray-200 text-gray-400'
+                    ? 'bg-stone-100 border-stone-300 text-stone-900'
+                    : 'bg-stone-100 border-stone-200 text-stone-400'
                 }`}
               >
                 {b.icon}
@@ -91,27 +91,27 @@ export function BadgeGrid({ userBadges }: BadgeGridProps) {
               <div className="flex-1 space-y-1">
                 <div className="flex items-center justify-between">
                   <h4
-                    className={`text-sm font-bold ${
-                      earned ? 'text-gray-900' : 'text-gray-600'
+                    className={`text-xs font-medium uppercase tracking-wider ${
+                      earned ? 'text-stone-900' : 'text-stone-600'
                     }`}
                   >
                     {b.name}
                   </h4>
                   {earned ? (
-                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-stone-900 shrink-0" />
                   ) : (
-                    <Lock className="w-3.5 h-3.5 text-gray-400 shrink-0" />
+                    <Lock className="w-3 h-3 text-stone-400 shrink-0" />
                   )}
                 </div>
 
-                <p className="text-xs text-gray-500 leading-relaxed">
+                <p className="text-xs text-stone-500 leading-relaxed">
                   {b.description}
                 </p>
 
-                <div className="pt-1 flex items-center justify-between text-[10px] font-mono text-gray-400">
+                <div className="pt-1 flex items-center justify-between text-[10px] font-mono text-stone-400">
                   <span>{b.criteria}</span>
                   {earned && (
-                    <span className="text-amber-700 font-semibold">
+                    <span className="text-stone-900 font-medium">
                       Unlocked {new Date(earned.earnedAt).toLocaleDateString()}
                     </span>
                   )}

@@ -61,20 +61,20 @@ export default function ModeratorDashboardPage() {
       <ModeratorGuard>
         <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
           {/* Dashboard Header */}
-          <div className="bg-gradient-to-r from-purple-950 via-indigo-950 to-slate-900 rounded-3xl p-6 sm:p-10 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
+          <section className="border-b border-stone-200 pb-8 pt-4 flex flex-col md:flex-row md:items-end justify-between gap-6">
             <div className="space-y-2 max-w-2xl">
-              <div className="inline-flex items-center space-x-1.5 bg-purple-500/20 border border-purple-400/30 px-3 py-1 rounded-full text-xs font-semibold text-purple-200">
-                <ShieldCheck className="w-3.5 h-3.5" />
-                <span>Internal Staff Operational Portal</span>
+              <div className="flex items-center space-x-2 text-xs font-mono tracking-wider text-stone-500 uppercase">
+                <span className="w-1.5 h-1.5 bg-indigo-600 rounded-full" />
+                <span>Intake & Custody Review</span>
               </div>
-              <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
-                Campus Moderation Center
+              <h1 className="text-3xl sm:text-4xl font-normal tracking-tight text-stone-900">
+                Moderation Operations
               </h1>
-              <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
+              <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
                 Review submitted campus found items and evaluate private ownership claims safely.
               </p>
             </div>
-          </div>
+          </section>
 
           {loading ? (
             <div className="flex justify-center py-12">

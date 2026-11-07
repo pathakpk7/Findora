@@ -1,5 +1,4 @@
 import { LostReportStatus } from '@findora/types';
-import { Clock, CheckCircle2, XCircle, Search, AlertTriangle, Archive } from 'lucide-react';
 
 interface LostReportStatusBadgeProps {
   status: LostReportStatus;
@@ -8,60 +7,49 @@ interface LostReportStatusBadgeProps {
 export function LostReportStatusBadge({ status }: LostReportStatusBadgeProps) {
   const configs: Record<
     LostReportStatus,
-    { label: string; bg: string; text: string; border: string; icon: any }
+    { label: string; dot: string; text: string }
   > = {
     [LostReportStatus.ACTIVE]: {
       label: 'Active Search',
-      bg: 'bg-blue-50',
-      text: 'text-blue-700',
-      border: 'border-blue-200',
-      icon: Search,
+      dot: 'bg-blue-600 animate-pulse',
+      text: 'text-blue-800',
     },
     [LostReportStatus.MATCHED]: {
       label: 'Potential Match',
-      bg: 'bg-purple-50',
-      text: 'text-purple-700',
-      border: 'border-purple-200',
-      icon: Clock,
+      dot: 'bg-indigo-600 animate-pulse',
+      text: 'text-indigo-800',
     },
     [LostReportStatus.RECOVERED]: {
       label: 'Recovered',
-      bg: 'bg-emerald-50',
-      text: 'text-emerald-700',
-      border: 'border-emerald-200',
-      icon: CheckCircle2,
+      dot: 'bg-emerald-600',
+      text: 'text-emerald-800',
     },
     [LostReportStatus.CLOSED]: {
       label: 'Closed',
-      bg: 'bg-gray-100',
-      text: 'text-gray-700',
-      border: 'border-gray-300',
-      icon: Archive,
+      dot: 'bg-stone-400',
+      text: 'text-stone-500',
     },
     [LostReportStatus.CANCELLED]: {
       label: 'Cancelled',
-      bg: 'bg-red-50',
-      text: 'text-red-700',
-      border: 'border-red-200',
-      icon: XCircle,
+      dot: 'bg-stone-300',
+      text: 'text-stone-400',
     },
     [LostReportStatus.EXPIRED]: {
       label: 'Expired',
-      bg: 'bg-amber-50',
-      text: 'text-amber-700',
-      border: 'border-amber-200',
-      icon: AlertTriangle,
+      dot: 'bg-amber-500',
+      text: 'text-amber-800',
     },
   };
 
-  const config = configs[status] || configs[LostReportStatus.ACTIVE];
-  const Icon = config.icon;
+  const config = configs[status] || {
+    label: String(status),
+    dot: 'bg-stone-400',
+    text: 'text-stone-500',
+  };
 
   return (
-    <span
-      className={`inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border ${config.bg} ${config.text} ${config.border}`}
-    >
-      <Icon className="w-3.5 h-3.5" />
+    <span className={`inline-flex items-center space-x-1.5 text-xs font-medium ${config.text}`}>
+      <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
       <span>{config.label}</span>
     </span>
   );

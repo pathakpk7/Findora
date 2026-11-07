@@ -130,19 +130,19 @@ export default function NotificationsCenterPage() {
 
       <main className="flex-1 max-w-4xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         {/* Banner Header */}
-        <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="space-y-1">
-            <div className="inline-flex items-center space-x-1.5 bg-blue-500/20 border border-blue-400/30 px-3 py-1 rounded-full text-xs font-semibold text-blue-200">
-              <Bell className="w-3.5 h-3.5" />
-              <span>Campus Activity Stream</span>
+        <section className="border-b border-stone-200 pb-8 pt-4 flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+          <div className="space-y-2">
+            <div className="flex items-center space-x-2 text-xs font-mono tracking-wider text-stone-500 uppercase">
+              <span className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
+              <span>Activity Stream</span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-              Notification Center
+            <h1 className="text-3xl sm:text-4xl font-normal tracking-tight text-stone-900">
+              Notifications
             </h1>
-            <p className="text-gray-300 text-xs sm:text-sm">
+            <p className="text-stone-600 text-xs sm:text-sm">
               {unreadCount > 0
                 ? `You have ${unreadCount} unread notification${unreadCount > 1 ? 's' : ''}`
-                : 'All caught up! No unread notifications.'}
+                : 'All status updates and verification alerts are marked as read.'}
             </p>
           </div>
 
@@ -150,17 +150,17 @@ export default function NotificationsCenterPage() {
             <button
               onClick={handleMarkAllRead}
               disabled={markingAll}
-              className="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs rounded-xl transition-all shadow-md inline-flex items-center justify-center space-x-1.5 shrink-0 disabled:opacity-50"
+              className="px-3.5 py-2 bg-stone-900 hover:bg-black text-white font-medium text-xs uppercase tracking-wider transition-colors inline-flex items-center justify-center space-x-1.5 shrink-0 disabled:opacity-50"
             >
               {markingAll ? (
-                <Loader2 className="w-4 h-4 animate-spin" />
+                <Loader2 className="w-3.5 h-3.5 animate-spin" />
               ) : (
-                <CheckCheck className="w-4 h-4" />
+                <CheckCheck className="w-3.5 h-3.5" />
               )}
               <span>Mark All as Read</span>
             </button>
           )}
-        </div>
+        </section>
 
         {/* Filter Controls */}
         <div className="flex items-center justify-between border-b border-gray-200 pb-3">

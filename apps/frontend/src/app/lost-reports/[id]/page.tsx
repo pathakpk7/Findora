@@ -234,7 +234,7 @@ export default function LostReportDetailPage({
 
 import { fetchMatches, refreshMatches } from '@/lib/matchingApi';
 import { PossibleMatchesResponse, LostReportMatchItem } from '@findora/types';
-import { Sparkles, RefreshCw, CheckCircle, HelpCircle } from 'lucide-react';
+import { ScanLine, RefreshCw, CheckCircle, HelpCircle } from 'lucide-react';
 
 function PossibleMatchesSection({ lostReportId }: { lostReportId: string }) {
   const [matchesData, setMatchesData] = useState<PossibleMatchesResponse | null>(null);
@@ -265,14 +265,14 @@ function PossibleMatchesSection({ lostReportId }: { lostReportId: string }) {
   }, [lostReportId]);
 
   return (
-    <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6">
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-gray-100">
+    <div className="bg-white border border-stone-200 p-6 sm:p-8 space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-stone-100">
         <div className="space-y-1">
-          <div className="flex items-center space-x-2 text-indigo-600">
-            <Sparkles className="w-5 h-5" />
-            <h2 className="text-xl font-bold text-gray-900">Possible Found Item Matches</h2>
+          <div className="flex items-center space-x-2 text-stone-900">
+            <ScanLine className="w-4 h-4 text-stone-700" />
+            <h2 className="text-lg font-normal tracking-tight text-stone-900">Possible Found Item Matches</h2>
           </div>
-          <p className="text-xs text-gray-500">
+          <p className="text-xs text-stone-500">
             Automated recommendations based on public attributes, location, and dates.
           </p>
         </div>

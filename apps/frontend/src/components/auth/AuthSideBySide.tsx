@@ -12,19 +12,18 @@ import {
   Lock,
   User,
   GraduationCap,
+  Building,
   Eye,
   EyeOff,
-  Sparkles,
   ShieldCheck,
   CheckCircle2,
   AlertCircle,
   ArrowRight,
-  ArrowLeft,
-  Key,
   QrCode,
-  Check,
-  TrendingUp,
+  Scan,
 } from 'lucide-react';
+import { HideAndSeekMascot, MascotState } from './HideAndSeekMascot';
+import { LostAndFoundCanvas } from './LostAndFoundCanvas';
 import { FindoraLogo } from '@/components/brand/FindoraLogo';
 
 // Validation Schemas
@@ -34,11 +33,12 @@ const loginSchema = z.object({
 });
 
 const registerSchema = z.object({
-  username: z.string().min(3, { message: 'Full name must be at least 3 characters' }),
+  username: z.string().min(3, { message: 'Username must be at least 3 characters' }),
   email: z.string().email({ message: 'Enter a valid university email' }),
   password: z.string().min(6, { message: 'Password must be at least 6 characters' }),
   rollNo: z.string().optional(),
   department: z.string().optional(),
+  year: z.coerce.number().min(1).max(6).optional(),
 });
 
 type LoginForm = z.infer<typeof loginSchema>;
@@ -55,19 +55,22 @@ export function AuthSideBySide({ initialMode = 'login' }: AuthSideBySideProps) {
 
   const redirectUrl = searchParams.get('redirect') || '/';
 
-  // Active view: 'login' | 'register'
+  // Responsive active view for mobile screens
   const [activeTab, setActiveTab] = useState<'login' | 'register'>(initialMode);
 
   // Password visibility states
   const [showLoginPassword, setShowLoginPassword] = useState(false);
   const [showRegisterPassword, setShowRegisterPassword] = useState(false);
 
+  // Focus tracking for Hide & Seek animation
+  const [focusedField, setFocusedField] = useState<string | null>(null);
+
   // Status and loading states
   const [loginLoading, setLoginLoading] = useState(false);
   const [loginError, setLoginError] = useState<string | null>(null);
   const [loginSuccess, setLoginSuccess] = useState(false);
 
-  // Registration Multi-Stage
+  // Registration Multi-Stage: idle | creating | signing-in | success
   const [regStage, setRegStage] = useState<'idle' | 'creating' | 'signing-in' | 'success'>('idle');
   const [registerError, setRegisterError] = useState<string | null>(null);
 
@@ -75,7 +78,6 @@ export function AuthSideBySide({ initialMode = 'login' }: AuthSideBySideProps) {
   const {
     register: loginRegister,
     handleSubmit: handleLoginSubmit,
-    watch: watchLogin,
     formState: { errors: loginErrors },
   } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
@@ -84,18 +86,25 @@ export function AuthSideBySide({ initialMode = 'login' }: AuthSideBySideProps) {
   const {
     register: regRegister,
     handleSubmit: handleRegisterSubmit,
-    watch: watchReg,
     formState: { errors: registerErrors },
   } = useForm<RegisterForm>({
     resolver: zodResolver(registerSchema),
   });
 
-  const regName = watchReg('username');
-  const regEmail = watchReg('email');
-  const regPassword = watchReg('password') || '';
-  const loginEmail = watchLogin('email');
+  // Calculate dynamic Mascot state for Hide & Seek animations
+  const getMascotState = (): MascotState => {
+    if (loginSuccess || regStage === 'success') return 'success';
+    if (focusedField === 'login-password') {
+      return showLoginPassword ? 'password-revealed' : 'password-hidden';
+    }
+    if (focusedField === 'register-password') {
+      return showRegisterPassword ? 'password-revealed' : 'password-hidden';
+    }
+    if (focusedField) return 'text-focused';
+    return 'idle';
+  };
 
-  // Submit Handlers
+  // Login Handler
   async function onLogin(data: LoginForm) {
     setLoginError(null);
     setLoginLoading(true);
@@ -112,6 +121,7 @@ export function AuthSideBySide({ initialMode = 'login' }: AuthSideBySideProps) {
     }
   }
 
+  // Registration Handler: Creates Account First, Then Signs In
   async function onRegister(data: RegisterForm) {
     setRegisterError(null);
     setRegStage('creating');
@@ -122,6 +132,7 @@ export function AuthSideBySide({ initialMode = 'login' }: AuthSideBySideProps) {
         password: data.password,
         rollNo: data.rollNo || undefined,
         department: data.department || undefined,
+        year: data.year ? Number(data.year) : undefined,
       });
 
       setRegStage('signing-in');
@@ -132,428 +143,449 @@ export function AuthSideBySide({ initialMode = 'login' }: AuthSideBySideProps) {
         router.push(redirectUrl);
       }, 900);
     } catch (err: any) {
-      setRegisterError(err?.message || 'Registration failed. Please check your details.');
+      setRegisterError(err?.message || 'Registration failed. Please verify your details.');
       setRegStage('idle');
     }
   }
 
+  const mascotState = getMascotState();
+
   return (
-    <div className="min-h-screen bg-[#EEF2FC] flex flex-col justify-center items-center py-6 sm:py-12 px-3 sm:px-6 relative overflow-hidden font-sans">
-      
-      {/* Decorative Background Accents */}
-      <div className="absolute top-0 left-0 w-96 h-96 bg-blue-300/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 bg-indigo-300/20 rounded-full blur-3xl pointer-events-none" />
+    <div className="min-h-screen bg-[#0d0e12] text-stone-100 flex flex-col justify-between relative overflow-hidden py-6 sm:py-10 px-4 sm:px-6 lg:px-8 selection:bg-stone-800 selection:text-white">
+      {/* Interactive Geometric Radar & Coordinates Canvas */}
+      <LostAndFoundCanvas />
 
-      {/* Main Container Card */}
-      <div className="max-w-5xl w-full mx-auto bg-white rounded-3xl sm:rounded-[36px] shadow-[0_20px_60px_-15px_rgba(24,72,224,0.15)] overflow-hidden border border-slate-100 z-10 grid grid-cols-1 lg:grid-cols-12 min-h-[640px]">
-        
-        {/* ============================================================== */}
-        {/* LEFT SECTION: FORM AREA (7 COLS)                              */}
-        {/* ============================================================== */}
-        <div className="lg:col-span-7 p-6 sm:p-10 lg:p-12 flex flex-col justify-between">
-          <div>
-            {/* Top Navigation & Visible Slider Bar */}
-            <div className="flex items-center justify-between gap-3 mb-8">
-              {/* Back to Home Button */}
-              <Link
-                href="/"
-                className="w-10 h-10 rounded-full border border-slate-200/90 flex items-center justify-center text-slate-600 hover:text-slate-900 hover:border-slate-400 bg-white shadow-sm transition-all active:scale-95 shrink-0"
-                aria-label="Back to home"
-              >
-                <ArrowLeft className="w-4 h-4" />
-              </Link>
+      {/* Top Header */}
+      <header className="max-w-6xl mx-auto w-full flex items-center justify-between z-10 mb-6">
+        <Link href="/" className="flex items-center space-x-2.5">
+          <FindoraLogo variant="dark" size="md" />
+        </Link>
 
-              {/* VISIBLE SLIDER CONTROLLER */}
-              <div className="relative inline-flex items-center bg-slate-100/90 p-1 rounded-full border border-slate-200/80 shadow-inner select-none">
-                {/* Smooth Glider Thumb */}
-                <div
-                  className={`absolute top-1 bottom-1 w-[calc(50%-4px)] bg-white rounded-full shadow-md transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] ${
-                    activeTab === 'login' ? 'translate-x-0' : 'translate-x-full'
-                  }`}
-                />
-                
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('login')}
-                  className={`relative z-10 px-4 sm:px-5 py-1.5 text-xs font-bold rounded-full transition-colors duration-200 ${
-                    activeTab === 'login' ? 'text-blue-600' : 'text-slate-500 hover:text-slate-800'
-                  }`}
-                >
+        <Link
+          href="/found-items"
+          className="text-xs text-stone-400 hover:text-white flex items-center space-x-1.5 transition-colors"
+        >
+          <span>Return to inventory</span>
+          <ArrowRight className="w-3.5 h-3.5" />
+        </Link>
+      </header>
+
+      {/* Hide & Seek Interactive Focus Centerpiece */}
+      <div className="z-10 mb-4">
+        <HideAndSeekMascot
+          state={mascotState}
+          activeFieldLabel={focusedField ? focusedField.replace('-', ' ') : undefined}
+        />
+      </div>
+
+      {/* Mobile Mode Switcher */}
+      <div className="lg:hidden max-w-md mx-auto w-full mb-6 z-10">
+        <div className="grid grid-cols-2 p-1 border border-stone-800 bg-stone-900/80">
+          <button
+            type="button"
+            onClick={() => setActiveTab('login')}
+            className={`py-2 text-xs uppercase tracking-wider font-mono transition-colors ${
+              activeTab === 'login'
+                ? 'bg-stone-100 text-stone-950 font-medium'
+                : 'text-stone-400 hover:text-white'
+            }`}
+          >
+            Sign in
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab('register')}
+            className={`py-2 text-xs uppercase tracking-wider font-mono transition-colors ${
+              activeTab === 'register'
+                ? 'bg-stone-100 text-stone-950 font-medium'
+                : 'text-stone-400 hover:text-white'
+            }`}
+          >
+            Create account
+          </button>
+        </div>
+      </div>
+
+      {/* Main Dual-Panel Editorial Container */}
+      <main className="max-w-5xl mx-auto w-full z-10 my-auto">
+        <div className="grid grid-cols-1 lg:grid-cols-2 border border-stone-800 bg-stone-950/85 backdrop-blur-xl">
+          
+          {/* ============================================================== */}
+          {/* LEFT PANEL: SIGN IN                                           */}
+          {/* ============================================================== */}
+          <section
+            className={`p-6 sm:p-10 flex flex-col justify-between border-b lg:border-b-0 lg:border-r border-stone-800 ${
+              activeTab === 'login' ? 'block' : 'hidden lg:flex'
+            }`}
+          >
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2 text-xs font-mono tracking-wider text-stone-400">
+                  <span className="w-1.5 h-1.5 bg-blue-500 rounded-full" />
+                  <span>Existing Member</span>
+                </div>
+                <h1 className="text-2xl sm:text-3xl font-normal tracking-tight text-white">
                   Sign In
-                </button>
-
-                <button
-                  type="button"
-                  onClick={() => setActiveTab('register')}
-                  className={`relative z-10 px-4 sm:px-5 py-1.5 text-xs font-bold rounded-full transition-colors duration-200 ${
-                    activeTab === 'register' ? 'text-blue-600' : 'text-slate-500 hover:text-slate-800'
-                  }`}
-                >
-                  Sign Up
-                </button>
+                </h1>
+                <p className="text-stone-400 text-xs sm:text-sm leading-relaxed">
+                  Authenticate your student or faculty identity to manage custody records and report items.
+                </p>
               </div>
 
-              {/* Quick Switch Text Link */}
-              <div className="text-xs text-slate-500 text-right whitespace-nowrap hidden sm:block">
-                {activeTab === 'register' ? (
-                  <>
-                    Already member?{' '}
-                    <button
-                      type="button"
-                      onClick={() => setActiveTab('login')}
-                      className="text-blue-600 font-bold hover:underline ml-1"
-                    >
-                      Sign In
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    No account?{' '}
-                    <button
-                      type="button"
-                      onClick={() => setActiveTab('register')}
-                      className="text-blue-600 font-bold hover:underline ml-1"
-                    >
-                      Sign Up
-                    </button>
-                  </>
-                )}
-              </div>
-            </div>
+              {loginError && (
+                <div className="border border-rose-500/40 bg-rose-950/20 text-rose-200 p-3 text-xs flex items-center space-x-2">
+                  <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                  <span>{loginError}</span>
+                </div>
+              )}
 
-            {/* Form Titles */}
-            <div className="mb-8">
-              <h1 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-                {activeTab === 'register' ? 'Sign Up' : 'Sign In'}
-              </h1>
-              <p className="text-xs sm:text-sm text-slate-400 mt-1.5">
-                {activeTab === 'register'
-                  ? 'Secure Your Campus Belongings with Findora'
-                  : 'Welcome back to Findora campus recovery'}
-              </p>
-            </div>
+              {loginSuccess && (
+                <div className="border border-emerald-500/40 bg-emerald-950/20 text-emerald-200 p-3 text-xs flex items-center space-x-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>Credentials confirmed. Establishing session...</span>
+                </div>
+              )}
 
-            {/* Notifications / Errors */}
-            {loginError && activeTab === 'login' && (
-              <div className="mb-5 bg-rose-50 border border-rose-200 text-rose-700 p-3.5 rounded-2xl text-xs flex items-center space-x-2.5">
-                <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
-                <span>{loginError}</span>
-              </div>
-            )}
-
-            {loginSuccess && activeTab === 'login' && (
-              <div className="mb-5 bg-emerald-50 border border-emerald-200 text-emerald-700 p-3.5 rounded-2xl text-xs flex items-center space-x-2.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                <span>Verified! Directing to your campus listings...</span>
-              </div>
-            )}
-
-            {registerError && activeTab === 'register' && (
-              <div className="mb-5 bg-rose-50 border border-rose-200 text-rose-700 p-3.5 rounded-2xl text-xs flex items-center space-x-2.5">
-                <AlertCircle className="w-4 h-4 text-rose-500 shrink-0" />
-                <span>{registerError}</span>
-              </div>
-            )}
-
-            {regStage === 'success' && activeTab === 'register' && (
-              <div className="mb-5 bg-emerald-50 border border-emerald-200 text-emerald-700 p-3.5 rounded-2xl text-xs flex items-center space-x-2.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0" />
-                <span>Account created! Logging you in...</span>
-              </div>
-            )}
-
-            {/* ========================================================== */}
-            {/* SIGN IN FORM                                               */}
-            {/* ========================================================== */}
-            {activeTab === 'login' ? (
-              <form onSubmit={handleLoginSubmit(onLogin)} className="space-y-6">
-                {/* Email Field */}
-                <div className="space-y-1.5">
-                  <div className="relative flex items-center border-b border-slate-200 focus-within:border-blue-600 transition-colors pb-2">
-                    <Mail className="w-5 h-5 text-slate-400 mr-3 shrink-0" />
+              {/* Login Form */}
+              <form onSubmit={handleLoginSubmit(onLogin)} className="space-y-4">
+                <div>
+                  <label className="block text-xs font-mono text-stone-400 mb-1.5 uppercase tracking-wider">
+                    Institutional Email
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-500" />
                     <input
                       type="email"
-                      placeholder="Campus Email"
+                      placeholder="name@university.edu"
                       {...loginRegister('email')}
-                      className="w-full bg-transparent text-sm sm:text-base text-slate-900 placeholder-slate-400 focus:outline-none"
+                      onFocus={() => setFocusedField('email')}
+                      onBlur={() => setFocusedField(null)}
+                      className="w-full pl-10 pr-4 py-2.5 bg-stone-900/60 border border-stone-800 text-sm text-stone-100 placeholder-stone-600 focus:outline-none focus:border-stone-500 transition-colors"
                     />
-                    {loginEmail && loginEmail.includes('@') && (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 ml-2" />
-                    )}
                   </div>
                   {loginErrors.email && (
-                    <p className="text-xs text-rose-500">{loginErrors.email.message}</p>
+                    <p className="mt-1 text-xs text-rose-400">{loginErrors.email.message}</p>
                   )}
                 </div>
 
-                {/* Password Field */}
-                <div className="space-y-1.5">
-                  <div className="relative flex items-center border-b border-slate-200 focus-within:border-blue-600 transition-colors pb-2">
-                    <Lock className="w-5 h-5 text-slate-400 mr-3 shrink-0" />
+                <div>
+                  <div className="flex items-center justify-between mb-1.5">
+                    <label className="block text-xs font-mono text-stone-400 uppercase tracking-wider">
+                      Passcode
+                    </label>
+                    <span className="text-xs text-stone-400 hover:text-stone-200 cursor-pointer transition-colors">
+                      Reset
+                    </span>
+                  </div>
+                  <div className="relative">
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-500" />
                     <input
                       type={showLoginPassword ? 'text' : 'password'}
-                      placeholder="Password"
+                      placeholder="••••••••"
                       {...loginRegister('password')}
-                      className="w-full bg-transparent text-sm sm:text-base text-slate-900 placeholder-slate-400 focus:outline-none"
+                      onFocus={() => setFocusedField('login-password')}
+                      onBlur={() => setFocusedField(null)}
+                      className="w-full pl-10 pr-10 py-2.5 bg-stone-900/60 border border-stone-800 text-sm text-stone-100 placeholder-stone-600 focus:outline-none focus:border-stone-500 transition-colors"
                     />
                     <button
                       type="button"
                       onClick={() => setShowLoginPassword(!showLoginPassword)}
-                      className="text-slate-400 hover:text-slate-600 ml-2 shrink-0"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-500 hover:text-stone-300"
+                      aria-label="Toggle password visibility"
                     >
                       {showLoginPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
                   {loginErrors.password && (
-                    <p className="text-xs text-rose-500">{loginErrors.password.message}</p>
+                    <p className="mt-1 text-xs text-rose-400">{loginErrors.password.message}</p>
                   )}
                 </div>
 
-                {/* Submit Action */}
-                <div className="pt-2">
-                  <button
-                    type="submit"
-                    disabled={loginLoading || loginSuccess}
-                    className="w-full sm:w-auto min-w-[180px] py-3.5 px-8 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-full shadow-lg shadow-blue-500/25 flex items-center justify-center space-x-2 transition-all transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50"
-                  >
-                    {loginLoading ? (
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    ) : (
-                      <>
-                        <span>Sign In</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </>
-                    )}
-                  </button>
-                </div>
+                <button
+                  type="submit"
+                  disabled={loginLoading || loginSuccess}
+                  className="w-full py-3 bg-stone-100 hover:bg-white text-stone-950 font-medium text-xs uppercase tracking-wider transition-colors disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center space-x-2"
+                >
+                  {loginLoading ? (
+                    <div className="w-4 h-4 border-2 border-stone-900 border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <>
+                      <span>Sign In</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </>
+                  )}
+                </button>
               </form>
-            ) : (
-              /* ========================================================== */
-              /* SIGN UP FORM                                               */
-              /* ========================================================== */
-              <form onSubmit={handleRegisterSubmit(onRegister)} className="space-y-5">
-                {/* Full Name */}
-                <div className="space-y-1.5">
-                  <div className="relative flex items-center border-b border-slate-200 focus-within:border-blue-600 transition-colors pb-2">
-                    <User className="w-5 h-5 text-slate-400 mr-3 shrink-0" />
-                    <input
-                      type="text"
-                      placeholder="Full Name"
-                      {...regRegister('username')}
-                      className="w-full bg-transparent text-sm sm:text-base text-slate-900 placeholder-slate-400 focus:outline-none"
-                    />
-                    {regName && regName.length >= 3 && (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 ml-2" />
+            </div>
+
+            <div className="pt-6 mt-6 border-t border-stone-800/80 flex items-center justify-between text-xs text-stone-400">
+              <span>Unregistered profile?</span>
+              <button
+                type="button"
+                onClick={() => setActiveTab('register')}
+                className="text-stone-200 hover:text-white underline underline-offset-4 lg:hidden"
+              >
+                Go to register
+              </button>
+              <span className="hidden lg:inline text-stone-500">Registration form on the right</span>
+            </div>
+          </section>
+
+          {/* ============================================================== */}
+          {/* RIGHT PANEL: SIGN UP / REGISTER                                */}
+          {/* ============================================================== */}
+          <section
+            className={`p-6 sm:p-10 flex flex-col justify-between bg-stone-900/20 ${
+              activeTab === 'register' ? 'block' : 'hidden lg:flex'
+            }`}
+          >
+            <div className="space-y-6">
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2 text-xs font-mono tracking-wider text-stone-400">
+                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
+                  <span>New Member</span>
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-normal tracking-tight text-white">
+                  Create Account
+                </h2>
+                <p className="text-stone-400 text-xs sm:text-sm leading-relaxed">
+                  Establish verified campus identity to register lost belongings or file ownership claims.
+                </p>
+              </div>
+
+              {registerError && (
+                <div className="border border-rose-500/40 bg-rose-950/20 text-rose-200 p-3 text-xs flex items-center space-x-2">
+                  <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
+                  <span>{registerError}</span>
+                </div>
+              )}
+
+              {/* Dynamic Stage Notifications */}
+              {regStage === 'creating' && (
+                <div className="border border-stone-700 bg-stone-900 p-3 text-xs flex items-center space-x-2 text-stone-200">
+                  <div className="w-3.5 h-3.5 border-2 border-stone-300 border-t-transparent rounded-full animate-spin shrink-0" />
+                  <span>Step 1: Storing campus member profile...</span>
+                </div>
+              )}
+
+              {regStage === 'signing-in' && (
+                <div className="border border-stone-700 bg-stone-900 p-3 text-xs flex items-center space-x-2 text-stone-200">
+                  <div className="w-3.5 h-3.5 border-2 border-stone-300 border-t-transparent rounded-full animate-spin shrink-0" />
+                  <span>Step 2: Authenticating and initializing custody session...</span>
+                </div>
+              )}
+
+              {regStage === 'success' && (
+                <div className="border border-emerald-500/40 bg-emerald-950/20 text-emerald-200 p-3 text-xs flex items-center space-x-2">
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                  <span>Registration complete. Loading portal...</span>
+                </div>
+              )}
+
+              {/* Registration Form */}
+              <form onSubmit={handleRegisterSubmit(onRegister)} className="space-y-3.5">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div>
+                    <label className="block text-xs font-mono text-stone-400 mb-1.5 uppercase tracking-wider">
+                      Full Name
+                    </label>
+                    <div className="relative">
+                      <User className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-500" />
+                      <input
+                        type="text"
+                        placeholder="Enter your name"
+                        {...regRegister('username')}
+                        onFocus={() => setFocusedField('username')}
+                        onBlur={() => setFocusedField(null)}
+                        className="w-full pl-10 pr-3 py-2 bg-stone-900/60 border border-stone-800 text-xs text-stone-100 placeholder-stone-600 focus:outline-none focus:border-stone-500 transition-colors"
+                      />
+                    </div>
+                    {registerErrors.username && (
+                      <p className="mt-1 text-[11px] text-rose-400">{registerErrors.username.message}</p>
                     )}
                   </div>
-                  {registerErrors.username && (
-                    <p className="text-xs text-rose-500">{registerErrors.username.message}</p>
-                  )}
+
+                  <div>
+                    <label className="block text-xs font-mono text-stone-400 mb-1.5 uppercase tracking-wider">
+                      Campus ID No.
+                    </label>
+                    <div className="relative">
+                      <GraduationCap className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-500" />
+                      <input
+                        type="text"
+                        placeholder="e.g. 2026-CS-042"
+                        {...regRegister('rollNo')}
+                        onFocus={() => setFocusedField('roll-number')}
+                        onBlur={() => setFocusedField(null)}
+                        className="w-full pl-10 pr-3 py-2 bg-stone-900/60 border border-stone-800 text-xs text-stone-100 placeholder-stone-600 focus:outline-none focus:border-stone-500 transition-colors"
+                      />
+                    </div>
+                  </div>
                 </div>
 
-                {/* University Email */}
-                <div className="space-y-1.5">
-                  <div className="relative flex items-center border-b border-slate-200 focus-within:border-blue-600 transition-colors pb-2">
-                    <Mail className="w-5 h-5 text-slate-400 mr-3 shrink-0" />
+                <div>
+                  <label className="block text-xs font-mono text-stone-400 mb-1.5 uppercase tracking-wider">
+                    Campus Email
+                  </label>
+                  <div className="relative">
+                    <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-500" />
                     <input
                       type="email"
-                      placeholder="University Email"
+                      placeholder="your.email@university.edu"
                       {...regRegister('email')}
-                      className="w-full bg-transparent text-sm sm:text-base text-slate-900 placeholder-slate-400 focus:outline-none"
+                      onFocus={() => setFocusedField('email')}
+                      onBlur={() => setFocusedField(null)}
+                      className="w-full pl-10 pr-3 py-2 bg-stone-900/60 border border-stone-800 text-xs text-stone-100 placeholder-stone-600 focus:outline-none focus:border-stone-500 transition-colors"
                     />
-                    {regEmail && regEmail.includes('@') && (
-                      <CheckCircle2 className="w-4 h-4 text-emerald-500 shrink-0 ml-2" />
-                    )}
                   </div>
                   {registerErrors.email && (
-                    <p className="text-xs text-rose-500">{registerErrors.email.message}</p>
+                    <p className="mt-1 text-[11px] text-rose-400">{registerErrors.email.message}</p>
                   )}
                 </div>
 
-                {/* Password */}
-                <div className="space-y-1.5">
-                  <div className="relative flex items-center border-b border-slate-200 focus-within:border-blue-600 transition-colors pb-2">
-                    <Lock className="w-5 h-5 text-slate-400 mr-3 shrink-0" />
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                  <div>
+                    <label className="block text-xs font-mono text-stone-400 mb-1.5 uppercase tracking-wider">
+                      Department
+                    </label>
+                    <div className="relative">
+                      <Building className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-500" />
+                      <input
+                        type="text"
+                        placeholder="e.g. Computer Science"
+                        {...regRegister('department')}
+                        onFocus={() => setFocusedField('department')}
+                        onBlur={() => setFocusedField(null)}
+                        className="w-full pl-10 pr-3 py-2 bg-stone-900/60 border border-stone-800 text-xs text-stone-100 placeholder-stone-600 focus:outline-none focus:border-stone-500 transition-colors"
+                      />
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-mono text-stone-400 mb-1.5 uppercase tracking-wider">
+                      Academic Year
+                    </label>
+                    <select
+                      {...regRegister('year')}
+                      onFocus={() => setFocusedField('year')}
+                      onBlur={() => setFocusedField(null)}
+                      className="w-full px-3 py-2 bg-stone-900 border border-stone-800 text-xs text-stone-100 focus:outline-none focus:border-stone-500 transition-colors"
+                    >
+                      <option value="1">1st Year (Freshman)</option>
+                      <option value="2">2nd Year (Sophomore)</option>
+                      <option value="3">3rd Year (Junior)</option>
+                      <option value="4">4th Year (Senior)</option>
+                      <option value="5">Graduate / Faculty</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-mono text-stone-400 mb-1.5 uppercase tracking-wider">
+                    Create Passcode
+                  </label>
+                  <div className="relative">
+                    <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-stone-500" />
                     <input
                       type={showRegisterPassword ? 'text' : 'password'}
-                      placeholder="Password"
+                      placeholder="At least 6 characters"
                       {...regRegister('password')}
-                      className="w-full bg-transparent text-sm sm:text-base text-slate-900 placeholder-slate-400 focus:outline-none"
+                      onFocus={() => setFocusedField('register-password')}
+                      onBlur={() => setFocusedField(null)}
+                      className="w-full pl-10 pr-10 py-2 bg-stone-900/60 border border-stone-800 text-xs text-stone-100 placeholder-stone-600 focus:outline-none focus:border-stone-500 transition-colors"
                     />
                     <button
                       type="button"
                       onClick={() => setShowRegisterPassword(!showRegisterPassword)}
-                      className="text-slate-400 hover:text-slate-600 ml-2 shrink-0"
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-stone-500 hover:text-stone-300"
+                      aria-label="Toggle password visibility"
                     >
                       {showRegisterPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
                   </div>
                   {registerErrors.password && (
-                    <p className="text-xs text-rose-500">{registerErrors.password.message}</p>
+                    <p className="mt-1 text-[11px] text-rose-400">{registerErrors.password.message}</p>
                   )}
                 </div>
 
-                {/* Password Strength Checklist */}
-                <div className="space-y-1 text-xs text-slate-400 pt-1">
-                  <div className={`flex items-center space-x-1.5 ${regPassword.length >= 6 ? 'text-emerald-600 font-medium' : ''}`}>
-                    <Check className={`w-3.5 h-3.5 ${regPassword.length >= 6 ? 'text-emerald-500' : 'text-slate-300'}`} />
-                    <span>Least 6 characters</span>
-                  </div>
-                  <div className={`flex items-center space-x-1.5 ${regEmail && regEmail.includes('@') ? 'text-emerald-600 font-medium' : ''}`}>
-                    <Check className={`w-3.5 h-3.5 ${regEmail && regEmail.includes('@') ? 'text-emerald-500' : 'text-slate-300'}`} />
-                    <span>Campus email format</span>
-                  </div>
-                </div>
-
-                {/* Submit Action */}
-                <div className="pt-3">
+                <div className="pt-2">
                   <button
                     type="submit"
                     disabled={regStage !== 'idle'}
-                    className="w-full sm:w-auto min-w-[180px] py-3.5 px-8 bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm rounded-full shadow-lg shadow-blue-500/25 flex items-center justify-center space-x-2 transition-all transform hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-50"
+                    className="w-full py-2.5 bg-stone-100 hover:bg-white text-stone-950 font-medium text-xs uppercase tracking-wider transition-colors disabled:opacity-50 disabled:pointer-events-none flex items-center justify-center space-x-2"
                   >
-                    {regStage !== 'idle' ? (
-                      <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    {regStage === 'creating' ? (
+                      <>
+                        <div className="w-3.5 h-3.5 border-2 border-stone-900 border-t-transparent rounded-full animate-spin" />
+                        <span>Creating profile...</span>
+                      </>
+                    ) : regStage === 'signing-in' ? (
+                      <>
+                        <div className="w-3.5 h-3.5 border-2 border-stone-900 border-t-transparent rounded-full animate-spin" />
+                        <span>Authenticating...</span>
+                      </>
+                    ) : regStage === 'success' ? (
+                      <>
+                        <CheckCircle2 className="w-3.5 h-3.5" />
+                        <span>Profile ready</span>
+                      </>
                     ) : (
                       <>
-                        <span>Sign Up</span>
-                        <ArrowRight className="w-4 h-4" />
+                        <span>Create Account</span>
+                        <ArrowRight className="w-3.5 h-3.5" />
                       </>
                     )}
                   </button>
                 </div>
               </form>
-            )}
+            </div>
+
+            <div className="pt-6 mt-6 border-t border-stone-800/80 flex items-center justify-between text-xs text-stone-400">
+              <span>Already registered?</span>
+              <button
+                type="button"
+                onClick={() => setActiveTab('login')}
+                className="text-stone-200 hover:text-white underline underline-offset-4 lg:hidden"
+              >
+                Go to sign in
+              </button>
+              <span className="hidden lg:inline text-stone-500">Sign in on the left</span>
+            </div>
+          </section>
+        </div>
+
+        {/* Verification Architecture Protocol Strip */}
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-3 border border-stone-800 bg-stone-950/60 divide-y md:divide-y-0 md:divide-x divide-stone-800">
+          <div className="p-4 flex items-start space-x-3">
+            <ShieldCheck className="w-4 h-4 text-stone-400 shrink-0 mt-0.5" />
+            <div>
+              <p className="text-xs font-medium text-stone-200">Campus Verification</p>
+              <p className="text-[11px] text-stone-500 leading-relaxed mt-0.5">Closed institutional registry restricted to verified campus members.</p>
+            </div>
           </div>
 
-          {/* Bottom Brand Marker */}
-          <div className="pt-8 border-t border-slate-100 flex items-center justify-between text-xs text-slate-400">
-            <span>Findora Smart Campus</span>
-            <div className="flex items-center space-x-1.5 text-emerald-600 font-medium">
-              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Campus Network Active</span>
+          <div className="p-4 flex items-start space-x-3">
+            <QrCode className="w-4 h-4 text-stone-400 shrink-0 mt-0.5" />
+            <div>
+              <p className="text-xs font-medium text-stone-200">Ephemeral Handover</p>
+              <p className="text-[11px] text-stone-500 leading-relaxed mt-0.5">Time-limited QR and alphanumeric tokens for physical return.</p>
+            </div>
+          </div>
+
+          <div className="p-4 flex items-start space-x-3">
+            <Scan className="w-4 h-4 text-stone-400 shrink-0 mt-0.5" />
+            <div>
+              <p className="text-xs font-medium text-stone-200">Cross-Referencing</p>
+              <p className="text-[11px] text-stone-500 leading-relaxed mt-0.5">Automated image-to-report feature matching across all stations.</p>
             </div>
           </div>
         </div>
+      </main>
 
-        {/* ============================================================== */}
-        {/* RIGHT SECTION: SHOWCASE VISUALS & METRIC CARDS (5 COLS)        */}
-        {/* ============================================================== */}
-        <div className="hidden lg:flex lg:col-span-5 relative bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 p-8 sm:p-10 flex-col justify-between overflow-hidden text-white">
-          
-          {/* Organic Background Curved Wave Layers */}
-          <div className="absolute -bottom-16 -right-16 w-80 h-80 bg-cyan-400/20 rounded-full blur-2xl pointer-events-none" />
-          <div className="absolute top-1/4 -left-12 w-72 h-72 bg-blue-400/25 rounded-full blur-2xl pointer-events-none" />
-          
-          {/* Top Decorative Floating Card (Stats & Activity) - Authentically Tailored to Findora */}
-          <div className="relative z-10 w-full pt-4">
-            <div className="bg-white text-slate-900 p-6 rounded-3xl shadow-2xl max-w-[285px] ml-auto transform -rotate-1 hover:rotate-0 transition-transform duration-300 border border-slate-100">
-              <div className="flex items-center justify-between">
-                <span className="text-[10px] font-extrabold text-blue-600 uppercase tracking-wider bg-blue-50 px-2.5 py-0.5 rounded-full">
-                  Campus Recoveries
-                </span>
-                <span className="text-[10px] font-bold text-emerald-600 flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  94.8% Rate
-                </span>
-              </div>
-
-              <div className="mt-3">
-                <div className="text-3xl font-black text-slate-900 tracking-tight">
-                  1,420<span className="text-blue-600">+</span>
-                </div>
-                <p className="text-[11px] text-slate-500 mt-0.5">
-                  Items safely reclaimed this semester
-                </p>
-              </div>
-
-              {/* Clean Smooth Trend Line with Gradient Area */}
-              <div className="relative h-14 mt-3 w-full">
-                <svg viewBox="0 0 200 50" className="w-full h-full overflow-visible">
-                  <defs>
-                    <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#2563EB" stopOpacity="0.25" />
-                      <stop offset="100%" stopColor="#2563EB" stopOpacity="0.0" />
-                    </linearGradient>
-                  </defs>
-                  {/* Subtle Gradient Area Fill */}
-                  <path
-                    d="M 5 45 Q 40 38, 70 32 T 130 18 T 195 10 L 195 50 L 5 50 Z"
-                    fill="url(#chartGrad)"
-                  />
-                  {/* Active Spline Line */}
-                  <path
-                    d="M 5 45 Q 40 38, 70 32 T 130 18 T 195 10"
-                    fill="none"
-                    stroke="#2563EB"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                  />
-                  {/* Active Pinpoint ON the curve */}
-                  <circle cx="130" cy="18" r="4.5" fill="#2563EB" />
-                  <circle cx="130" cy="18" r="9" fill="#2563EB" opacity="0.2" className="animate-ping" />
-                  <circle cx="195" cy="10" r="4.5" fill="#10B981" />
-                </svg>
-              </div>
-
-              <div className="mt-2 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
-                <span>Wallets • IDs • Tech</span>
-                <span className="font-semibold text-slate-600 flex items-center gap-1">
-                  <TrendingUp className="w-3 h-3 text-emerald-500" /> +18% MoM
-                </span>
-              </div>
-            </div>
-          </div>
-
-          {/* Middle Decorative Badges */}
-          <div className="relative z-10 flex items-center justify-end space-x-2.5 my-3 pr-4">
-            <div className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-white/15 backdrop-blur-md text-white text-xs font-semibold shadow-lg border border-white/20">
-              <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
-              <span>Smart AI Matching</span>
-            </div>
-            <div className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-white/15 backdrop-blur-md text-white text-xs font-semibold shadow-lg border border-white/20">
-              <QrCode className="w-3.5 h-3.5 text-blue-200" />
-              <span>1-Time QR Handover</span>
-            </div>
-          </div>
-
-          {/* Bottom Floating Card: "Your data, your rules" */}
-          <div className="relative z-10 w-full pb-2">
-            <div className="bg-white text-slate-900 p-5 rounded-3xl shadow-2xl max-w-[295px] mr-auto transform rotate-1 hover:rotate-0 transition-transform duration-300 border border-slate-100">
-              <div className="flex items-center space-x-3 mb-2.5">
-                <div className="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
-                  <ShieldCheck className="w-5 h-5" />
-                </div>
-                <div>
-                  <h3 className="font-bold text-sm text-slate-900 leading-tight">
-                    Privacy-First Returns
-                  </h3>
-                  <span className="text-[10px] font-semibold text-blue-600">
-                    Encrypted Ownership Proof
-                  </span>
-                </div>
-              </div>
-              <p className="text-xs text-slate-500 leading-relaxed">
-                Serial numbers & secret marks remain hidden. Single-use QR authorization tokens verify in-person handovers.
-              </p>
-              
-              <div className="mt-3 pt-2 border-t border-slate-100 flex items-center gap-1.5 flex-wrap">
-                <span className="text-[10px] font-medium bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md">
-                  ✓ AI-Assisted Matches
-                </span>
-                <span className="text-[10px] font-medium bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md">
-                  ✓ 1-Time QR Token
-                </span>
-              </div>
-            </div>
-
-            <div className="mt-6 text-[11px] text-blue-200/80 text-center font-medium">
-              Findora Campus Lost & Found • University Verified
-            </div>
-          </div>
-        </div>
-
-      </div>
+      {/* Footer */}
+      <footer className="max-w-6xl mx-auto w-full text-center text-xs text-stone-600 mt-8 z-10">
+        Findora Institutional Custody Network
+      </footer>
     </div>
   );
 }

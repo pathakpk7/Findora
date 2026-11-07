@@ -76,20 +76,22 @@ export default function LeaderboardPage() {
 
       <main className="flex-1 max-w-5xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-6">
         {/* Banner */}
-        <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 rounded-3xl p-6 sm:p-8 text-white shadow-xl flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-          <div className="space-y-1">
-            <div className="inline-flex items-center space-x-1.5 bg-amber-500/20 border border-amber-400/30 px-3 py-1 rounded-full text-xs font-semibold text-amber-200">
-              <Trophy className="w-3.5 h-3.5" />
-              <span>Campus Rankings</span>
+        <section className="border-b border-stone-200 pb-8 pt-4">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div className="space-y-2">
+              <div className="flex items-center space-x-2 text-xs font-mono tracking-wider text-stone-500 uppercase">
+                <span className="w-1.5 h-1.5 bg-amber-500 rounded-full" />
+                <span>Verified Contributors</span>
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-normal tracking-tight text-stone-900">
+                Reputation Registry
+              </h1>
+              <p className="text-stone-600 text-xs sm:text-sm leading-relaxed">
+                Campus members ranked by verified property returns, verified claims, and peer trust metrics.
+              </p>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-              Reputation Leaderboard
-            </h1>
-            <p className="text-gray-300 text-xs sm:text-sm">
-              Top campus contributors ranked by verified item returns and community trust score.
-            </p>
           </div>
-        </div>
+        </section>
 
         {/* Content */}
         {loading ? (

@@ -62,30 +62,30 @@ function ClaimsDashboardContent() {
   return (
     <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-amber-900 via-orange-950 to-stone-900 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <section className="border-b border-stone-200 pb-8 pt-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center space-x-1.5 bg-amber-500/20 border border-amber-400/30 px-3 py-1 rounded-full text-xs font-semibold text-amber-200">
-              <ShieldCheck className="w-3.5 h-3.5" />
-              <span>Private Claims Dashboard</span>
+            <div className="flex items-center space-x-2 text-xs font-mono tracking-wider text-stone-500 uppercase">
+              <span className="w-1.5 h-1.5 bg-amber-600 rounded-full" />
+              <span>Custody Verification</span>
             </div>
-            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
-              My Ownership Claims
+            <h1 className="text-3xl sm:text-4xl font-normal tracking-tight text-stone-900">
+              Ownership Claims
             </h1>
-            <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
-              Track the status of your claims filed for found campus items. Your evidence remains private to you and reviewing campus staff.
+            <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
+              Active verification claims submitted for campus items. Your evidence statements remain confidential between you and intake officers.
             </p>
           </div>
 
           <Link
             href="/found-items"
-            className="shrink-0 px-6 py-3.5 bg-amber-600 hover:bg-amber-500 text-white font-semibold text-sm rounded-xl transition-all shadow-lg hover:shadow-amber-500/25 flex items-center justify-center space-x-2"
+            className="shrink-0 px-4 py-2.5 bg-stone-900 hover:bg-black text-white font-medium text-xs uppercase tracking-wider transition-colors flex items-center justify-center space-x-2"
           >
-            <Search className="w-4 h-4" />
+            <Search className="w-3.5 h-3.5 text-stone-300" />
             <span>Browse Found Items</span>
           </Link>
         </div>
-      </div>
+      </section>
 
       {/* Filter Bar */}
       <div className="bg-white border border-gray-200 rounded-2xl p-4 shadow-sm flex items-center justify-between gap-4">

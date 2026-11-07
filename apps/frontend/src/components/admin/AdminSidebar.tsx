@@ -8,7 +8,6 @@ import {
   ShieldAlert,
   ClipboardList,
   ArrowLeft,
-  Sparkles,
 } from 'lucide-react';
 
 export function AdminSidebar() {
@@ -37,15 +36,15 @@ export function AdminSidebar() {
       <div className="space-y-6">
         {/* Brand */}
         <div className="flex items-center space-x-3 px-2">
-          <div className="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-500 via-indigo-500 to-purple-600 flex items-center justify-center shadow-lg">
-            <Sparkles className="w-5 h-5 text-white" />
+          <div className="w-8 h-8 border border-stone-700 bg-stone-800 flex items-center justify-center">
+            <LayoutDashboard className="w-4 h-4 text-stone-200" />
           </div>
           <div>
-            <h2 className="text-lg font-black tracking-tight text-white">
-              FINDORA
+            <h2 className="text-sm font-normal tracking-wider uppercase text-white font-mono">
+              Findora
             </h2>
-            <span className="text-[10px] font-extrabold uppercase tracking-widest text-amber-400 bg-amber-400/10 px-2 py-0.5 rounded-full border border-amber-400/20">
-              Admin Portal
+            <span className="text-[10px] font-mono uppercase tracking-widest text-stone-400">
+              Admin Console
             </span>
           </div>
         </div>

@@ -1,5 +1,4 @@
 import { HandoverStatus } from '@findora/types';
-import { Clock, CheckCircle2, XCircle, AlertCircle, Archive } from 'lucide-react';
 
 interface HandoverStatusBadgeProps {
   status: HandoverStatus;
@@ -8,53 +7,44 @@ interface HandoverStatusBadgeProps {
 export function HandoverStatusBadge({ status }: HandoverStatusBadgeProps) {
   const configs: Record<
     HandoverStatus,
-    { label: string; bg: string; text: string; border: string; icon: any }
+    { label: string; dot: string; text: string }
   > = {
     [HandoverStatus.PENDING]: {
       label: 'Handover Active',
-      bg: 'bg-emerald-50',
-      text: 'text-emerald-700',
-      border: 'border-emerald-200',
-      icon: Clock,
+      dot: 'bg-emerald-500 animate-pulse',
+      text: 'text-emerald-800',
     },
     [HandoverStatus.SCANNED]: {
-      label: 'Scanned',
-      bg: 'bg-purple-50',
-      text: 'text-purple-700',
-      border: 'border-purple-200',
-      icon: AlertCircle,
+      label: 'Token Scanned',
+      dot: 'bg-blue-600',
+      text: 'text-blue-800',
     },
     [HandoverStatus.COMPLETED]: {
       label: 'Returned & Completed',
-      bg: 'bg-blue-50',
-      text: 'text-blue-700',
-      border: 'border-blue-200',
-      icon: CheckCircle2,
+      dot: 'bg-emerald-600',
+      text: 'text-emerald-800',
     },
     [HandoverStatus.EXPIRED]: {
       label: 'QR Expired',
-      bg: 'bg-red-50',
-      text: 'text-red-700',
-      border: 'border-red-200',
-      icon: XCircle,
+      dot: 'bg-stone-400',
+      text: 'text-stone-500',
     },
     [HandoverStatus.CANCELLED]: {
       label: 'Cancelled',
-      bg: 'bg-gray-100',
-      text: 'text-gray-700',
-      border: 'border-gray-300',
-      icon: Archive,
+      dot: 'bg-stone-300',
+      text: 'text-stone-400',
     },
   };
 
-  const config = configs[status] || configs[HandoverStatus.PENDING];
-  const Icon = config.icon;
+  const config = configs[status] || {
+    label: String(status),
+    dot: 'bg-stone-400',
+    text: 'text-stone-500',
+  };
 
   return (
-    <span
-      className={`inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-full text-xs font-semibold border ${config.bg} ${config.text} ${config.border}`}
-    >
-      <Icon className="w-3.5 h-3.5" />
+    <span className={`inline-flex items-center space-x-1.5 text-xs font-medium ${config.text}`}>
+      <span className={`w-1.5 h-1.5 rounded-full ${config.dot}`} />
       <span>{config.label}</span>
     </span>
   );

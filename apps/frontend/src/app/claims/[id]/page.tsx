@@ -223,20 +223,20 @@ export default function ClaimDetailPage({
 
           {/* Handover CTA when APPROVED */}
           {claim.status === ClaimStatus.APPROVED && (
-            <div className="bg-gradient-to-r from-blue-900 to-indigo-900 rounded-2xl p-6 text-white space-y-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div className="border border-stone-800 bg-[#0f1013] p-6 text-stone-100 space-y-3 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
               <div className="space-y-1">
-                <div className="inline-flex items-center space-x-1 bg-blue-500/20 text-blue-200 px-2.5 py-0.5 rounded-full text-xs font-semibold">
-                  <ShieldCheck className="w-3.5 h-3.5" />
+                <div className="flex items-center space-x-2 text-xs font-mono tracking-wider text-emerald-400 uppercase">
+                  <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" />
                   <span>Ownership Verified</span>
                 </div>
-                <h3 className="font-extrabold text-lg">Ready for Physical Handover</h3>
-                <p className="text-xs text-blue-200">
-                  Your claim has been approved! Generate your one-time handover QR code to present during item return.
+                <h3 className="font-normal text-lg tracking-tight text-white">Ready for Physical Handover</h3>
+                <p className="text-xs text-stone-400 max-w-md">
+                  Your claim has been approved. Generate your single-use handover QR credential to present at the intake desk.
                 </p>
               </div>
               <Link
                 href="/handovers"
-                className="px-6 py-3 bg-blue-500 hover:bg-blue-400 text-white font-semibold text-xs rounded-xl transition-all shadow-md shrink-0 text-center"
+                className="px-5 py-2.5 bg-stone-100 hover:bg-white text-stone-950 font-medium text-xs uppercase tracking-wider transition-colors shrink-0 text-center"
               >
                 Go to Handovers &rarr;
               </Link>

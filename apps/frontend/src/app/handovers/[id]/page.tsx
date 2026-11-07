@@ -187,10 +187,10 @@ export default function HandoverDetailPage({
 
           {/* QR Code Presentation Section */}
           {!isCompleted && !isExpired && (
-            <div className="bg-gradient-to-b from-gray-50 to-blue-50/40 rounded-3xl p-6 sm:p-8 border border-blue-100 text-center space-y-4">
-              <div className="inline-flex items-center space-x-1.5 bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs font-bold">
-                <ShieldCheck className="w-3.5 h-3.5" />
-                <span>One-Time Handover Token</span>
+            <div className="border border-stone-200 bg-stone-50 p-6 sm:p-8 text-center space-y-4">
+              <div className="flex items-center justify-center space-x-2 text-xs font-mono uppercase tracking-wider text-stone-600">
+                <span className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
+                <span>Single-Use Handover Token</span>
               </div>
 
               {rawToken ? (

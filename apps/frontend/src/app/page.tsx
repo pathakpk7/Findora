@@ -1,142 +1,235 @@
 import React from 'react';
 import Link from 'next/link';
 import { Navbar } from '@/components/Navbar';
-import { Search, PlusCircle, ShieldCheck, Sparkles, FolderHeart, AlertCircle } from 'lucide-react';
+import { Search, Plus, ArrowRight, ShieldCheck, Lock, CheckCircle2, QrCode } from 'lucide-react';
 import { CampusItemsDirectory } from '@/components/home/CampusItemsDirectory';
+import { FindoraLogo } from '@/components/brand/FindoraLogo';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div className="min-h-screen bg-[#faf9f6] text-stone-900 flex flex-col selection:bg-stone-900 selection:text-white">
       <Navbar />
 
       <main className="flex-1">
-        {/* Hero Section */}
-        <section className="bg-gradient-to-b from-blue-900 via-indigo-900 to-slate-900 text-white py-16 sm:py-20 px-3 sm:px-6 lg:px-8 relative overflow-hidden">
-          <div className="max-w-5xl mx-auto text-center space-y-6 relative z-10">
-            <div className="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-3.5 py-1.5 rounded-full text-xs font-semibold text-blue-200 border border-white/15">
-              <Sparkles className="w-3.5 h-3.5 text-blue-300" />
-              <span>Smart Campus Lost & Found Platform</span>
-            </div>
+        {/* Editorial Hero Section */}
+        <section className="relative pt-16 sm:pt-24 pb-20 border-b border-stone-200 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+              {/* Left Column: Editorial Headline & Narrative */}
+              <div className="lg:col-span-7 space-y-6">
+                <div className="inline-flex items-center space-x-2 text-xs font-semibold text-stone-500 tracking-wider uppercase">
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse-dot" />
+                  <span>Campus Custody Network Active</span>
+                </div>
 
-            <h1 className="text-3xl sm:text-6xl font-black tracking-tight leading-tight">
-              Lost something on campus? <br className="hidden sm:inline" />
-              <span className="bg-gradient-to-r from-cyan-300 to-blue-400 bg-clip-text text-transparent">
-                Findora helps you recover it safely.
-              </span>
-            </h1>
+                <h1 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-stone-950 leading-[1.05]">
+                  Reuniting campus with what went missing
+                </h1>
 
-            <p className="max-w-2xl mx-auto text-sm sm:text-lg text-blue-100/80 leading-relaxed px-2">
-              Connect with fellow students to locate lost items. Privacy-first ownership verification ensures items return only to their rightful owners.
-            </p>
+                <p className="text-base sm:text-lg text-stone-600 max-w-xl leading-relaxed">
+                  A modern custody and return protocol for university grounds. Search the public directory without an account, or file a confidential notice to claim your property.
+                </p>
 
-            {/* Action Buttons: Strictly in ONE LINE on Mobile */}
-            <div className="pt-4 w-full flex items-center justify-start sm:justify-center overflow-x-auto no-scrollbar gap-2 sm:gap-4 py-2 px-1 scroll-smooth">
-              <Link
-                href="/found-items"
-                className="shrink-0 inline-flex items-center space-x-1.5 sm:space-x-2 px-3 sm:px-6 py-2 sm:py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-xs sm:text-base rounded-xl sm:rounded-2xl shadow-lg transition-all transform hover:-translate-y-0.5 whitespace-nowrap active:scale-95"
-              >
-                <Search className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
-                <span>Browse Found Items</span>
-              </Link>
+                {/* Primary Action Triggers */}
+                <div className="pt-2 flex flex-wrap items-center gap-3">
+                  <Link
+                    href="/found-items"
+                    className="inline-flex items-center justify-center space-x-2 px-6 py-3.5 bg-stone-950 hover:bg-stone-800 text-white font-medium text-sm rounded-md transition-all active:scale-[0.98]"
+                  >
+                    <Search className="w-4 h-4" />
+                    <span>Search Found Directory</span>
+                  </Link>
 
-              <Link
-                href="/lost-reports/new"
-                className="shrink-0 inline-flex items-center space-x-1.5 sm:space-x-2 px-3 sm:px-6 py-2 sm:py-3.5 bg-rose-600/90 hover:bg-rose-600 text-white font-semibold text-xs sm:text-base rounded-xl sm:rounded-2xl shadow-lg transition-all transform hover:-translate-y-0.5 whitespace-nowrap active:scale-95"
-              >
-                <AlertCircle className="w-4 h-4 sm:w-5 sm:h-5 text-rose-200 shrink-0" />
-                <span>Report Missing Item</span>
-              </Link>
+                  <Link
+                    href="/lost-reports/new"
+                    className="inline-flex items-center justify-center space-x-2 px-5 py-3.5 bg-white hover:bg-stone-50 text-stone-800 font-medium text-sm rounded-md border border-stone-200 transition-colors"
+                  >
+                    <span>File Lost Notice</span>
+                  </Link>
 
-              <Link
-                href="/found-items/new"
-                className="shrink-0 inline-flex items-center space-x-1.5 sm:space-x-2 px-3 sm:px-6 py-2 sm:py-3.5 bg-white/10 hover:bg-white/20 text-white font-semibold text-xs sm:text-base rounded-xl sm:rounded-2xl border border-white/20 backdrop-blur-md transition-all whitespace-nowrap active:scale-95"
-              >
-                <PlusCircle className="w-4 h-4 sm:w-5 sm:h-5 text-blue-300 shrink-0" />
-                <span>Report a Found Item</span>
-              </Link>
+                  <Link
+                    href="/found-items/new"
+                    className="inline-flex items-center justify-center space-x-1.5 px-4 py-3.5 text-stone-600 hover:text-stone-950 font-medium text-sm transition-colors"
+                  >
+                    <Plus className="w-4 h-4" />
+                    <span>Report Found Item</span>
+                  </Link>
+                </div>
+
+                {/* Subtle reassurance metrics */}
+                <div className="pt-6 border-t border-stone-200/80 flex items-center gap-8 text-xs text-stone-500">
+                  <div>
+                    <span className="block font-semibold text-stone-900 text-sm">Zero-Knowledge</span>
+                    <span>Serial numbers encrypted</span>
+                  </div>
+                  <div className="w-px h-8 bg-stone-200" />
+                  <div>
+                    <span className="block font-semibold text-stone-900 text-sm">QR Authenticated</span>
+                    <span>Physical return verification</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Right Column: Interactive Custody Artifact */}
+              <div className="lg:col-span-5 relative">
+                <div className="bg-white rounded-lg border border-stone-200/90 shadow-sm p-6 space-y-6">
+                  {/* Live Simulation Stream */}
+                  <div className="flex items-center justify-between border-b border-stone-100 pb-4 text-xs">
+                    <div className="flex items-center space-x-2">
+                      <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse-dot" />
+                      <span className="font-semibold text-stone-900">Custody Radar</span>
+                    </div>
+                    <span className="text-stone-400 font-mono text-[11px]">AUTO-MATCHING</span>
+                  </div>
+
+                  <div className="relative aspect-[16/10] bg-stone-50 rounded border border-stone-100 overflow-hidden flex flex-col justify-between p-4">
+                    {/* Simulated Scanner Line */}
+                    <div className="absolute inset-x-0 h-0.5 bg-blue-600/40 animate-scan-line pointer-events-none" />
+
+                    <div className="flex justify-between items-start text-[11px] text-stone-400">
+                      <span>STATION: LIBRARY 2F</span>
+                      <span>SECURE VAULT</span>
+                    </div>
+
+                    <div className="space-y-1 my-auto text-center">
+                      <p className="text-xs font-semibold text-stone-900">
+                        Item Awaiting Verified Owner
+                      </p>
+                      <p className="text-[11px] text-stone-500">
+                        Identifying markings matched against 1 pending student report
+                      </p>
+                    </div>
+
+                    <div className="flex items-center justify-between text-[11px] pt-2 border-t border-stone-200/60 text-stone-500">
+                      <span>CONFIDENTIAL CLAIM</span>
+                      <span className="text-blue-700 font-medium">94% Semantic Match</span>
+                    </div>
+                  </div>
+
+                  {/* Verification Protocol Guarantee */}
+                  <div className="bg-stone-50/80 rounded p-4 border border-stone-200/60 text-xs text-stone-600 space-y-1.5">
+                    <div className="flex items-center space-x-2 font-medium text-stone-900">
+                      <ShieldCheck className="w-4 h-4 text-blue-700" />
+                      <span>University Custody Standard</span>
+                    </div>
+                    <p className="text-[11px] text-stone-500 leading-relaxed">
+                      Lost property is registered with public photos, while serial numbers and internal markings remain encrypted for staff verification.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </section>
 
-        {/* Live Campus Items Directory (Items shown first without requiring sign-in) */}
+        {/* Live Campus Telemetry Strip */}
+        <section className="bg-white border-b border-stone-200/80 py-4 text-xs font-medium text-stone-600 overflow-hidden">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-3 text-stone-500">
+            <div className="flex items-center space-x-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+              <span className="text-stone-900 font-medium">Live Campus Operations</span>
+            </div>
+            <div className="flex flex-wrap items-center gap-6 text-stone-600">
+              <span>Main Library Desk · 08:00 - 22:00</span>
+              <span>Student Union Hub · Open</span>
+              <span>Engineering Complex Intake · Active</span>
+            </div>
+          </div>
+        </section>
+
+        {/* Live Campus Items Directory */}
         <CampusItemsDirectory />
 
-        {/* Core Value Pillars */}
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-3xl border border-gray-200 shadow-sm space-y-3">
-              <div className="w-12 h-12 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center">
-                <Search className="w-6 h-6" />
-              </div>
-              <h3 className="text-xl font-bold text-gray-900">Campus Inventory</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Filter approved items by category, campus location, and date to quickly locate what belongs to you.
+        {/* The Architecture of Return (Editorial Process Section) */}
+        <section className="py-24 border-t border-stone-200 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-16">
+            <div className="max-w-xl space-y-3">
+              <span className="text-xs font-semibold text-blue-700 tracking-wider uppercase">
+                The Protocol
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-stone-950">
+                How items return home
+              </h2>
+              <p className="text-sm sm:text-base text-stone-600 leading-relaxed">
+                Designed to protect honest finders, safeguard owner privacy, and eliminate false claims through strict custody verification.
               </p>
             </div>
 
-            <div className="bg-white p-8 rounded-3xl border border-gray-200 shadow-sm space-y-3">
-              <div className="w-12 h-12 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center">
-                <ShieldCheck className="w-6 h-6" />
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 lg:gap-16">
+              {/* Step 1 */}
+              <div className="space-y-4">
+                <div className="text-xs font-mono font-semibold text-stone-400">01 / REGISTRATION</div>
+                <h3 className="text-lg font-semibold text-stone-900">
+                  Visual Intake & Masking
+                </h3>
+                <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                  The finder logs the item with general appearance and location. Sensitive characteristics like serial numbers and internal wallpapers are kept strictly confidential.
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-gray-900">Privacy & Verification</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Sensitive serial numbers and hidden characteristics remain private for moderator verification only.
-              </p>
-            </div>
 
-            <div className="bg-white p-8 rounded-3xl border border-gray-200 shadow-sm space-y-3">
-              <div className="w-12 h-12 bg-purple-100 text-purple-600 rounded-2xl flex items-center justify-center">
-                <FolderHeart className="w-6 h-6" />
+              {/* Step 2 */}
+              <div className="space-y-4">
+                <div className="text-xs font-mono font-semibold text-stone-400">02 / MATCHING</div>
+                <h3 className="text-lg font-semibold text-stone-900">
+                  Semantic Cross-Referencing
+                </h3>
+                <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                  When a student files a private lost report, our matching engine compares temporal, spatial, and visual parameters without exposing personal contact details.
+                </p>
               </div>
-              <h3 className="text-xl font-bold text-gray-900">Student Community</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                Report found items in seconds, track moderation status, and help keep campus honest and connected.
-              </p>
+
+              {/* Step 3 */}
+              <div className="space-y-4">
+                <div className="text-xs font-mono font-semibold text-stone-400">03 / HANDOVER</div>
+                <h3 className="text-lg font-semibold text-stone-900">
+                  Cryptographic Handoff
+                </h3>
+                <p className="text-xs sm:text-sm text-stone-600 leading-relaxed">
+                  Approved claimants present a dynamic QR token at campus security or directly to the finder. Scanning validates identity and releases custody in the immutable log.
+                </p>
+              </div>
             </div>
           </div>
         </section>
       </main>
 
-      {/* Brand Footer: Designed for crystal-clear Findora visibility on Mobile & Desktop */}
-      <footer className="bg-slate-900 text-slate-300 py-10 sm:py-12 border-t border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="flex flex-col items-center md:items-start space-y-2 text-center md:text-left w-full md:w-auto">
-            <div className="flex items-center space-x-2.5">
-              <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center shadow-md shadow-blue-500/20 shrink-0">
-                <Sparkles className="w-5 h-5 text-white" />
-              </div>
-              <div className="flex items-center space-x-2">
-                <span className="text-2xl sm:text-3xl font-black tracking-tight text-white">
-                  Find<span className="text-cyan-400">ora</span>
-                </span>
-                <span className="text-[10px] bg-blue-500/20 text-cyan-300 font-bold px-2 py-0.5 rounded-full border border-blue-400/30 uppercase tracking-wider">
-                  Campus
-                </span>
-              </div>
+      {/* Editorial Footer */}
+      <footer className="bg-stone-950 text-stone-400 py-16 border-t border-stone-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+          <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 pb-12 border-b border-stone-800/80">
+            <div className="space-y-2">
+              <FindoraLogo variant="dark" size="md" withTagline={true} />
+              <p className="text-xs text-stone-400 max-w-sm mt-2 leading-relaxed">
+                Campus property registry and verification framework. Built for honest student communities.
+              </p>
             </div>
-            <p className="text-xs text-slate-400 max-w-sm mt-1">
-              Empowering university campuses with transparent lost and found item recovery.
+
+            <div className="flex items-center space-x-2 text-xs text-stone-400">
+              <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse-dot" />
+              <span>Network status: All campus desks operational</span>
+            </div>
+          </div>
+
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-stone-400">
+            <div className="flex flex-wrap items-center gap-6">
+              <Link href="/found-items" className="hover:text-white transition-colors">
+                Public Directory
+              </Link>
+              <Link href="/lost-reports/new" className="hover:text-white transition-colors">
+                File Lost Report
+              </Link>
+              <Link href="/found-items/new" className="hover:text-white transition-colors">
+                Report Found Property
+              </Link>
+              <Link href="/login" className="hover:text-white transition-colors">
+                Account Sign In
+              </Link>
+            </div>
+
+            <p className="text-stone-400">
+              © {new Date().getFullYear()} Findora Campus Network
             </p>
           </div>
-          
-          <div className="flex flex-wrap items-center justify-center md:justify-end gap-x-5 sm:gap-x-6 gap-y-2 text-xs sm:text-sm text-slate-400 font-medium">
-            <Link href="/found-items" className="hover:text-cyan-400 transition-colors py-1">
-              Browse Found Items
-            </Link>
-            <Link href="/lost-reports/new" className="hover:text-cyan-400 transition-colors py-1">
-              Report Missing Item
-            </Link>
-            <Link href="/found-items/new" className="hover:text-cyan-400 transition-colors py-1">
-              Report a Found Item
-            </Link>
-            <Link href="/login" className="hover:text-cyan-400 transition-colors py-1">
-              Account
-            </Link>
-          </div>
-        </div>
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-8 pt-6 border-t border-slate-800/60 text-center text-xs text-slate-500">
-          &copy; {new Date().getFullYear()} Findora Campus Platform. All rights reserved.
         </div>
       </footer>
     </div>

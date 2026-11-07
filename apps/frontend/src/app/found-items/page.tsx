@@ -10,7 +10,7 @@ import { FoundItemGridSkeleton } from '@/components/found-items/FoundItemSkeleto
 import { EmptyFoundItems } from '@/components/found-items/EmptyFoundItems';
 import { getPublicFoundItems } from '@/lib/foundItemsApi';
 import { PublicFoundItem } from '@findora/types';
-import { ChevronLeft, ChevronRight, Sparkles, AlertCircle, PlusCircle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, AlertCircle, PlusCircle } from 'lucide-react';
 
 function FoundItemsContent() {
   const router = useRouter();
@@ -98,40 +98,40 @@ function FoundItemsContent() {
   return (
     <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Header Banner with Action Buttons */}
-      <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-3xl p-6 sm:p-10 text-white shadow-lg relative overflow-hidden">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <section className="border-b border-stone-200 pb-8 pt-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="max-w-2xl space-y-2">
-            <div className="inline-flex items-center space-x-1.5 bg-white/15 backdrop-blur-md px-3 py-1 rounded-full text-xs font-semibold">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Campus Public Inventory</span>
+            <div className="flex items-center space-x-2 text-xs font-mono tracking-wider text-stone-500 uppercase">
+              <span className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
+              <span>Campus Public Registry</span>
             </div>
-            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
-              Campus Lost & Found Inventory
+            <h1 className="text-3xl sm:text-4xl font-normal tracking-tight text-stone-900">
+              Found Inventory
             </h1>
-            <p className="text-blue-100 text-sm sm:text-base leading-relaxed">
-              Search approved found items reported by fellow students across campus buildings, libraries, and common areas.
+            <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
+              Approved items located across campus facilities. Filter by building, date, or category to identify your belongings.
             </p>
           </div>
 
           {/* Quick Direct Reporting Actions */}
-          <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+          <div className="flex flex-col sm:flex-row gap-2.5 shrink-0">
             <Link
               href="/lost-reports/new"
-              className="inline-flex items-center justify-center space-x-2 px-5 py-3 bg-white text-rose-700 hover:bg-rose-50 font-bold text-sm rounded-2xl shadow-md transition-all transform hover:-translate-y-0.5"
+              className="inline-flex items-center justify-center space-x-2 px-4 py-2.5 bg-stone-900 hover:bg-black text-white font-medium text-xs uppercase tracking-wider transition-colors"
             >
-              <AlertCircle className="w-4 h-4 text-rose-600" />
+              <AlertCircle className="w-3.5 h-3.5 text-stone-300" />
               <span>Report Missing Item</span>
             </Link>
             <Link
               href="/found-items/new"
-              className="inline-flex items-center justify-center space-x-2 px-5 py-3 bg-white/15 hover:bg-white/25 text-white font-semibold text-sm rounded-2xl border border-white/20 backdrop-blur-md transition-all"
+              className="inline-flex items-center justify-center space-x-2 px-4 py-2.5 border border-stone-300 hover:border-stone-900 bg-white text-stone-900 font-medium text-xs uppercase tracking-wider transition-colors"
             >
-              <PlusCircle className="w-4 h-4 text-blue-200" />
+              <PlusCircle className="w-3.5 h-3.5 text-stone-600" />
               <span>Report Found Item</span>
             </Link>
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Filter Controls */}
       <FoundItemFilters

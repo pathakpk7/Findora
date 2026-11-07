@@ -48,28 +48,30 @@ export default function HandoversDashboardPage() {
 
       <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
         {/* Header Banner */}
-        <div className="bg-gradient-to-r from-blue-950 via-slate-900 to-indigo-950 rounded-3xl p-6 sm:p-10 text-white shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center space-x-1.5 bg-blue-500/20 border border-blue-400/30 px-3 py-1 rounded-full text-xs font-semibold text-blue-200">
-              <QrCode className="w-3.5 h-3.5" />
-              <span>Physical Handover Verification</span>
+        <section className="border-b border-stone-200 pb-8 pt-4">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+            <div className="space-y-2 max-w-2xl">
+              <div className="flex items-center space-x-2 text-xs font-mono tracking-wider text-stone-500 uppercase">
+                <span className="w-1.5 h-1.5 bg-blue-600 rounded-full" />
+                <span>Physical Exchange</span>
+              </div>
+              <h1 className="text-3xl sm:text-4xl font-normal tracking-tight text-stone-900">
+                Item Handovers
+              </h1>
+              <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
+                Generate single-use verification tokens or scan QR credentials to finalize in-person return of claimed property.
+              </p>
             </div>
-            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
-              Item Handovers
-            </h1>
-            <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
-              Generate one-time QR codes or scan tokens to complete physical return of claimed campus items.
-            </p>
-          </div>
 
-          <button
-            onClick={() => setIsScannerOpen(true)}
-            className="shrink-0 px-6 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm rounded-xl transition-all shadow-lg hover:shadow-blue-500/25 flex items-center justify-center space-x-2"
-          >
-            <QrCode className="w-4 h-4" />
-            <span>Scan Handover QR</span>
-          </button>
-        </div>
+            <button
+              onClick={() => setIsScannerOpen(true)}
+              className="shrink-0 px-4 py-2.5 bg-stone-900 hover:bg-black text-white font-medium text-xs uppercase tracking-wider transition-colors flex items-center justify-center space-x-2"
+            >
+              <QrCode className="w-3.5 h-3.5 text-stone-300" />
+              <span>Scan Handover Token</span>
+            </button>
+          </div>
+        </section>
 
         {successMessage && (
           <div className="bg-emerald-50 border border-emerald-200 text-emerald-900 p-4 rounded-2xl text-sm flex items-center space-x-3">

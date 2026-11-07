@@ -65,30 +65,30 @@ function LostReportsDashboardContent() {
   return (
     <main className="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
       {/* Header Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-blue-950 to-indigo-900 rounded-3xl p-6 sm:p-10 text-white shadow-xl relative overflow-hidden">
-        <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
+      <section className="border-b border-stone-200 pb-8 pt-4">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
           <div className="space-y-2 max-w-2xl">
-            <div className="inline-flex items-center space-x-1.5 bg-blue-500/20 border border-blue-400/30 px-3 py-1 rounded-full text-xs font-semibold text-blue-200">
-              <ShieldAlert className="w-3.5 h-3.5" />
-              <span>Private Owner Dashboard</span>
+            <div className="flex items-center space-x-2 text-xs font-mono tracking-wider text-stone-500 uppercase">
+              <span className="w-1.5 h-1.5 bg-rose-500 rounded-full" />
+              <span>Owner Custody Records</span>
             </div>
-            <h1 className="text-2xl sm:text-4xl font-extrabold tracking-tight">
-              My Lost Item Reports
+            <h1 className="text-3xl sm:text-4xl font-normal tracking-tight text-stone-900">
+              Lost Item Reports
             </h1>
-            <p className="text-gray-300 text-sm sm:text-base leading-relaxed">
-              Track and manage items you have reported missing on campus. Reports remain strictly private to you and campus staff for ownership verification.
+            <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
+              Track items reported missing across campus facilities. Reports remain private to your profile and authorized intake stations.
             </p>
           </div>
 
           <Link
             href="/lost-reports/new"
-            className="shrink-0 px-6 py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm rounded-xl transition-all shadow-lg hover:shadow-blue-500/25 flex items-center justify-center space-x-2"
+            className="shrink-0 px-4 py-2.5 bg-stone-900 hover:bg-black text-white font-medium text-xs uppercase tracking-wider transition-colors flex items-center justify-center space-x-2"
           >
-            <PlusCircle className="w-4 h-4" />
+            <PlusCircle className="w-3.5 h-3.5 text-stone-300" />
             <span>Report Lost Item</span>
           </Link>
         </div>
-      </div>
+      </section>
 
       {/* Filter Bar */}
       <div className="bg-white border border-gray-200 rounded-2xl p-4 shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
