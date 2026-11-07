@@ -1,9 +1,12 @@
 /**
- * CampusFind - Student Authentication Controller (Login, Register, Forgot Password)
+ * CampusFind - Student Authentication Controller
+ * Features: Fluid morphing switcher with physics-based sliding glider and dynamic height transition
  */
 
 import { loginUser, registerUser, resetPassword, onAuthChange } from "../auth.js";
 import { updateNavbar, setupMobileNav, setupModalListeners, initConfigChecker, showToast } from "../ui.js";
+
+let currentAuthMode = "login";
 
 document.addEventListener("DOMContentLoaded", () => {
   setupMobileNav();
@@ -20,47 +23,200 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  setupAuthTabs();
+  setupFluidAuthSwitcher();
   setupLoginForm();
   setupRegisterForm();
   setupResetForm();
 
-  // Activate specific tab if passed via URL
+  // Handle initial tab from query param
   const urlParams = new URLSearchParams(window.location.search);
   const requestedTab = urlParams.get("tab");
   if (requestedTab === "register") {
-    document.querySelector('[data-target="pane-register"]')?.click();
+    switchAuthMode("register", false);
   } else if (requestedTab === "reset") {
-    document.querySelector('[data-target="pane-reset"]')?.click();
+    switchAuthMode("reset", false);
+  } else {
+    switchAuthMode("login", false);
   }
+
+  // Adjust height on window resize
+  window.addEventListener("resize", () => {
+    adjustStageHeight(currentAuthMode);
+  });
 });
 
-function setupAuthTabs() {
-  const tabBtns = document.querySelectorAll(".auth-tab-btn");
-  const tabPanes = document.querySelectorAll(".auth-tab-pane");
+/**
+ * Setup fluid interactive switcher
+ */
+function setupFluidAuthSwitcher() {
+  const btnLogin = document.getElementById("btn-tab-login");
+  const btnRegister = document.getElementById("btn-tab-register");
+  const topToggleBtn = document.getElementById("auth-top-toggle-btn");
 
-  tabBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      tabBtns.forEach(b => b.classList.remove("active"));
-      tabPanes.forEach(p => p.classList.remove("active"));
+  if (btnLogin) {
+    btnLogin.addEventListener("click", () => switchAuthMode("login"));
+  }
 
-      btn.classList.add("active");
-      const targetId = btn.dataset.target;
-      const targetPane = document.getElementById(targetId);
-      if (targetPane) targetPane.classList.add("active");
+  if (btnRegister) {
+    btnRegister.addEventListener("click", () => switchAuthMode("register"));
+  }
+
+  // Top action toggle button
+  if (topToggleBtn) {
+    topToggleBtn.addEventListener("click", () => {
+      const targetMode = topToggleBtn.dataset.target || (currentAuthMode === "login" ? "register" : "login");
+      switchAuthMode(targetMode);
     });
-  });
+  }
 
-  // Switch links inside cards
+  // In-form link clicks (e.g. "Forgot Password?", "Create an account", "Back to Log In")
   document.querySelectorAll(".switch-tab-link").forEach(link => {
     link.addEventListener("click", (e) => {
       e.preventDefault();
-      const target = link.dataset.target;
-      document.querySelector(`[data-target="${target}"]`)?.click();
+      const targetMode = link.dataset.mode;
+      if (targetMode) switchAuthMode(targetMode);
     });
   });
 }
 
+/**
+ * Switch between "login", "register", and "reset" with smooth visual animation
+ */
+function switchAuthMode(mode, animate = true) {
+  currentAuthMode = mode;
+
+  const track = document.getElementById("auth-panes-track");
+  const glider = document.getElementById("auth-switch-glider");
+  const btnLogin = document.getElementById("btn-tab-login");
+  const btnRegister = document.getElementById("btn-tab-register");
+  const topToggleBtn = document.getElementById("auth-top-toggle-btn");
+  const toggleLead = document.getElementById("toggle-lead-text");
+  const toggleAction = document.getElementById("toggle-action-text");
+  const title = document.getElementById("auth-title");
+  const subtitle = document.getElementById("auth-subtitle");
+
+  const paneLogin = document.getElementById("pane-login");
+  const paneRegister = document.getElementById("pane-register");
+  const paneReset = document.getElementById("pane-reset");
+
+  // Update track active pane attribute
+  if (track) {
+    track.setAttribute("data-active-pane", mode);
+  }
+
+  // Update active pane classes
+  [paneLogin, paneRegister, paneReset].forEach(pane => {
+    if (pane) pane.classList.remove("active");
+  });
+
+  const activePane = mode === "register" ? paneRegister : (mode === "reset" ? paneReset : paneLogin);
+  if (activePane) {
+    activePane.classList.add("active");
+  }
+
+  // Glider positioning & Pill states
+  if (glider && btnLogin && btnRegister) {
+    if (mode === "login") {
+      glider.style.opacity = "1";
+      glider.style.transform = "translate3d(0%, 0, 0)";
+      btnLogin.classList.add("active");
+      btnLogin.setAttribute("aria-selected", "true");
+      btnRegister.classList.remove("active");
+      btnRegister.setAttribute("aria-selected", "false");
+    } else if (mode === "register") {
+      glider.style.opacity = "1";
+      glider.style.transform = "translate3d(100%, 0, 0)";
+      btnRegister.classList.add("active");
+      btnRegister.setAttribute("aria-selected", "true");
+      btnLogin.classList.remove("active");
+      btnLogin.setAttribute("aria-selected", "false");
+    } else {
+      // Reset mode
+      glider.style.opacity = "0";
+      btnLogin.classList.remove("active");
+      btnRegister.classList.remove("active");
+    }
+  }
+
+  // Update Top Action Toggle Button
+  if (topToggleBtn && toggleLead && toggleAction) {
+    if (mode === "login") {
+      toggleLead.textContent = "New student?";
+      toggleAction.innerHTML = "Tap to Register &rarr;";
+      topToggleBtn.dataset.target = "register";
+    } else if (mode === "register") {
+      toggleLead.textContent = "Already registered?";
+      toggleAction.innerHTML = "Tap to Sign In &rarr;";
+      topToggleBtn.dataset.target = "login";
+    } else {
+      toggleLead.textContent = "Remember credentials?";
+      toggleAction.innerHTML = "Back to Sign In &rarr;";
+      topToggleBtn.dataset.target = "login";
+    }
+  }
+
+  // Header Title & Subtitle cross-fade
+  if (title && subtitle) {
+    if (animate) {
+      title.style.opacity = "0";
+      title.style.transform = "translateY(-4px)";
+      subtitle.style.opacity = "0";
+      subtitle.style.transform = "translateY(-4px)";
+
+      setTimeout(() => {
+        applyHeaderText(mode, title, subtitle);
+        title.style.opacity = "1";
+        title.style.transform = "translateY(0)";
+        subtitle.style.opacity = "1";
+        subtitle.style.transform = "translateY(0)";
+      }, 140);
+    } else {
+      applyHeaderText(mode, title, subtitle);
+    }
+  }
+
+  // Dynamic height adaptation of stage
+  adjustStageHeight(mode);
+
+  // Update URL history state
+  const newURL = mode === "login" ? "login.html" : `login.html?tab=${mode}`;
+  window.history.replaceState(null, "", newURL);
+}
+
+function applyHeaderText(mode, title, subtitle) {
+  if (mode === "login") {
+    title.textContent = "Welcome Back";
+    subtitle.textContent = "Sign in to report belongings and verify ownership claims";
+  } else if (mode === "register") {
+    title.textContent = "Create Student Account";
+    subtitle.textContent = "Join the verified campus network to report and reclaim items";
+  } else {
+    title.textContent = "Account Recovery";
+    subtitle.textContent = "Enter your registered college address to reset credentials";
+  }
+}
+
+/**
+ * Adjust stage viewport height to match the active pane
+ */
+function adjustStageHeight(mode) {
+  const stage = document.getElementById("auth-card-stage");
+  const pane = mode === "register" ? 
+    document.getElementById("pane-register") : 
+    (mode === "reset" ? document.getElementById("pane-reset") : document.getElementById("pane-login"));
+
+  if (stage && pane) {
+    // Read natural height
+    requestAnimationFrame(() => {
+      const height = pane.scrollHeight;
+      stage.style.height = `${height}px`;
+    });
+  }
+}
+
+/**
+ * Handle student login submit
+ */
 function setupLoginForm() {
   const form = document.getElementById("login-form");
   const submitBtn = document.getElementById("btn-submit-login");
@@ -98,6 +254,9 @@ function setupLoginForm() {
   });
 }
 
+/**
+ * Handle student registration submit
+ */
 function setupRegisterForm() {
   const form = document.getElementById("register-form");
   const submitBtn = document.getElementById("btn-submit-register");
@@ -147,6 +306,9 @@ function setupRegisterForm() {
   });
 }
 
+/**
+ * Handle password reset submit
+ */
 function setupResetForm() {
   const form = document.getElementById("reset-form");
   const submitBtn = document.getElementById("btn-submit-reset");
@@ -164,7 +326,7 @@ function setupResetForm() {
       await resetPassword(email);
       showToast("Password reset link sent! Check your inbox.", "success");
       form.reset();
-      document.querySelector('[data-target="pane-login"]')?.click();
+      switchAuthMode("login");
     } catch (error) {
       console.error("Password reset failed:", error);
       showToast(error.message, "error");
