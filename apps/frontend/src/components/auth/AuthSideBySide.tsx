@@ -23,6 +23,7 @@ import {
   Key,
   QrCode,
   Check,
+  TrendingUp,
 } from 'lucide-react';
 import { FindoraLogo } from '@/components/brand/FindoraLogo';
 
@@ -444,59 +445,106 @@ export function AuthSideBySide({ initialMode = 'login' }: AuthSideBySideProps) {
           <div className="absolute -bottom-16 -right-16 w-80 h-80 bg-cyan-400/20 rounded-full blur-2xl pointer-events-none" />
           <div className="absolute top-1/4 -left-12 w-72 h-72 bg-blue-400/25 rounded-full blur-2xl pointer-events-none" />
           
-          {/* Top Decorative Floating Card (Stats & Activity) */}
+          {/* Top Decorative Floating Card (Stats & Activity) - Authentically Tailored to Findora */}
           <div className="relative z-10 w-full pt-4">
-            <div className="bg-white text-slate-900 p-6 rounded-3xl shadow-2xl max-w-[270px] ml-auto transform -rotate-1 hover:rotate-0 transition-transform duration-300">
-              <div className="text-[11px] font-bold text-orange-500 uppercase tracking-wider">
-                Campus Finds
-              </div>
-              <div className="text-3xl font-black text-slate-900 tracking-tight mt-1">
-                176,18
+            <div className="bg-white text-slate-900 p-6 rounded-3xl shadow-2xl max-w-[285px] ml-auto transform -rotate-1 hover:rotate-0 transition-transform duration-300 border border-slate-100">
+              <div className="flex items-center justify-between">
+                <span className="text-[10px] font-extrabold text-blue-600 uppercase tracking-wider bg-blue-50 px-2.5 py-0.5 rounded-full">
+                  Campus Recoveries
+                </span>
+                <span className="text-[10px] font-bold text-emerald-600 flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                  94.8% Rate
+                </span>
               </div>
 
-              {/* Dynamic Wavy Sparkline Graph */}
-              <div className="relative h-14 mt-3 flex items-center justify-center">
-                <svg viewBox="0 0 160 40" className="w-full h-full overflow-visible">
+              <div className="mt-3">
+                <div className="text-3xl font-black text-slate-900 tracking-tight">
+                  1,420<span className="text-blue-600">+</span>
+                </div>
+                <p className="text-[11px] text-slate-500 mt-0.5">
+                  Items safely reclaimed this semester
+                </p>
+              </div>
+
+              {/* Clean Smooth Trend Line with Gradient Area */}
+              <div className="relative h-14 mt-3 w-full">
+                <svg viewBox="0 0 200 50" className="w-full h-full overflow-visible">
+                  <defs>
+                    <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#2563EB" stopOpacity="0.25" />
+                      <stop offset="100%" stopColor="#2563EB" stopOpacity="0.0" />
+                    </linearGradient>
+                  </defs>
+                  {/* Subtle Gradient Area Fill */}
                   <path
-                    d="M 0 30 Q 30 10, 60 25 T 120 15 T 160 28"
+                    d="M 5 45 Q 40 38, 70 32 T 130 18 T 195 10 L 195 50 L 5 50 Z"
+                    fill="url(#chartGrad)"
+                  />
+                  {/* Active Spline Line */}
+                  <path
+                    d="M 5 45 Q 40 38, 70 32 T 130 18 T 195 10"
                     fill="none"
-                    stroke="#F97316"
-                    strokeWidth="3.5"
+                    stroke="#2563EB"
+                    strokeWidth="3"
                     strokeLinecap="round"
                   />
-                  <circle cx="80" cy="18" r="5" fill="#0E121B" />
+                  {/* Active Pinpoint ON the curve */}
+                  <circle cx="130" cy="18" r="4.5" fill="#2563EB" />
+                  <circle cx="130" cy="18" r="9" fill="#2563EB" opacity="0.2" className="animate-ping" />
+                  <circle cx="195" cy="10" r="4.5" fill="#10B981" />
                 </svg>
-                <div className="absolute top-1 right-12 w-6 h-6 bg-slate-900 text-white rounded-full flex items-center justify-center text-[10px] font-black shadow-md">
-                  45
-                </div>
+              </div>
+
+              <div className="mt-2 pt-2.5 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400">
+                <span>Wallets • IDs • Tech</span>
+                <span className="font-semibold text-slate-600 flex items-center gap-1">
+                  <TrendingUp className="w-3 h-3 text-emerald-500" /> +18% MoM
+                </span>
               </div>
             </div>
           </div>
 
           {/* Middle Decorative Badges */}
-          <div className="relative z-10 flex items-center justify-end space-x-3 my-4 pr-6">
-            <div className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white shadow-lg border border-white/20 hover:scale-110 transition-transform">
-              <Sparkles className="w-5 h-5 text-cyan-300" />
+          <div className="relative z-10 flex items-center justify-end space-x-2.5 my-3 pr-4">
+            <div className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-white/15 backdrop-blur-md text-white text-xs font-semibold shadow-lg border border-white/20">
+              <Sparkles className="w-3.5 h-3.5 text-cyan-300" />
+              <span>Smart AI Matching</span>
             </div>
-            <div className="w-10 h-10 rounded-2xl bg-white/20 backdrop-blur-md flex items-center justify-center text-white shadow-lg border border-white/20 hover:scale-110 transition-transform">
-              <QrCode className="w-5 h-5 text-blue-200" />
+            <div className="inline-flex items-center space-x-1.5 px-3 py-1.5 rounded-xl bg-white/15 backdrop-blur-md text-white text-xs font-semibold shadow-lg border border-white/20">
+              <QrCode className="w-3.5 h-3.5 text-blue-200" />
+              <span>1-Time QR Handover</span>
             </div>
           </div>
 
           {/* Bottom Floating Card: "Your data, your rules" */}
           <div className="relative z-10 w-full pb-2">
-            <div className="bg-white text-slate-900 p-6 rounded-3xl shadow-2xl max-w-[290px] mr-auto transform rotate-1 hover:rotate-0 transition-transform duration-300">
-              <div className="flex items-center space-x-3 mb-3">
-                <div className="w-9 h-9 rounded-xl bg-orange-100 text-orange-600 flex items-center justify-center shrink-0">
-                  <Key className="w-5 h-5" />
+            <div className="bg-white text-slate-900 p-5 rounded-3xl shadow-2xl max-w-[295px] mr-auto transform rotate-1 hover:rotate-0 transition-transform duration-300 border border-slate-100">
+              <div className="flex items-center space-x-3 mb-2.5">
+                <div className="w-9 h-9 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center shrink-0">
+                  <ShieldCheck className="w-5 h-5" />
                 </div>
-                <h3 className="font-bold text-sm text-slate-900 leading-tight">
-                  Your data, your rules
-                </h3>
+                <div>
+                  <h3 className="font-bold text-sm text-slate-900 leading-tight">
+                    Privacy-First Returns
+                  </h3>
+                  <span className="text-[10px] font-semibold text-blue-600">
+                    Encrypted Ownership Proof
+                  </span>
+                </div>
               </div>
               <p className="text-xs text-slate-500 leading-relaxed">
-                Your belongings & claim proofs stay strictly encrypted. Only verified claimants get item return codes.
+                Serial numbers & secret marks remain hidden. Single-use QR authorization tokens verify in-person handovers.
               </p>
+              
+              <div className="mt-3 pt-2 border-t border-slate-100 flex items-center gap-1.5 flex-wrap">
+                <span className="text-[10px] font-medium bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md">
+                  ✓ AI-Assisted Matches
+                </span>
+                <span className="text-[10px] font-medium bg-slate-100 text-slate-600 px-2 py-0.5 rounded-md">
+                  ✓ 1-Time QR Token
+                </span>
+              </div>
             </div>
 
             <div className="mt-6 text-[11px] text-blue-200/80 text-center font-medium">
